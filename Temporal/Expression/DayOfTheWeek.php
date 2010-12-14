@@ -1,10 +1,10 @@
 <?php
 
-namespace Bundle\CalendarBundle\TemporalExpression\Expression;
+namespace Bundle\CalendarBundle\Temporal\Expression;
 
-use Bundle\CalendarBundle\TemporalExpression\TemporalExpression;
+use Bundle\CalendarBundle\Temporal\Expression;
 
-class DayOfTheWeek implements TemporalExpression
+class DayOfTheWeek implements Expression
 {
     private $day;
 

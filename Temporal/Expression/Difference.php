@@ -1,16 +1,16 @@
 <?php
 
-namespace Bundle\CalendarBundle\TemporalExpression\Expression;
+namespace Bundle\CalendarBundle\Expression\Expression;
 
-use Bundle\CalendarBundle\TemporalExpression\TemporalExpression;
+use Bundle\CalendarBundle\Expression\Expression;
 
-class Difference implements TemporalExpression
+class Difference implements Expression
 {
     private $firstExpression;
 
     private $secondExpression;
 
-    public function __construct(TemporalExpression $firstExpression, TemporalExpression $secondExpression)
+    public function __construct(Expression $firstExpression, Expression $secondExpression)
     {
         $this->firstExpression = $firstExpression;
         $this->secondExpression = $secondExpression;

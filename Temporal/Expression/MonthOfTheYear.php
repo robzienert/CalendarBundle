@@ -1,10 +1,10 @@
 <?php
 
-namespace Bundle\CalendarBundle\TemporalExpression\Expression;
+namespace Bundle\CalendarBundle\Expression\Expression;
 
-use Bundle\CalendarBundle\TemporalExpression\TemporalExpression;
+use Bundle\CalendarBundle\Expression\Expression;
 
-class MonthOfTheYear implements TemporalExpression
+class MonthOfTheYear implements Expression
 {
     private $month;
 

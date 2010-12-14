@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\CalendarBundle\TemporalExpression;
+namespace Bundle\CalendarBundle\Temporal;
 
 class Factory
 {
