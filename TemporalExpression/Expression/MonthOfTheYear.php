@@ -24,8 +24,8 @@ class MonthOfTheYear implements TemporalExpression
 
     public function getNextOccurrence(\DateTime $dateTime)
     {
-        $currentYearOccurrence = DateTime::createFromFormat('Y-m-d', $dateTime->format('Y'), $dateTime->format('m'), $dateTime->format('d'));
-        $nextYearOccurrence = DateTime::createFromFormat('Y-m-d', $dateTime->format('Y') + 1, $dateTime->format('m'), $dateTime->format('d'));
+        $currentYearOccurrence = \DateTime::createFromFormat('Y-m-d', $dateTime->format('Y'), $dateTime->format('m'), $dateTime->format('d'));
+        $nextYearOccurrence = \DateTime::createFromFormat('Y-m-d', $dateTime->format('Y') + 1, $dateTime->format('m'), $dateTime->format('d'));
 
         if ($dateTime < $currentYearOccurrence) {
             return $currentYearOccurrence;

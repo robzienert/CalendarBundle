@@ -22,15 +22,15 @@ class DayOfTheYear implements TemporalExpression
     {
         if ($this->day > 0) {
             if ($dateTime->sub($this->day . ' days')->format('Y') < $dateTime->format('Y')) {
-                $nextOccurrence = DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-%s', $dateTime->format('Y'), '01', '01'));
+                $nextOccurrence = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-%s', $dateTime->format('Y'), '01', '01'));
             } else {
-                $nextOccurrence = DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-%s', $dateTime->format('Y') + 1, '01', '01'));
+                $nextOccurrence = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-%s', $dateTime->format('Y') + 1, '01', '01'));
             }
         } else {
             if ($dateTime->sub($this->day . ' days')->format('Y') > $dateTime->format('Y')) {
-                $nextOccurrence = DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-%s', $dateTime->format('Y'), 12, 31));
+                $nextOccurrence = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-%s', $dateTime->format('Y'), 12, 31));
             } else {
-                $nextOccurrence = DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-%s', $dateTime->format('Y') + 1, 12, 31));
+                $nextOccurrence = \DateTime::createFromFormat('Y-m-d', sprintf('%s-%s-%s', $dateTime->format('Y') + 1, 12, 31));
             }
         }
 
