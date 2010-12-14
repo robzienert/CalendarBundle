@@ -10,8 +10,8 @@ class DayOfTheMonth implements Expression
     
     public function __construct($day, $ignoreDay = true)
     {
-        $this->day = (int) $day;
-        $this->ignoreDay = (bool) $ignoreDay;
+        $this->setDay($day);
+        $this->setIgnoreDay($ignoreDay);
     }
 
     public function contains(\DateTime $dateTime)
@@ -25,7 +25,26 @@ class DayOfTheMonth implements Expression
             }
         } else {
             $value = ($this->day < 0) ? -1 : 1;
-
         }
+    }
+
+    public function setDay($day)
+    {
+        $this->day = (int) $day;
+    }
+
+    public function getDay()
+    {
+        return $this->day;
+    }
+
+    public function setIgnoreDay($ignoreDay)
+    {
+        $this->ignoreDay = (bool) $ignoreDay;
+    }
+
+    public function getIgnoreDay()
+    {
+        return $this->ignoreDay;
     }
 }
