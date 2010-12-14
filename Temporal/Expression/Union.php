@@ -1,8 +1,6 @@
 <?php
 
-namespace Bundle\CalendarBundle\Expression\Expression;
-
-use Bundle\CalendarBundle\Expression\Expression;
+namespace Bundle\CalendarBundle\Temporal\Expression;
 
 class Union implements Expression
 {

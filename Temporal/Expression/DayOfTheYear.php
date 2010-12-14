@@ -1,10 +1,8 @@
 <?php
 
-namespace Bundle\CalendarBundle\Expression\Expression;
+namespace Bundle\CalendarBundle\Temporal\Expression;
 
-use Bundle\CalendarBundle\Expression\Expression;
-
-class DayOfTheYear implements Expression
+class DayOfTheYear implements TemporalExpression
 {
     private $day;
     

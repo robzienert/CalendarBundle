@@ -2,8 +2,6 @@
 
 namespace Bundle\CalendarBundle\Temporal\Expression;
 
-use Bundle\CalendarBundle\Temporal\Expression;
-
 class DayOfTheMonth implements Expression
 {
     private $day;
