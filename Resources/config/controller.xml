@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://www.symfony-project.org/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.symfony-project.org/schema/dic/services http://www.symfony-project.org/schema/dic/services/services-1.0.xsd">
+    
+    <parameters>
+        <parameter key="calendar.controller.main.class">Bundle\CalendarBundle\Controller\MainController</parameter>
+        <parameter key="calendar.controller.calendar.class">Bundle\CalendarBundle\Controller\CalendarController</parameter>
+        <parameter key="calendar.controller.event.class">Bundle\CalendarBundle\Controller\EventController</parameter>
+    </parameters>
+
+    <services>
+        <service id="calendar.controller.main" class="%calendar.controller.main.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+        <service id="calendar.controller.calendar" class="%calendar.controller.calendar.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+        <service id="calendar.controller.event" class="%calendar.controller.event.class%">
+            <call method="setContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+    </services>
+</container>

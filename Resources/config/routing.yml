@@ -1,0 +1,4 @@
+calendar_calendar_add:
+  pattern: /calendar/:id/add
+  defaults: { _controller: calendar.controller.calendar:addAction }
+  requirements: { id: "[\w\-]{8}", _method: "get|head" }
