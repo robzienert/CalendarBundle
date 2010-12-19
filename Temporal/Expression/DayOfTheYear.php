@@ -37,6 +37,16 @@ class DayOfTheYear implements TemporalExpression
         return $nextOccurrence->add($this->day - $value . ' days');
     }
 
+    public function setDay($day)
+    {
+        $this->day = (int) $day;
+    }
+
+    public function getDay()
+    {
+        return $this->day;
+    }
+
     public function __toString()
     {
         return sprintf('DOTY(%s)', $this->day);

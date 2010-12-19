@@ -56,6 +56,16 @@ class DayOfTheWeek implements Expression
         return ($dateTime < $currentWeekOccurrence) ? $currentWeekOccurrence : $nextWeekOccurrence;
     }
 
+    public function setDay($day)
+    {
+        $this->day = $this->weekDayIndex($day);
+    }
+
+    public function getDay()
+    {
+        return $this->day;
+    }
+
     public function __toString()
     {
         return sprintf('DOTW(%d)', $this->day);

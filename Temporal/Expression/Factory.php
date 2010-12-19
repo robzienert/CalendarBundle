@@ -6,13 +6,13 @@ class Factory
 {
     public static function createFromString($expression)
     {
-        if (preg_match_all("([A-Za-z0-9,: \[\]\(\) ]*[])([UID]{1})(\[[A-Za-z0-9,: \[\]\(\) ]*)", $expression, $matches)) {
+        if (preg_match_all("([A-Za-z0-9,: \[\]\(\) ]*\])([UID]{1})(\[[A-Za-z0-9,: \[\]\(\) ]*)", $expression, $matches)) {
             $temporalExpression = self::createFromRelationship(
                 $matches[0][1],
                 $matches[0][0],
                 $matches[0][2]);
         } else {
-            preg_match_all("([A-Z]{1,4})?\((A-Za-z0-9.,:\-/ ]*)?\)", $expression, $matches);
+            preg_match_all("([A-Z]{1,4})?\(([A-Za-z0-9.,:\-/ ]*)?\)", $expression, $matches);
 
             $temporalExpressionType = $matches[0][1];
             $temporalExpressionParameters = $matches[0][2];
