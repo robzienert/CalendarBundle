@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<expressions>
+    <expression name="Day of the Month" acronym="DOTM" class="Bundle\CalendarBundle\Temporal\Expression\DayOfTheMonth" />
+    <expression name="Day of the Week" acronym="DOTW" class="Bundle\CalendarBundle\Temporal\Expression\DayOfTheWeek" />
+    <expression name="Day of the Year" acronym="DOTY" class="Bundle\CalendarBundle\Temporal\Expression\DayOfTheYear" />
+    <expression name="Month of the Year" acronym="MOTY" class="Bundle\CalendarBundle\Temporal\Expression\MonthOfTheYear" />
+</expressions>
