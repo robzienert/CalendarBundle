@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass
+        name="Bundle\CalendarBundle\Entity\Event"
+        table="calendar_event"
+        inheritence-type="SINGLE_TABLE">
+
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO" />
+        </id>
+
+        <field name="title" column="title" />
+        <field name="description" column="description" />
+        <field name="category" column="category" />
+        <field name="expression" column="expression" />
+        <field name="timeStart" column="time_start" />
+        <field name="timeEnd" column="time_end" />
+
+        <many-to-one field="calendar" target-entity="Calendar" mapped-by="calendar_event">
+            <cascade>
+                <cascade-persist />
+            </cascade>
+            <order-by>
+                <order-by-field name="id" direction="ASC" />
+            </order-by>
+        </many-to-one>
+
+    <mapped-superclass>
+
+</doctrine-mapping>
