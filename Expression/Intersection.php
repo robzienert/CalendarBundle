@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\CalendarBundle\Temporal\Expression;
+namespace Bundle\CalendarBundle\Expression;
 
 class Intersection implements Expression
 {
@@ -34,6 +34,26 @@ class Intersection implements Expression
             return $this->getNextOccurrence(
                 ($firstNextOccurrence < $secondNextOccurrence) ? $firstNextOccurrence : $secondNextOccurrence);
         }
+    }
+
+    public function setFirstExpression(Expression $firstExpression)
+    {
+        $this->firstExpression = $firstExpression;
+    }
+
+    public function getFirstExpression()
+    {
+        return $this->firstExpression;
+    }
+
+    public function setSecondExpression(Expression $secondExpression)
+    {
+        $this->secondExpression = $secondExpression;
+    }
+
+    public function getSecondExpression()
+    {
+        return $this->secondExpression;
     }
 
     public function __toString()

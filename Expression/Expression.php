@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\CalendarBundle\Temporal\Expression;
+namespace Bundle\CalendarBundle\Expression;
 
 interface Expression
 {
