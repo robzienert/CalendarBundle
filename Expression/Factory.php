@@ -10,9 +10,9 @@ class Factory
         
         if (preg_match_all("#([A-Za-z0-9,: \[\]\(\) ]*\])([UID]{1})(\[[A-Za-z0-9,: \[\]\(\) ]*)#", $expression, $matches)) {
             $expressionObject = self::createFromRelationship(
+                $matches[2][0],
                 $matches[1][0],
-                $matches[3][0],
-                $matches[2][0]);
+                $matches[3][0]);
         } else {
             preg_match_all("#([A-Z]{1,4})?\(([A-Za-z0-9.,:\-/ ]*)?\)#", $expression, $matches);
             if (3 != count($matches)) {
