@@ -113,12 +113,21 @@ class CalendarController extends Controller
      * Find a calendar by its id
      *
      * @param int $id
+     * @return Bundle\CalendarBundle\Model\Calendar
+     * @throws NotFoundHttpException if the calendar cannot be found
      */
     protected function findCalendar($id)
     {
-        if (empty($id)) {
+        $calendar = null;
+        if (!empty($id)) {
+            $event = $this['calendar.repository.calendar']->findOneById($id);
+        }
+
+        if (empty($calendar)) {
             throw new NotFoundHttpException(sprintf('The calendar "%d" does not exist', $id));
         }
+
+        return $calendar;
     }
 
     /**
