@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://www.symfony-project.org/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.symfony-project.org/schema/dic/services http://www.symfony-project.org/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="calendar.form.calendar.class">Bundle\CalendarBundle\Form\CalendarForm</parameter>
+        <parameter key="calendar.form.calendar.name">calendar_calednar_form</parameter>
+        <parameter key="calendar.form.event.class">Bundle\CalendarBundle\Form\EventForm</parameter>
+        <parameter key="calendar.form.event.name">calendar_event_form</parameter>
+    </parameters>
+
+    <services>
+        <serivce id="calendar.form.calendar" class="%calendar.form.calendar.class%">
+            <argument>%calendar.form.calendar.name%</argument>
+        </serivce>
+        <service id="calendar.form.event" class="%calendar.form.event.class%">
+            <argument>%calendar.form.event.name%</argument>
+        </service>
+    </services>
+
+</container>
