@@ -6,13 +6,29 @@ abstract class Event
 {
     protected $id;
 
+    protected $category;
+
+    protected $calendar;
+
     protected $title;
 
     protected $description;
 
-    protected $category;
+    protected $summary;
 
-    protected $calendar;
+    protected $allDay;
+
+    protected $startDate;
+    
+    protected $endDate;
+
+    protected $exceptions;
+
+    protected $status;
+
+    protected $location;
+
+    protected $url;
 
     protected $expression;
 
