@@ -22,7 +22,7 @@ class CalendarController extends Controller
      */
     public function showAction($id)
     {
-        $calendars = $this->findGroup($id);
+        $calendar = $this->findCalendar($id);
 
         return $this->render('CalendarBundle:Calendar:show.php', array('calendar' => $calendar));
     }
@@ -91,7 +91,7 @@ class CalendarController extends Controller
             return $this->redirect($this->generate('calendar_calendar_show', array('id' => $form->getData()->getId())));
         }
 
-        return $tis->render('CalendarBundle:Calendar:edit.php');
+        return $this->render('CalendarBundle:Calendar:edit.php', array('form' => $form, 'id' => $id));
     }
 
     /**
@@ -101,8 +101,8 @@ class CalendarController extends Controller
     {
         $calendar = $this->findCalendar($id);
 
-        $this['calendar.repository.calendar']->getObjectManager->delete($calendar);
-        $this['calendar.repository.calendar']->getObjectManager->flush();
+        $this['calendar.repository.calendar']->getObjectManager()->delete($calendar);
+        $this['calendar.repository.calendar']->getObjectManager()->flush();
 
         $this['session']->setFlash('calendar_calendar_delete/success');
 
@@ -110,7 +110,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * Find a group by its id
+     * Find a calendar by its id
      *
      * @param int $id
      */
