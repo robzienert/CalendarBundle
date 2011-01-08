@@ -8,7 +8,7 @@ class DayOfTheMonth implements Expression
 
     private $ignoreDay;
     
-    public function __construct($day, $ignoreDay = true)
+    public function __construct($day = 0, $ignoreDay = true)
     {
         $this->setDay($day);
         $this->setIgnoreDay($ignoreDay);

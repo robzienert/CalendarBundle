@@ -3,9 +3,23 @@
 namespace Bundle\CalendarBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Bundle\CalendarBundle\Expression\DayOfTheMonth;
+use Bundle\CalendarBundle\Expression\DayOfTheYear;
 
 abstract class Recurrence
 {
+    const DAY_SUNDAY = 'sunday';
+    const DAY_MONDAY = 'monday';
+    const DAY_TUESDAY = 'tuesday';
+    const DAY_WEDNESDAY = 'wednesday';
+    const DAY_THURSDAY = 'thursday';
+    const DAY_FRIDAY = 'friday';
+
+    const FREQUENCY_DAILY = 1;
+    const FREQUENCY_WEEKLY = 2;
+    const FREQUENCY_MONTHLY = 3;
+    const FREQUENCY_YEARLY = 4;
+    
     protected $id;
 
     protected $event;
@@ -47,19 +61,6 @@ abstract class Recurrence
      * @var array
      */
     protected $monthDays;
-
-    /**
-     * An array of integer numbers used to specify specific days within an
-     * expanded set of occurrences. The numbers specify the index of an expanded
-     * sequence of occurrences starting with 1. For example, if $frequency is
-     * daily, the event starts on a Monday, and bysetpos is (1, 8), then the
-     * recurrence will occur on the first and second Mondays only. If
-     * $setPosition is (2, 8) the event or task will occur on the first Tuesday
-     * in the sequence and the second Monday.
-     *
-     * @var array
-     */
-    protected $setPosition;
 
     /**
      * An array of numbers, with integer values ranging from 1 to 53 or -53 to -1,
@@ -200,16 +201,6 @@ abstract class Recurrence
         }
     }
 
-    public function setSetPosition($position)
-    {
-        $this->setPosition = $position;
-    }
-
-    public function getSetPosition()
-    {
-        return $this->setPosition;
-    }
-
     public function getWeekNumbers()
     {
         return $this->weekNumbers ?: $this->monthDays = new ArrayCollection();
@@ -299,6 +290,76 @@ abstract class Recurrence
 
     public function contains(DateTime $dateTime)
     {
-        
+        $result = ($dateTime->format('Y-m-d') > $this->until->format('Y-m-d')
+            && $this->getMonths()->count() && $this->getMonths()->contains($dateTime->format('n'))
+            && $this->getWeekNumbers()->count() && $this->getWeekNumbers()->contains($dateTime->format('W'))
+            && $this->getDays()->count() && $this->getDays()->contains($dateTime->format('N'))
+            && $this->onYearDays($dateTime)
+            && $this->onMonthDays($dateTime));
+
+        return $result;
+    }
+
+    protected function onDayFrequency(\DateTime $dateTime)
+    {
+        if ($this->frequency == self::FREQUENCY_DAILY || !$this->dayFrequency->count() || !$this->days->count()) return true;
+
+        // This needs $interval integrated as well... yay.
+        while ($this->days->next()) {
+            $day = $this->days->current();
+            while ($this->dayFrequency->next()) {
+
+                switch($this->frequency) {
+                    case self::FREQUENCY_WEEKLY:
+                        $compare = jddayofweek(cal_to_jd(CAL_GREGORIAN, $dateTime->format('m'), $dateTime->format('j'), $dateTime->format('Y')));
+                        break;
+
+                    case self::FREQUENCY_MONTHLY:
+                        throw new \Exception('Not implemented');
+                        break;
+
+                    case self::FREQUENCY_YEARLY:
+                        $compare = $dateTime->format('z');
+                        break;
+
+                    default:
+                        throw new \UnexpectedValueException("The provided frequency `{$this->frequency}` is invalid");
+                }
+
+                if ($compare === $day) return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function onMonthDays(\DateTime $dateTime)
+    {
+        if (!$this->monthDays->count()) return true;
+
+        $dotm = new DayOfTheMonth();
+        while ($this->monthDays->next()) {
+            if ($dotm->setDay($this->monthDays->current())->contains($dateTime))
+                return true;
+        }
+        return false;
+    }
+
+    public function onYearDays(\DateTime $dateTime)
+    {
+        if (!$this->yearDays->count()) return true;
+
+        $doty = new DayOfTheYear();
+        while ($this->yearDays->next()) {
+            if ($doty->setDay($this->yearDays->current())->contains($dateTime))
+                return true;
+        }
+
+        return false;
+    }
+
+    public function getOccurrences($betweenStart = null, $betweenEnd = null)
+    {
+        // Maybe throw an exception if the recurrence is indefinite and between dates are not set
     }
 }

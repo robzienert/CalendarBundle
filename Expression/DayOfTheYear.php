@@ -6,7 +6,7 @@ class DayOfTheYear implements TemporalExpression
 {
     private $day;
     
-    public function __construct($day)
+    public function __construct($day = 0)
     {
         $this->day = $day;
     }
