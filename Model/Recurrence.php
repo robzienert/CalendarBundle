@@ -119,6 +119,8 @@ abstract class Recurrence
      */
     protected $weekStartDay;
 
+    private $occurrences;
+
     public function getId()
     {
         return $this->id;
@@ -239,16 +241,6 @@ abstract class Recurrence
         }
     }
 
-    public function setCount($count)
-    {
-        $this->count = $count;
-    }
-
-    public function getCount()
-    {
-        return $this->count;
-    }
-
     public function setFrequency($frequency)
     {
         $this->frequency = $frequency;
@@ -358,8 +350,30 @@ abstract class Recurrence
         return false;
     }
 
-    public function getOccurrences($betweenStart = null, $betweenEnd = null)
+    public function getOccurrences(\DateTime $betweenStart = null, \DateTime $betweenEnd = null)
     {
-        // Maybe throw an exception if the recurrence is indefinite and between dates are not set
+        if (null === $this->occurrences) {
+            if (!$betweenEnd) {
+                if (!$this->until) {
+                    throw new \InvalidArgumentException('Cannot get occurrences on an infinite recurrence without using an end constraint.');
+                }
+                $betweenEnd = $this->until;
+            }
+            $endDate = $betweenEnd->format('Y-m-d');
+
+            $occurrences = new ArrayCollection();
+            while (($date = $betweenStart->format('Y-m-d')) < $endDate) {
+                if ($this->contains($betweenStart))
+                    $occurrences->add($date);
+
+                $betweenStart->add('+1 days');
+            }
+        }
+        return $this->occurrences;
+    }
+
+    public function getCount()
+    {
+        return $this->getOccurrences()->count();
     }
 }
