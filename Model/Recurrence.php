@@ -361,10 +361,10 @@ abstract class Recurrence
             }
             $endDate = $betweenEnd->format('Y-m-d');
 
-            $occurrences = new ArrayCollection();
+            $this->occurrences = new ArrayCollection();
             while (($date = $betweenStart->format('Y-m-d')) < $endDate) {
                 if ($this->contains($betweenStart))
-                    $occurrences->add($date);
+                    $this->occurrences->add($date);
 
                 $betweenStart->add('+1 days');
             }
