@@ -2,24 +2,47 @@
 
 namespace Bundle\CalendarBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 abstract class Calendar
 {
     protected $id;
 
-    protected $name;
+    protected $title;
+
+    protected $events;
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function setName($name)
+    public function setTitle($title)
     {
-        $this->name = $name;
+        $this->title = $title;
     }
 
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
+    }
+
+    public function getEvents()
+    {
+        return $this->events ?: $this->events = new ArrayCollection();
+    }
+
+    public function addEvent(Event $event)
+    {
+        if (!$this->getEvents()->contains($event)) {
+            $this->getEvents()->add($event);
+        }
+    }
+
+    public function removeEvent(Event $event)
+    {
+        if ($this->getEvents()->contains($event)) {
+            $this->getEvents()->remove($event);
+        }
     }
 }
