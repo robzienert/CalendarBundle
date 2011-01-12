@@ -12,7 +12,7 @@ class CalendarController extends Controller
      */
     public function listAction()
     {
-        $calendars = $this['calendar.repository.calendar']->findAll();
+        $calendars = $this->get('calendar.repository.calendar')->findAll();
 
         return $this->render('CalendarBundle:Calendar:list.php', array('calendars' => $calendars));
     }
@@ -44,13 +44,13 @@ class CalendarController extends Controller
     public function createAction($id)
     {
         $form = $this->createForm();
-        $form->bind($this['request']->get($form->getId()));
+        $form->bind($this->get('request')->get($form->getId()));
 
         if ($form->isValid()) {
-            $this['Doctrine.ORM.DefaultEntityManager']->persist($form->getData());
-            $this['Doctrine.ORM.DefaultEntityManager']->flush();
+            $this->get('Doctrine.ORM.DefaultEntityManager')->persist($form->getData());
+            $this->get('Doctrine.ORM.DefaultEntityManager')->flush();
 
-            $this['session']->setFlash('calendar_calendar_create/success', true);
+            $this->get('session')->setFlash('calendar_calendar_create/success', true);
 
             return $this->redirect($this->generateUrl('calendar_calendar_show', array('id' => $this->getData()->getId())));
         }
@@ -80,13 +80,13 @@ class CalendarController extends Controller
     {
         $calendar = $this->findCalendar($id);
         $form = $this->createForm($calendar);
-        $form->bind($this['request']->get($form->getId()));
+        $form->bind($this->get('request')->get($form->getId()));
 
         if ($form->isValid()) {
-            $this['Doctrine.ORM.DefaultEntityManager']->persist($form->getData());
-            $this['Doctrine.ORM.DefaultEntityManager']->flush();
+            $this->get('Doctrine.ORM.DefaultEntityManager')->persist($form->getData());
+            $this->get('Doctrine.ORM.DefaultEntityManager')->flush();
 
-            $this['session']->setFlash('calendar_calendar_update/success', true);
+            $this->get('session')->setFlash('calendar_calendar_update/success', true);
 
             return $this->redirect($this->generate('calendar_calendar_show', array('id' => $form->getData()->getId())));
         }
@@ -101,10 +101,10 @@ class CalendarController extends Controller
     {
         $calendar = $this->findCalendar($id);
 
-        $this['calendar.repository.calendar']->getObjectManager()->delete($calendar);
-        $this['calendar.repository.calendar']->getObjectManager()->flush();
+        $this->get('calendar.repository.calendar')->getObjectManager()->delete($calendar);
+        $this->get('calendar.repository.calendar')->getObjectManager()->flush();
 
-        $this['session']->setFlash('calendar_calendar_delete/success');
+        $this->get('session')->setFlash('calendar_calendar_delete/success');
 
         return $this->redirect($this->generateUrl('calendar_calendar_list'));
     }
@@ -120,7 +120,7 @@ class CalendarController extends Controller
     {
         $calendar = null;
         if (!empty($id)) {
-            $event = $this['calendar.repository.calendar']->findOneById($id);
+            $event = $this->get('calendar.repository.calendar')->findOneById($id);
         }
 
         if (empty($calendar)) {
@@ -138,9 +138,9 @@ class CalendarController extends Controller
      */
     protected function createForm($object = null)
     {
-        $form = $this['calendar.form.calendar'];
+        $form = $this->get('calendar.form.calendar');
         if (null === $object) {
-            $calendarClass = $this['calendar.repository.calendar']->getObjectClass();
+            $calendarClass = $this->get('calendar.repository.calendar')->getObjectClass();
             $object = new $calendarClass();
         }
 
