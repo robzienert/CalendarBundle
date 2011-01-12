@@ -6,6 +6,9 @@
 
     <parameters>
         <parameter key="calendar.model.alarm.class">Bundle\CalendarBundle\Entity\Alarm</parameter>
+        <parameter key="calendar.model.calendar.class">Bundle\CalendarBundle\Entity\Calendar</parameter>
+        <parameter key="calendar.model.event.class">Bundle\CalendarBundle\Entity\Event</parameter>
+        <parameter key="calendar.model.recurrence.class">Bundle\CalendarBundle\Entity\Recurrence</parameter>
     </parameters>
 
     <services>
