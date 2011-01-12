@@ -208,30 +208,6 @@ abstract class Event
         }
     }
 
-    public function isOnDate(\DateTime $dateTime)
-    {
-        $onDate = false;
-        if (!$this->startDate->format('Y-m-d') > $dateTime->format('Y-m-d') || $this->endDate->format('Y-m-d') < $dateTime->format('Y-m-d')) {
-            while ($this->getRecurrences()->next()) {
-                if ($this->getRecurrences()->current()->contains($dateTime)) {
-                    $onDate = true;
-                    break;
-                }
-            }
-            
-            if ($onDate) {
-                while ($this->getExceptions()->next()) {
-                    if ($this->getExceptions()->current()->contains($dateTime)) {
-                        $onDate = false;
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $onDate;
-    }
-
     public function setOrganizer(Organizer $organizer)
     {
         $this->organizer = $organizer;
@@ -259,5 +235,29 @@ abstract class Event
         if ($this->getAttendees()->contains($attendee)) {
             $this->getAttendees()->remove($attendee);
         }
+    }
+
+    public function isOnDate(\DateTime $dateTime)
+    {
+        $onDate = false;
+        if (!$this->startDate->format('Y-m-d') > $dateTime->format('Y-m-d') || $this->endDate->format('Y-m-d') < $dateTime->format('Y-m-d')) {
+            while ($this->getRecurrences()->next()) {
+                if ($this->getRecurrences()->current()->contains($dateTime)) {
+                    $onDate = true;
+                    break;
+                }
+            }
+
+            if ($onDate) {
+                while ($this->getExceptions()->next()) {
+                    if ($this->getExceptions()->current()->contains($dateTime)) {
+                        $onDate = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $onDate;
     }
 }
