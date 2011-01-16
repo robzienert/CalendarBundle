@@ -15,9 +15,7 @@ abstract class Alarm
     protected $description;
 
     /**
-     * The date and time this alarm will trigger.
-     *
-     * @var DateTime
+     * @var DateTime The date and time this alarm will trigger.
      */
     protected $triggerAt;
 
