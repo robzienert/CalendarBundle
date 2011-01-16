@@ -12,9 +12,11 @@ class CalendarController extends Controller
      */
     public function listAction()
     {
-        $calendars = $this->get('calendar.repository.calendar')->findAll();
 
-        return $this->render('CalendarBundle:Calendar:list.php', array('calendars' => $calendars));
+        var_dump('aahhhh');exit;
+//        $calendars = $this->get('calendar.repository.calendar')->findAll();
+//
+//        return $this->render('CalendarBundle:Calendar:list.php', array('calendars' => $calendars));
     }
 
     /**

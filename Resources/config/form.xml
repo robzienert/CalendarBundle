@@ -12,9 +12,9 @@
     </parameters>
 
     <services>
-        <serivce id="calendar.form.calendar" class="%calendar.form.calendar.class%">
+        <service id="calendar.form.calendar" class="%calendar.form.calendar.class%">
             <argument>%calendar.form.calendar.name%</argument>
-        </serivce>
+        </service>
         <service id="calendar.form.event" class="%calendar.form.event.class%">
             <argument>%calendar.form.event.name%</argument>
         </service>

@@ -13,7 +13,8 @@
             <generator strategy="AUTO" />
         </id>
 
-        <field name="name" column="name" unique="true" />
+        <field name="title" column="title" unique="true" />
+
     <mapped-superclass>
 
 </doctrine-mapping>

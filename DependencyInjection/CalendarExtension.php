@@ -2,6 +2,7 @@
 
 namespace Bundle\CalendarBundle\DependencyInjection;
 
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -18,12 +19,13 @@ class CalendarExtension extends Extension
             throw new \InvalidArgumentException(sprintf('The db_driver "%s" is not supported (choose either "odm" or "orm")', $config['db_driver']));
         }
 
-        foreach (array($config['db_driver'], 'model', 'controller', 'form') as $basename) {
+        foreach (array($config['db_driver'], 'controller', 'form') as $basename) {
             $loader->load(sprintf('%s.xml', $basename));
         }
 
-        $loader = new YamlFileLoader($container, __DIR__ . '/../Resources/config');
-        $loader->load('routing.yml');
+        // @todo This doesn't work; added via app config
+//        $loader = new YamlFileLoader($container, __DIR__ . '/../Resources/config');
+//        $loader->load('routing.yml');
     }
 
     public function getXsdValidationBasePath()
