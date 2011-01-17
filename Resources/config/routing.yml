@@ -1,8 +1,29 @@
 calendar_calendar_list:
   pattern: /calendars
   defaults: { _controller: calendar.controller.calendar:listAction }
+  requirements: { _method: "get" }
 
-#calendar_calendar_add:
-#  pattern: /calendar/:id/add
-#  defaults: { _controller: calendar.controller.calendar:addAction }
-#  requirements: { id: "[\w\-]{8}", _method: "get" }
+calendar_calendar_new:
+  pattern: /calendar/new
+  defaults: { _controller: calendar.controller.calendar:newAction }
+  requirements: { _method: "get" }
+
+calendar_calendar_create:
+  pattern: /calendar/create
+  defaults: { _controller: calendar.controller.calendar:createAction }
+  requirements: { _method: "post" }
+
+calendar_calendar_edit:
+  pattern: /calendar/:id/edit
+  defaults: { _controller: calendar.controller.calendar:editAction }
+  requirements: { id: "[\w\-]{8}", _method: "get" }
+
+calendar_calendar_update:
+  pattern: /calendar/:id/update
+  defaults: { _controller: calendar.controller.calendar:updateAction }
+  requirements: { id: "[\w\-]{8}", _method: "post" }
+
+calendar_calendar_delete:
+  pattern: /calendar/:id/delete
+  defaults: { _controller: calendar.controller.calendar:deleteAction }
+  requirements: { id: "[\w\-]{8}", _method: "get" }

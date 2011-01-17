@@ -41,7 +41,7 @@ class CalendarController extends Controller
      * Creates a calendar and redirects to the show page or shows the creation
      * screen if it contains errors
      */
-    public function createAction($id)
+    public function createAction()
     {
         $form = $this->createForm();
         $form->bind($this->get('request')->get($form->getId()));

@@ -6,17 +6,12 @@
 
     <parameters>
         <parameter key="calendar.form.calendar.class">Bundle\CalendarBundle\Form\CalendarForm</parameter>
-        <parameter key="calendar.form.calendar.name">calendar_calednar_form</parameter>
-        <parameter key="calendar.form.event.class">Bundle\CalendarBundle\Form\EventForm</parameter>
-        <parameter key="calendar.form.event.name">calendar_event_form</parameter>
+        <parameter key="calendar.form.calendar.name">calendar_calendar_form</parameter>
     </parameters>
 
     <services>
         <service id="calendar.form.calendar" class="%calendar.form.calendar.class%">
             <argument>%calendar.form.calendar.name%</argument>
-        </service>
-        <service id="calendar.form.event" class="%calendar.form.event.class%">
-            <argument>%calendar.form.event.name%</argument>
         </service>
     </services>
 
