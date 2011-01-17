@@ -13,21 +13,5 @@
 
     <services>
         <service id="calendar.object_manager" alias="doctrine.orm.entity_manager" />
-<!--        <service id="calendar.repository.alarm" class="Bundle\CalendarBundle\Entity\AlarmRepository" shared="true">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument>%calendar.model.alarm.class%</argument>
-        </service>-->
-<!--        <service id="calendar.repository.calendar" class="Bundle\CalendarBundle\CalendarBundle" shared="true" factory-method="getRepository">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument>%calendar.model.calendar.class%</argument>
-        </service>-->
-<!--        <service id="calendar.repository.event" class="Bundle\CalendarBundle\Entity\EventRepository" shared="true">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument>%calendar.model.event.class%</argument>
-        </service>
-        <service id="calendar.repository.recurrence" class="Bundle\CalendarBundle\Entity\RecurrenceRepository" shared="true">
-            <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument>%calendar.model.recurrence.class%</argument>
-        </service>-->
     </services>
 </container>
