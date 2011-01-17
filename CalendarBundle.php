@@ -13,7 +13,7 @@ class CalendarBundle extends BaseBundle
      * @param string $objectClass
      * @return DocumentRepository|EntityRepository
      */
-    public function getRepository($objectManager, $objectClass)
+    public static function getRepository($objectManager, $objectClass)
     {
         return $objectManager->getRepository($objectClass);
     }

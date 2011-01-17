@@ -75,16 +75,6 @@ abstract class Event
         return $this->description;
     }
 
-    public function setExpression($expression)
-    {
-        $this->expression = $expression;
-    }
-
-    public function getExpression()
-    {
-        return $this->expression;
-    }
-
     public function setCategory($category)
     {
         $this->category = $category;

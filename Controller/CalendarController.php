@@ -12,11 +12,9 @@ class CalendarController extends Controller
      */
     public function listAction()
     {
+        $calendars = $this->get('calendar.repository.calendar')->findAll();
 
-        var_dump('aahhhh');exit;
-//        $calendars = $this->get('calendar.repository.calendar')->findAll();
-//
-//        return $this->render('CalendarBundle:Calendar:list.php', array('calendars' => $calendars));
+        return $this->render('CalendarBundle:Calendar:list.twig.html', array('calendars' => $calendars));
     }
 
     /**
@@ -26,7 +24,7 @@ class CalendarController extends Controller
     {
         $calendar = $this->findCalendar($id);
 
-        return $this->render('CalendarBundle:Calendar:show.php', array('calendar' => $calendar));
+        return $this->render('CalendarBundle:Calendar:show.twig.html', array('calendar' => $calendar));
     }
 
     /**
@@ -36,7 +34,7 @@ class CalendarController extends Controller
     {
         $form = $this->createForm();
 
-        return $this->render('CalendarBundle:Calendar:new.php', array('form' => $form));
+        return $this->render('CalendarBundle:Calendar:new.twig.html', array('form' => $form));
     }
 
     /**
@@ -57,7 +55,7 @@ class CalendarController extends Controller
             return $this->redirect($this->generateUrl('calendar_calendar_show', array('id' => $this->getData()->getId())));
         }
 
-        return $this->render('CalendarBundle:Calendar:new.php', array('form' => $form));
+        return $this->render('CalendarBundle:Calendar:new.twig.html', array('form' => $form));
     }
 
     /**
@@ -68,7 +66,7 @@ class CalendarController extends Controller
         $calendar = $this->findCalendar($id);
         $form = $this->createForm($calendar);
 
-        return $this->render('CalendarBundle:Calendar:edit.php', array(
+        return $this->render('CalendarBundle:Calendar:edit.twig.html', array(
             'form' => $form,
             'id' => $id,
         ));
@@ -93,7 +91,7 @@ class CalendarController extends Controller
             return $this->redirect($this->generate('calendar_calendar_show', array('id' => $form->getData()->getId())));
         }
 
-        return $this->render('CalendarBundle:Calendar:edit.php', array('form' => $form, 'id' => $id));
+        return $this->render('CalendarBundle:Calendar:edit.twig.html', array('form' => $form, 'id' => $id));
     }
 
     /**

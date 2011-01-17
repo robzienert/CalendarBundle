@@ -1,0 +1,7 @@
+<div class="calendar_calendar_list">
+    <ul>
+        {% for calendar in calendars %}
+        <li><a href="{{ path('calendar_calendar_show', {'id': calendar.getId()} ) }}">{{ calendar.getTitle() }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

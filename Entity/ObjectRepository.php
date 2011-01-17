@@ -3,7 +3,7 @@
 namespace Bundle\CalendarBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
-use Bundle\CalendarBundle\RepositoryInterface;
+use Bundle\CalendarBundle\Model\RepositoryInterface;
 
 abstract class ObjectRepository extends EntityRepository implements RepositoryInterface
 {
