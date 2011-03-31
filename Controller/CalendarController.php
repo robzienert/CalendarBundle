@@ -1,12 +1,21 @@
 <?php
 
-namespace Bundle\CalendarBundle\Controller;
+namespace Rizza\CalendarBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CalendarController extends Controller
 {
+    /**
+     * @extra:Route("/", name="_calendar")
+     * @return Response
+     */
+    public function indexAction()
+    {
+        return $this->render('RizzaCalendar:Calendar:index.html.twig');
+    }
+
     /**
      * Shows all calendars
      */
