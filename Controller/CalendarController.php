@@ -4,6 +4,8 @@ namespace Rizza\CalendarBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Rizza\CalendarBundle\Form\CalendarContext;
+use Rizza\CalendarBundle\Form\CalendarForm;
 
 class CalendarController extends Controller
 {
@@ -11,60 +13,52 @@ class CalendarController extends Controller
      * @extra:Route("/", name="_calendar")
      * @return Response
      */
-    public function indexAction()
-    {
-        return $this->render('RizzaCalendar:Calendar:index.html.twig');
-    }
-
-    /**
-     * Shows all calendars
-     */
     public function listAction()
     {
-        $calendars = $this->get('calendar.repository.calendar')->findAll();
+        $calendars = $this->getRepository()->findAll();
 
-        return $this->render('CalendarBundle:Calendar:list.twig.html', array('calendars' => $calendars));
+        return $this->render('RizzaCalendar:Calendar:list.html.twig', array('calendars' => $calendars));
     }
 
     /**
-     * Shows a single calendar
+     * @extra:Route("/show", name="_calendar_calendar_show")
+     * @return Response
      */
     public function showAction($id)
     {
         $calendar = $this->findCalendar($id);
 
-        return $this->render('CalendarBundle:Calendar:show.twig.html', array('calendar' => $calendar));
+        return $this->render('RizzaCalendar:Calendar:show.html.twig', array('calendar' => $calendar));
     }
 
     /**
-     * Shows the calendar creation form
+     * @extra:Route("/new", name="_calendar_calendar_new")
+     * @return Response
      */
     public function newAction()
     {
         $form = $this->createForm();
 
-        return $this->render('CalendarBundle:Calendar:new.twig.html', array('form' => $form));
+        return $this->render('RizzaCalendar:Calendar:new.html.twig', array('form' => $form));
     }
 
     /**
-     * Creates a calendar and redirects to the show page or shows the creation
-     * screen if it contains errors
+     * @extra:Route("/create", name="_calendar_calendar_create")
+     * @return Response
      */
     public function createAction()
     {
         $form = $this->createForm();
-        $form->bind($this->get('request')->get($form->getId()));
 
         if ($form->isValid()) {
-            $this->get('Doctrine.ORM.DefaultEntityManager')->persist($form->getData());
-            $this->get('Doctrine.ORM.DefaultEntityManager')->flush();
+            $em = $this->get('doctrine.orm.entity_manager');
+            $em->persist($form->getData());
+            $em->flush();
 
-            $this->get('session')->setFlash('calendar_calendar_create/success', true);
-
-            return $this->redirect($this->generateUrl('calendar_calendar_show', array('id' => $this->getData()->getId())));
+            return $this->redirect($this->generateUrl('calendar_calendar_list'));
         }
 
-        return $this->render('CalendarBundle:Calendar:new.twig.html', array('form' => $form));
+        return $this->render('RizzaCalendar:Calendar:new.html.twig', array('form' => $form));
     }
 
     /**
@@ -75,7 +69,7 @@ class CalendarController extends Controller
         $calendar = $this->findCalendar($id);
         $form = $this->createForm($calendar);
 
-        return $this->render('CalendarBundle:Calendar:edit.twig.html', array(
+        return $this->render('RizzaCalendar:Calendar:edit.html.twig', array(
             'form' => $form,
             'id' => $id,
         ));
@@ -100,7 +94,7 @@ class CalendarController extends Controller
             return $this->redirect($this->generate('calendar_calendar_show', array('id' => $form->getData()->getId())));
         }
 
-        return $this->render('CalendarBundle:Calendar:edit.twig.html', array('form' => $form, 'id' => $id));
+        return $this->render('RizzaCalendar:Calendar:edit.html.twig', array('form' => $form, 'id' => $id));
     }
 
     /**
@@ -140,20 +134,26 @@ class CalendarController extends Controller
     }
 
     /**
+     * Returns the Calendar Entity Repository
+     *
+     * @return Doctrine\ORM\EntityRepository
+     */
+    protected function getRepository()
+    {
+        return $this->get('doctrine.orm.entity_manager')->getRepository('Rizza\CalendarBundle\Entity\Calendar');
+    }
+
+    /**
      * Creates a CalendarForm instance and returns it.
      *
-     * @param Calendar $object
      * @return Bundle\CalendarBundle\Form\CalendarForm
      */
     protected function createForm($object = null)
     {
-        $form = $this->get('calendar.form.calendar');
-        if (null === $object) {
-            $calendarClass = $this->get('calendar.repository.calendar')->getObjectClass();
-            $object = new $calendarClass();
-        }
+        $context = new CalendarContext($this->get('form.context')->getOptions());
+        $form = CalendarForm::create($context, 'calendar');
 
-        $form->setData($object);
+        $form->bind($this->get('request'), $context);
 
         return $form;
     }

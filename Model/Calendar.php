@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\CalendarBundle\Model;
+namespace Rizza\CalendarBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -8,7 +8,11 @@ abstract class Calendar
 {
     protected $id;
 
-    protected $title;
+    /**
+     * @validation:MaxLength(255)
+     * @validation:NotBlank()
+     */
+    protected $name;
 
     protected $events;
 
@@ -17,14 +21,14 @@ abstract class Calendar
         return $this->id;
     }
 
-    public function setTitle($title)
+    public function setName($name)
     {
-        $this->title = $title;
+        $this->name = $name;
     }
 
-    public function getTitle()
+    public function getName()
     {
-        return $this->title;
+        return $this->name;
     }
 
     public function getEvents()
