@@ -117,7 +117,7 @@ class CalendarController extends Controller
     protected function findCalendar($name)
     {
         $calendar = null;
-        if (!empty($id)) {
+        if (!empty($name)) {
             $calendar = $this->get('rizza_calendar.calendar_manager')->findCalendarBy(array('name' => $name));
         }
 
