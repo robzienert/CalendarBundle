@@ -23,6 +23,10 @@ Add to your routing.yml:
       resource: "@RizzaCalendar/Controller/CalendarController.php"
       type:     annotation
 
+    _calendar_event:
+    resource: "@RizzaCalendar/Controller/EventController.php"
+    type:     annotation
+
 TODO
 ----
 
