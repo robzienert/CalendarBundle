@@ -1,16 +1,31 @@
-Provides applications with a calendar. The model layer is a partial port of
-Apple's iCal application.
+CalendarBundle
+==============
 
+Provides applications with an events calendar. This bundle's model layer
+represents a heavy port of Apple's iCal application.
 
-Roadmap
+*WARNING*: This is a prototype and not a final/stable bundle.
+
+Install
 -------
 
-* http://developer.apple.com/library/mac/#documentation/AppleApplications/Reference/SyncServicesSchemaRef/Articles/Calendars.html
-* http://tools.ietf.org/html/rfc5546
-* Commands
-    * CheckAlarmsCommand
-    * CreateCalendarCommand
-    * CreateEventCommand
-    * SendNotificationsCommand
-* Support alternative backends; such as Google Calendar, iCal feeds and the like.
-* Remove Expression component
+Proceed with a normal bundle installation, and then execute the following steps:
+
+Add to your config.yml:
+
+    # app/config/config.yml
+    rizza_calendar: ~
+
+Add to your routing.yml:
+
+    # app/config/routing.yml
+    _calendar:
+      resource: "@RizzaCalendar/Controller/CalendarController.php"
+      type:     annotation
+
+TODO
+----
+
+- Create ODM models
+- Commands
+- Alternative storage backaends (Google Calendar, iCal feeds, etc.)
