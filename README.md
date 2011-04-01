@@ -6,6 +6,15 @@ represents a heavy port of Apple's iCal application.
 
 *WARNING*: This is a prototype and not a final/stable bundle.
 
+Features
+--------
+
+- Multiple Calendars
+- Flexible Events
+- Fully-implemented event recursion
+- Event alarms
+- Event RSVPs
+
 Install
 -------
 
@@ -33,3 +42,4 @@ TODO
 - Create ODM models
 - Commands
 - Alternative storage backaends (Google Calendar, iCal feeds, etc.)
+- Event hooks
