@@ -6,12 +6,17 @@
 
     <parameters>
         <parameter key="rizza_calendar.calendar_manager.class">Rizza\CalendarBundle\Entity\CalendarManager</parameter>
+        <parameter key="rizza_calendar.event_manager.class">Rizza\CalendarBundle\Entity\EventManager</parameter>
     </parameters>
 
     <services>
         <service id="rizza_calendar.calendar_manager" class="%rizza_calendar.calendar_manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>Rizza\CalendarBundle\Entity\Calendar</argument>
+        </service>
+        <service id="rizza_calendar.event_manager" class="%rizza_calendar.event_manager.class%">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>Rizza\CalendarBundle\Entity\Event</argument>
         </service>
     </services>
 

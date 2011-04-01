@@ -5,10 +5,13 @@ namespace Bundle\CalendarBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+/**
+ * @extra:Route("/event")
+ */
 class EventController extends Controller
 {
     /**
-     * Shows all events
+     * @extra:Route("/", name="_calendar_event")
      */
     public function listAction()
     {

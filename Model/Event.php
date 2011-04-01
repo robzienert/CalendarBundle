@@ -21,8 +21,6 @@ abstract class Event implements EventInterface
 
     protected $description;
 
-    protected $summary;
-
     protected $allDay;
 
     protected $startDate;
@@ -45,8 +43,9 @@ abstract class Event implements EventInterface
 
     protected $attendees;
 
-    public function __construct()
+    public function __construct($title = null)
     {
+        $this->title = $title;
         $this->allDay = false;
     }
 
@@ -85,7 +84,7 @@ abstract class Event implements EventInterface
         return $this->category;
     }
 
-    public function setCalendar($calendar)
+    public function setCalendar(CalendarInterface $calendar)
     {
         $this->calendar = $calendar;
     }
@@ -120,7 +119,7 @@ abstract class Event implements EventInterface
         return $this->startDate;
     }
 
-    public function setEndDate(DateTime $endDate)
+    public function setEndDate(\DateTime $endDate)
     {
         $this->endDate = $endDate;
     }
@@ -135,14 +134,14 @@ abstract class Event implements EventInterface
         return $this->exceptions ?: $this->exceptions = new ArrayCollection();
     }
 
-    public function addException(DateTime $exception)
+    public function addException(\DateTime $exception)
     {
         if (!$this->getExceptions()->contains($exception)) {
             $this->getExceptions()->add($exception);
         }
     }
 
-    public function removeException(DateTime $exception)
+    public function removeException(\DateTime $exception)
     {
         if ($this->getExceptions()->contains($exception)) {
             $this->getExceptions()->remove($exception);

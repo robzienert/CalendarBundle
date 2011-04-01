@@ -108,7 +108,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * Find a calendar by its id
+     * Find a calendar by its name
      *
      * @param string $name
      * @return Bundle\CalendarBundle\Model\CalendarInterface

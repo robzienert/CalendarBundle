@@ -2,31 +2,17 @@
 
 namespace Rizza\CalendarBundle\Model;
 
-interface EventRepositoryInterface
+interface EventManagerInterface
 {
-    /**
-     * Returns all events for a specific date.
-     *
-     * @param int $year
-     * @param int $month
-     * @param int $day
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function findByDate($year, $month, $day);
+    public function createEvent($title);
 
-    /**
-     * Returns all events for a specific month.
-     *
-     * @param int $month
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function findByMonth($month);
+    public function updateEvent(EventInterface $event, $andFlush = true);
 
-    /**
-     * Returns all events for a specific Calendar.
-     *
-     * @param CalendarInterface $calendar
-     * @return Doctrine\Common\Collections\Collection
-     */
-    public function findByCalendar(CalendarInterface $calendar);
+    public function deleteEvent(EventInterface $event);
+
+    public function findEvents();
+
+    public function findEventBy(array $criteria);
+
+    public function getClass();
 }

@@ -5,7 +5,7 @@ namespace Rizza\CalendarBundle\Form;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\TextField;
 use Symfony\Component\HttpFoundation\Request;
-use Rizza\CalendarBundle\Model\Calendar;
+use Rizza\CalendarBundle\Model\CalendarInterface;
 use Rizza\CalendarBundle\Entity\CalendarManager;
 
 class CalendarForm extends Form
@@ -28,7 +28,7 @@ class CalendarForm extends Form
         $this->calendarManager = $calendarManager;
     }
 
-    public function process(Calendar $calendar = null)
+    public function process(CalendarInterface $calendar = null)
     {
         if (null === $calendar) {
             $calendar = $this->calendarManager->createCalendar('');

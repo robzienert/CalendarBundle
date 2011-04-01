@@ -6,6 +6,7 @@
 
     <parameters>
         <parameter key="rizza_calendar.form.calendar.class">Rizza\CalendarBundle\Form\CalendarForm</parameter>
+        <parameter key="rizza_calendar.form.calendar.class">Rizza\CalendarBundle\Form\EventForm</parameter>
     </parameters>
 
     <services>
@@ -18,6 +19,17 @@
             </call>
             <call method="setCalendarManager">
                 <argument type="service" id="rizza_calendar.calendar_manager" />
+            </call>
+        </service>
+
+        <service id="rizza_calendar.form.event" factory-method="create" factory-class="%rizza_calendar.form.event.class%" class="%rizza_calendar.form.event.class%" scope="request">
+            <argument type="service" id="form.context" />
+            <argument>event</argument>
+            <call method="setRequest">
+                <argument type="service" id="request" />
+            </call>
+            <call method="setEventManager">
+                <argument type="service" id="rizza_calendar.event_manager" />
             </call>
         </service>
         

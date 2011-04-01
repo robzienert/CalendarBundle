@@ -1,0 +1,21 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                    http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="Rizza\CalendarBundle\Entity\Event" table="calendar_event">
+        <id name="id" type="integer" column="id">
+            <generator strategy="AUTO"/>
+        </id>
+        <field name="title" column="title" type="string" length="255" />
+        <field name="category" column="category" type="string" length="255" />
+        <field name="description" column="description" type="text" />
+        <field name="allDay" column="all_day" type="boolean" />
+        <field name="startDate" column="start_date" type="datetime" />
+        <field name="endDate" column="end_date" type="datetime" />
+        <field name="status" column="status" type="smallint" />
+        <field name="location" column="location" type="string" />
+        <field name="url" column="url" type="string" />
+    </entity>
+
+</doctrine-mapping>
