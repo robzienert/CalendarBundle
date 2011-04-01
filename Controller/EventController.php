@@ -32,7 +32,7 @@ class EventController extends Controller
     }
 
     /**
-     * Shows the event creation form
+     * @extra:Route("/new", name="_calendar_event_new")
      */
     public function newAction()
     {
@@ -44,8 +44,7 @@ class EventController extends Controller
     }
 
     /**
-     * Creates an event and redirects to the show page or shows the creation
-     * screen if it contains errors
+     * @extra:Route("/create", name="_calendar_event_create")
      */
     public function createAction()
     {
@@ -60,7 +59,7 @@ class EventController extends Controller
     }
 
     /**
-     * Shows the event edit form
+     * @extra:Route("/edit/:id", name="_calendar_event_edit")
      */
     public function editAction($id)
     {
@@ -76,8 +75,7 @@ class EventController extends Controller
     }
 
     /**
-     * Updates an existing event and redirects to the show page or shows the
-     * update form if it contains errors
+     * @extra:Route("/update/:id", name="_calendar_event_update")
      */
     public function updateAction($id)
     {
@@ -97,7 +95,7 @@ class EventController extends Controller
     }
 
     /**
-     * Deletes an existing event and redirects to the event list
+     * @extra:Bundle("/delete/:id", name="_calendar_event_delete")
      */
     public function deleteAction($id)
     {
