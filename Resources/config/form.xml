@@ -31,6 +31,9 @@
             <call method="setEventManager">
                 <argument type="service" id="rizza_calendar.event_manager" />
             </call>
+            <call method="setEntityManager">
+                <argument type="service" id="doctrine.orm.entity_manager" />
+            </call>
         </service>
         
     </services>

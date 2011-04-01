@@ -50,4 +50,9 @@ abstract class Calendar implements CalendarInterface
             $this->getEvents()->remove($event);
         }
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }
