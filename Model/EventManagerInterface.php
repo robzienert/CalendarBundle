@@ -1,8 +1,6 @@
 <?php
 
-namespace Bundle\CalendarBundle\Model;
-
-use Bundle\CalendarBundle\Model\Calendar;
+namespace Rizza\CalendarBundle\Model;
 
 interface EventRepositoryInterface
 {
@@ -27,8 +25,8 @@ interface EventRepositoryInterface
     /**
      * Returns all events for a specific Calendar.
      *
-     * @param Calendar $calendar
+     * @param CalendarInterface $calendar
      * @return Doctrine\Common\Collections\Collection
      */
-    public function findByCalendar(Calendar $calendar);
+    public function findByCalendar(CalendarInterface $calendar);
 }

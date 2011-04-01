@@ -1,19 +1,16 @@
 <?php
 
-namespace Bundle\CalendarBundle\Model;
+namespace Rizza\CalendarBundle\Model;
 
-use Bundle\CalendarBundle\Model\Event;
-use Bundle\CalendarBundle\Model\Attendee;
-
-interface AlarmRepositoryInterface
+interface AlarmManagerInterface
 {
     /**
      * Returns all alarms for a given Event.
      *
-     * @param Event $event
+     * @param EventInterface $event
      * @return Doctrine\Common\Collections\Collection
      */
-    public function findByEvent(Event $event);
+    public function findByEvent(EventInterface $event);
 
     /**
      * Returns all alarams for a given Attendee.

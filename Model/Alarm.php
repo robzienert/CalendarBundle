@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\CalendarBundle\Model;
+namespace Rizza\CalendarBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -19,7 +19,7 @@ abstract class Alarm
      */
     protected $triggerAt;
 
-    public function __construct(Event $event)
+    public function __construct(EventInterface $event)
     {
         $this->event = $event;
     }
@@ -29,12 +29,12 @@ abstract class Alarm
         return $this->id;
     }
 
-    public function setEvent(Event $event)
+    public function setEvent(EventInterface $event)
     {
         $this->event = $event;
     }
 
-    public function getEvent(Event $event)
+    public function getEvent(EventInterface $event)
     {
         return $this->event;
     }

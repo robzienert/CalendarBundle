@@ -3,6 +3,7 @@
 namespace Rizza\CalendarBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Rizza\CalendarBundle\Model\EventInterface;
 
 abstract class Calendar implements CalendarInterface
 {
@@ -36,14 +37,14 @@ abstract class Calendar implements CalendarInterface
         return $this->events ?: $this->events = new ArrayCollection();
     }
 
-    public function addEvent(Event $event)
+    public function addEvent(EventInterface $event)
     {
         if (!$this->getEvents()->contains($event)) {
             $this->getEvents()->add($event);
         }
     }
 
-    public function removeEvent(Event $event)
+    public function removeEvent(EventInterface $event)
     {
         if ($this->getEvents()->contains($event)) {
             $this->getEvents()->remove($event);

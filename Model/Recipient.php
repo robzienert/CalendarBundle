@@ -1,6 +1,6 @@
 <?php
 
-namespace Bundle\CalendarBundle\Model;
+namespace Rizza\CalendarBundle\Model;
 
 /**
  * An object that implements this interface will be able to receive event

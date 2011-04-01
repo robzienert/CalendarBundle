@@ -1,12 +1,10 @@
 <?php
 
-namespace Bundle\CalendarBundle\Model;
+namespace Rizza\CalendarBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Bundle\CalendarBundle\Expression\DayOfTheMonth;
-use Bundle\CalendarBundle\Expression\DayOfTheYear;
 
-abstract class Recurrence
+abstract class Recurrence implements RecurrenceInterface
 {
     const DAY_SUNDAY = 'sunday';
     const DAY_MONDAY = 'monday';
@@ -119,7 +117,7 @@ abstract class Recurrence
         return $this->id;
     }
 
-    public function setEvent(Event $event)
+    public function setEvent(EventInterface $event)
     {
         $this->event = $event;
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Bundle\CalendarBundle\Model;
+namespace Rizza\CalendarBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-abstract class Event
+abstract class Event implements EventInterface
 {
     const STATUS_NONE = 0;
     const STATUS_TENTATIVE = 1;
@@ -110,7 +110,7 @@ abstract class Event
         return $this->allDay;
     }
 
-    public function setStartDate(DateTime $startDate)
+    public function setStartDate(\DateTime $startDate)
     {
         $this->startDate = $startDate;
     }
@@ -184,14 +184,14 @@ abstract class Event
         return $this->recurrences ?: $this->recurrences = new ArrayCollection();
     }
 
-    public function addRecurrence(Recurrence $recurrence)
+    public function addRecurrence(RecurrenceInterface $recurrence)
     {
         if (!$this->getRecurrences()->contains($recurrence)) {
             $this->getRecurrences()->add($recurrence);
         }
     }
 
-    public function removeRecurrence(Recurrence $recurrence)
+    public function removeRecurrence(RecurrenceInterface $recurrence)
     {
         if ($this->getRecurrences()->contains($recurrence)) {
             $this->getRecurrences()->remove($recurrence);
