@@ -22,7 +22,7 @@ class EventController extends Controller
     }
 
     /**
-     * @extra:Route("/show/:id", name="_calendar_event_show")
+     * @extra:Route("/show/{id}", name="_calendar_event_show")
      */
     public function showAction($id)
     {
@@ -59,7 +59,7 @@ class EventController extends Controller
     }
 
     /**
-     * @extra:Route("/edit/:id", name="_calendar_event_edit")
+     * @extra:Route("/edit/{id}", name="_calendar_event_edit")
      */
     public function editAction($id)
     {
@@ -75,7 +75,7 @@ class EventController extends Controller
     }
 
     /**
-     * @extra:Route("/update/:id", name="_calendar_event_update")
+     * @extra:Route("/update/{id}", name="_calendar_event_update")
      */
     public function updateAction($id)
     {
@@ -95,7 +95,7 @@ class EventController extends Controller
     }
 
     /**
-     * @extra:Bundle("/delete/:id", name="_calendar_event_delete")
+     * @extra:Bundle("/delete/{id}", name="_calendar_event_delete")
      */
     public function deleteAction($id)
     {

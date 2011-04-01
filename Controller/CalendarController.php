@@ -24,7 +24,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @extra:Route("/show/:name", requirements={"name" = "\s+"}, name="_calendar_calendar_show")
+     * @extra:Route("/show/{name}", name="_calendar_calendar_show")
      */
     public function showAction($name)
     {
@@ -61,7 +61,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @extra:Route("/edit/:name", name="_calendar_calendar_edit")
+     * @extra:Route("/edit/{name}", name="_calendar_calendar_edit")
      */
     public function editAction($name)
     {
@@ -77,7 +77,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @extra:Route("/update/:name", name="_calendar_calendar_update")
+     * @extra:Route("/update/{name}", name="_calendar_calendar_update")
      */
     public function updateAction($name)
     {
@@ -97,7 +97,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @extra:Bundle("/delete/:name", name="_calendar_calendar_delete")
+     * @extra:Bundle("/delete/{name}", name="_calendar_calendar_delete")
      */
     public function deleteAction($name)
     {
