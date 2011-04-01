@@ -18,7 +18,7 @@ class EventManager implements EventManagerInterface
         $this->repository = $em->getRepository($class);
 
         $metadata = $em->getClassMetadata($class);
-        $this->class = $metadata->class;
+        $this->class = $metadata->name;
     }
 
     public function createEvent($title)
