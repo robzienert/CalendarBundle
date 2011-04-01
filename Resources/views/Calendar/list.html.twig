@@ -1,4 +1,10 @@
 {% extends "RizzaCalendar::layout.html.twig" %}
 {% block content %}
-Hi.
+<div class="calendar_list">
+    <ul>
+        {% for calendar in calendars %}
+        <li><a href="{{ path('_calendar_calendar_show', {'name': calendar.getName()} ) }}">{{ calendar.getName() }}</li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock content %}

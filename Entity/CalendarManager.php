@@ -4,6 +4,7 @@ namespace Rizza\CalendarBundle\Entity;
 
 use Doctrine\ORM\EntityManager;
 use Rizza\CalendarBundle\Model\CalendarManagerInterface;
+use Rizza\CalendarBundle\Model\CalendarInterface;
 
 class CalendarManager implements CalendarManagerInterface
 {
@@ -27,7 +28,7 @@ class CalendarManager implements CalendarManagerInterface
         return new $class($name);
     }
 
-    public function updateCalendar(Calendar $calendar, $andFlush = true)
+    public function updateCalendar(CalendarInterface $calendar, $andFlush = true)
     {
         $this->em->persist($calendar);
         if ($andFlush) {
@@ -35,9 +36,24 @@ class CalendarManager implements CalendarManagerInterface
         }
     }
 
-    public function deleteCalendar(Calendar $calendar)
+    public function deleteCalendar(CalendarInterface $calendar)
     {
         $this->em->remove($calendar);
         $this->em->flush();
+    }
+
+    public function findCalendars()
+    {
+        return $this->repository->findAll();
+    }
+
+    public function findCalendarBy(array $criteria)
+    {
+        return $this->repository->findOneBy($criteria);
+    }
+
+    public function getClass()
+    {
+        return $this->class;
     }
 }

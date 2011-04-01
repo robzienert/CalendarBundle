@@ -6,9 +6,13 @@ interface CalendarManagerInterface
 {
     public function createCalendar($name);
 
-    public function updateCalendar(Calendar $calendar);
+    public function updateCalendar(CalendarInterface $calendar, $andFlush = true);
     
-    public function deleteCalendar(Calendar $calendar);
+    public function deleteCalendar(CalendarInterface $calendar);
+
+    public function findCalendars();
+
+    public function findCalendarBy(array $criteria);
 
     public function getClass();
 }

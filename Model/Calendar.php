@@ -4,7 +4,7 @@ namespace Rizza\CalendarBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-abstract class Calendar
+abstract class Calendar implements CalendarInterface
 {
     protected $id;
 
