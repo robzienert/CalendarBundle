@@ -3,20 +3,23 @@
 namespace Rizza\CalendarBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Rizza\CalendarBundle\DateProcessor\DayOfTheMonth;
+use Rizza\CalendarBundle\DateProcessor\DayOfTheYear;
 
 abstract class Recurrence implements RecurrenceInterface
 {
-    const DAY_SUNDAY = 'sunday';
-    const DAY_MONDAY = 'monday';
-    const DAY_TUESDAY = 'tuesday';
-    const DAY_WEDNESDAY = 'wednesday';
-    const DAY_THURSDAY = 'thursday';
-    const DAY_FRIDAY = 'friday';
+    const DAY_SUNDAY = 0;
+    const DAY_MONDAY = 1;
+    const DAY_TUESDAY = 2;
+    const DAY_WEDNESDAY = 3;
+    const DAY_THURSDAY = 4;
+    const DAY_FRIDAY = 5;
+    const DAY_SATURDAY = 6;
 
-    const FREQUENCY_DAILY = 1;
-    const FREQUENCY_WEEKLY = 2;
-    const FREQUENCY_MONTHLY = 3;
-    const FREQUENCY_YEARLY = 4;
+    const FREQUENCY_DAILY = 0;
+    const FREQUENCY_WEEKLY = 1;
+    const FREQUENCY_MONTHLY = 2;
+    const FREQUENCY_YEARLY = 3;
     
     protected $id;
 
