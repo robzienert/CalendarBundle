@@ -6,7 +6,7 @@
 
     <parameters>
         <parameter key="rizza_calendar.form.calendar.class">Rizza\CalendarBundle\Form\CalendarForm</parameter>
-        <parameter key="rizza_calendar.form.calendar.class">Rizza\CalendarBundle\Form\EventForm</parameter>
+        <parameter key="rizza_calendar.form.event.class">Rizza\CalendarBundle\Form\EventForm</parameter>
     </parameters>
 
     <services>
