@@ -3,7 +3,7 @@
       xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                     http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="Rizza\CalendarBundle\Entity\Calendar" table="calendar">
+    <entity name="Rizza\CalendarBundle\Entity\Calendar" table="calendar_calendar">
         <id name="id" type="integer" column="id">
             <generator strategy="AUTO"/>
         </id>
