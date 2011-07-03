@@ -61,7 +61,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($event->getCalendar());
 
-        $event->setCategory(new Calendar());
+        $event->setCalendar(new Calendar());
         $this->assertType('Calendar', $event->getCalendar());
     }
 }
