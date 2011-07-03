@@ -274,12 +274,15 @@ abstract class Recurrence implements RecurrenceInterface
         return $this->weekStartDay;
     }
 
-    public function contains(DateTime $dateTime)
+    public function contains(\DateTime $dateTime)
     {
         $result = ($dateTime->format('Y-m-d') > $this->until->format('Y-m-d')
-            && $this->getMonths()->count() && $this->getMonths()->contains($dateTime->format('n'))
-            && $this->getWeekNumbers()->count() && $this->getWeekNumbers()->contains($dateTime->format('W'))
-            && $this->getDays()->count() && $this->getDays()->contains($dateTime->format('N'))
+            && $this->getMonths()->count()
+            && $this->getMonths()->contains($dateTime->format('n'))
+            && $this->getWeekNumbers()->count()
+            && $this->getWeekNumbers()->contains($dateTime->format('W'))
+            && $this->getDays()->count()
+            && $this->getDays()->contains($dateTime->format('N'))
             && $this->onYearDays($dateTime)
             && $this->onMonthDays($dateTime));
 
