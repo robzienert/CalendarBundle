@@ -22,9 +22,9 @@ class DayOfTheMonth implements Processor
                                            $dateTime->format('j'),
                                            $dateTime->format('Y')));
 
-        return ($this->day == $dayOfWeek) &&
-            ($compare->add((-1 * $this->day) . ' days')->format('m') != $dateTime->format('m')) &&
-            ($compare->setDate($dateTime->getTimestamp())->add((-1 * $this->day) + $value)->format('m') == $dateTime->format('m'));
+        return ($this->day == $dayOfWeek) 
+            && ($compare->add((-1 * $this->day) . ' days')->format('m') != $dateTime->format('m'))
+            && ($compare->setDate($dateTime->getTimestamp())->add((-1 * $this->day) + $value)->format('m') == $dateTime->format('m'));
     }
 
     public function getNextOccurrence(\DateTime $dateTime)

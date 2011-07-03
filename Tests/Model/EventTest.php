@@ -1,15 +1,10 @@
 <?php
 
-namespace Bundle\CalendarBundle\Tests\Model;
+namespace Rizza\CalendarBundle\Tests\Model;
 
-use Bundle\CalendarBundle\Model\Event as AbstractEvent;
-use  Bundle\CalendarBundle\TemporalExpression\TemporalExpression as ExpressionInterface;
+use Rizza\CalendarBundle\Model\Event as AbstractEvent;
 
 class Event extends AbstractEvent
-{
-}
-
-class TemporalExpression implements ExpressionInterface
 {
 }
 
@@ -33,16 +28,6 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
         $event->setDescription('...Or try the sun');
         $this->assertEquals('...Or try the sun', $event->getDescription());
-    }
-
-    public function testExpression()
-    {
-        $event = new Event();
-
-        $this->assertNull($event->getExpression());
-
-        $event->setExpression(new TemporalExpression());
-        $this->assertType('TemporalExpression', $event->getExpression());
     }
 
     public function testCategory()

@@ -1,8 +1,8 @@
 <?php
 
-namespace Bundle\CalendarBundle\Tests\Model;
+namespace Rizza\CalendarBundle\Tests\Model;
 
-use Bundle\CalendarBundle\Model\Calendar as AbstractCalendar;
+use Rizza\CalendarBundle\Model\Calendar as AbstractCalendar;
 
 class Calendar extends AbstractCalendar
 {
