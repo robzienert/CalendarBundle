@@ -20,7 +20,7 @@ class EventController extends Controller
     {
         $events = $this->get('rizza_calendar.event_manager')->findEvents();
 
-        return $this->render('RizzaCalendar:Event:list.html.twig', array('events' => $events));
+        return $this->render('RizzaCalendarBundle:Event:list.html.twig', array('events' => $events));
     }
 
     /**
@@ -30,7 +30,7 @@ class EventController extends Controller
     {
         $event = $this->findEvent($id);
 
-        return $this->render('RizzaCalendar:Event:show.html.twig', array('event' => $event));
+        return $this->render('RizzaCalendarBundle:Event:show.html.twig', array('event' => $event));
     }
 
     /**
@@ -42,7 +42,7 @@ class EventController extends Controller
 
         $form->process();
 
-        return $this->render('RizzaCalendar:Event:new.html.twig', array('form' => $form));
+        return $this->render('RizzaCalendarBundle:Event:new.html.twig', array('form' => $form));
     }
 
     /**
@@ -57,7 +57,7 @@ class EventController extends Controller
             return $this->redirect($this->generateUrl('_rizza_calendar_event'));
         }
 
-        return $this->render('RizzaCalendar:Event:new.html.twig', array('form' => $form));
+        return $this->render('RizzaCalendarBundle:Event:new.html.twig', array('form' => $form));
     }
 
     /**
@@ -70,7 +70,7 @@ class EventController extends Controller
 
         $form->process($event);
 
-        return $this->render('RizzaCalendar:Event:edit.html.twig', array(
+        return $this->render('RizzaCalendarBundle:Event:edit.html.twig', array(
             'form' => $form,
             'title' => $event->getTitle(),
         ));
@@ -90,7 +90,7 @@ class EventController extends Controller
             return new RedirectResponse($eventUrl);
         }
 
-        return $this->render('RizzaCalendar:Event:edit.html.twig', array(
+        return $this->render('RizzaCalendarBundle:Event:edit.html.twig', array(
             'form' => $form,
             'title' => $event->getId(),
         ));
