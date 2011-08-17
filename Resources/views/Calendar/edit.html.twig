@@ -1,0 +1,13 @@
+{% extends "RizzaCalendarBundle::layout.html.twig" %}
+{% block content %}
+<h2>Edit &quot;{{ calendar.getName() }}&quot;</h2>
+<form action="{{ path('rizza_calendar_edit', { 'id': calendar.getId() }) }}" {{ form_enctype(form) }} method="POST">
+    {{ form_errors(form) }}
+
+    {{ form_row(form.name) }}
+
+    {{ form_rest(form) }}
+
+    <input type="submit" value="Create Calendar" />
+</form>
+{% endblock content %}

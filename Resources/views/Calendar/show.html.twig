@@ -1,4 +1,6 @@
 {% extends "RizzaCalendarBundle::layout.html.twig" %}
 {% block content %}
-This is the {{ calendar.getName() }} calendar. Riveting.
+This is the {{ calendar.getName() }} calendar. Riveting. 
+  <a href="{{ path('rizza_calendar_edit', { 'id': calendar.getId() }) }}">(edit)</a>
+  <a href="{{ path('rizza_calendar_delete', { 'id': calendar.getId() }) }}">(delete)</a>
 {% endblock content %}
