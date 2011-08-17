@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class EventController extends Controller
 {
     /**
-     * @Route("/", name="_calendar_event")
+     * @Route("/", name="rizza_calendar_event")
      */
     public function listAction()
     {
@@ -24,7 +24,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/show/{id}", name="_calendar_event_show")
+     * @Route("/show/{id}", name="rizza_calendar_event_show")
      */
     public function showAction($id)
     {
@@ -34,7 +34,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/new", name="_calendar_event_new")
+     * @Route("/new", name="rizza_calendar_event_new")
      */
     public function newAction()
     {
@@ -46,7 +46,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/create", name="_calendar_event_create")
+     * @Route("/create", name="rizza_calendar_event_create")
      */
     public function createAction()
     {
@@ -54,14 +54,14 @@ class EventController extends Controller
 
         $process = $form->process();
         if ($process) {
-            return $this->redirect($this->generateUrl('_calendar_event'));
+            return $this->redirect($this->generateUrl('_rizza_calendar_event'));
         }
 
         return $this->render('RizzaCalendar:Event:new.html.twig', array('form' => $form));
     }
 
     /**
-     * @Route("/edit/{id}", name="_calendar_event_edit")
+     * @Route("/edit/{id}", name="rizza_calendar_event_edit")
      */
     public function editAction($id)
     {
@@ -77,7 +77,7 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/update/{id}", name="_calendar_event_update")
+     * @Route("/update/{id}", name="rizza_calendar_event_update")
      */
     public function updateAction($id)
     {
@@ -86,7 +86,7 @@ class EventController extends Controller
 
         $process = $form->process($event);
         if ($process) {
-            $eventUrl = $this->get('router')->generate('_calendar_event_show', array('id' => $event->getId()));
+            $eventUrl = $this->get('router')->generate('_rizza_calendar_event_show', array('id' => $event->getId()));
             return new RedirectResponse($eventUrl);
         }
 
@@ -97,14 +97,14 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/delete/{id}", name="_calendar_event_delete")
+     * @Route("/delete/{id}", name="rizza_calendar_event_delete")
      */
     public function deleteAction($id)
     {
         $event = $this->findEvent($id);
         $this->get('rizza_calendar.event_manager')->deleteEvent($event);
 
-        return new RedirectResponse($this->get('router')->generate('_calendar_event'));
+        return new RedirectResponse($this->get('router')->generate('_rizza_calendar_event'));
     }
 
     /**

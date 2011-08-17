@@ -9,6 +9,9 @@
       <em>Notice</em>: {{ app.session.flash('notice') }}
     </div>
     {% endif %}
+    <ul>
+      <li><a href="{{ path('rizza_calendar_new') }}">New Calendar</a></li>
+    </ul>
     <div>
       {% block content %}
       {% endblock content %}

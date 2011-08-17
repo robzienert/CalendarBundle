@@ -16,7 +16,7 @@ use Rizza\CalendarBundle\Form\CalendarForm;
 class CalendarController extends Controller
 {
     /**
-     * @Route("/", name="_calendar")
+     * @Route("/", name="rizza_calendar_list")
      */
     public function listAction()
     {
@@ -26,7 +26,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @Route("/show/{name}", name="_calendar_calendar_show")
+     * @Route("/show/{name}", name="rizza_calendar_show")
      */
     public function showAction($name)
     {
@@ -36,7 +36,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @Route("/new", name="_calendar_calendar_new")
+     * @Route("/new", name="rizza_calendar_new")
      */
     public function newAction()
     {
@@ -48,7 +48,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @Route("/create", name="_calendar_calendar_create")
+     * @Route("/create", name="rizza_calendar_create")
      */
     public function createAction()
     {
@@ -63,7 +63,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @Route("/edit/{name}", name="_calendar_calendar_edit")
+     * @Route("/edit/{name}", name="rizza_calendar_edit")
      */
     public function editAction($name)
     {
@@ -79,7 +79,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @Route("/update/{name}", name="_calendar_calendar_update")
+     * @Route("/update/{name}", name="rizza_calendar_update")
      */
     public function updateAction($name)
     {
@@ -88,7 +88,7 @@ class CalendarController extends Controller
 
         $process = $form->process($calendar);
         if ($process) {
-            $calendarUrl = $this->get('router')->generate('_calendar_calendar_show', array('name' => $calendar->getName()));
+            $calendarUrl = $this->get('router')->generate('_rizza_calendar_show', array('name' => $calendar->getName()));
             return new RedirectResponse($calendarUrl);
         }
 
@@ -99,7 +99,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @Route("/delete/{name}", name="_calendar_calendar_delete")
+     * @Route("/delete/{name}", name="rizza_calendar_delete")
      */
     public function deleteAction($name)
     {
