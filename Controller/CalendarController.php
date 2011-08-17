@@ -5,26 +5,28 @@ namespace Rizza\CalendarBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Rizza\CalendarBundle\Form\CalendarContext;
 use Rizza\CalendarBundle\Form\CalendarForm;
 
 /**
- * @extra:Route("/calendar")
+ * @Route("/calendar")
  */
 class CalendarController extends Controller
 {
     /**
-     * @extra:Route("/", name="_calendar")
+     * @Route("/", name="_calendar")
      */
     public function listAction()
     {
         $calendars = $this->get('rizza_calendar.calendar_manager')->findCalendars();
 
-        return $this->render('RizzaCalendar:Calendar:list.html.twig', array('calendars' => $calendars));
+        return $this->render('RizzaCalendarBundle:Calendar:list.html.twig', array('calendars' => $calendars));
     }
 
     /**
-     * @extra:Route("/show/{name}", name="_calendar_calendar_show")
+     * @Route("/show/{name}", name="_calendar_calendar_show")
      */
     public function showAction($name)
     {
@@ -34,7 +36,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @extra:Route("/new", name="_calendar_calendar_new")
+     * @Route("/new", name="_calendar_calendar_new")
      */
     public function newAction()
     {
@@ -46,7 +48,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @extra:Route("/create", name="_calendar_calendar_create")
+     * @Route("/create", name="_calendar_calendar_create")
      */
     public function createAction()
     {
@@ -61,7 +63,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @extra:Route("/edit/{name}", name="_calendar_calendar_edit")
+     * @Route("/edit/{name}", name="_calendar_calendar_edit")
      */
     public function editAction($name)
     {
@@ -77,7 +79,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @extra:Route("/update/{name}", name="_calendar_calendar_update")
+     * @Route("/update/{name}", name="_calendar_calendar_update")
      */
     public function updateAction($name)
     {
@@ -97,7 +99,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * @extra:Bundle("/delete/{name}", name="_calendar_calendar_delete")
+     * @Route("/delete/{name}", name="_calendar_calendar_delete")
      */
     public function deleteAction($name)
     {
@@ -111,7 +113,7 @@ class CalendarController extends Controller
      * Find a calendar by its name
      *
      * @param string $name
-     * @return Bundle\CalendarBundle\Model\CalendarInterface
+     * @return Rizza\CalendarBundle\Model\CalendarInterface
      * @throws NotFoundHttpException if the calendar cannot be found
      */
     protected function findCalendar($name)

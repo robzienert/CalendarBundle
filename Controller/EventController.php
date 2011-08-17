@@ -5,14 +5,16 @@ namespace Rizza\CalendarBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
- * @extra:Route("/event")
+ * @Route("/event")
  */
 class EventController extends Controller
 {
     /**
-     * @extra:Route("/", name="_calendar_event")
+     * @Route("/", name="_calendar_event")
      */
     public function listAction()
     {
@@ -22,7 +24,7 @@ class EventController extends Controller
     }
 
     /**
-     * @extra:Route("/show/{id}", name="_calendar_event_show")
+     * @Route("/show/{id}", name="_calendar_event_show")
      */
     public function showAction($id)
     {
@@ -32,7 +34,7 @@ class EventController extends Controller
     }
 
     /**
-     * @extra:Route("/new", name="_calendar_event_new")
+     * @Route("/new", name="_calendar_event_new")
      */
     public function newAction()
     {
@@ -44,7 +46,7 @@ class EventController extends Controller
     }
 
     /**
-     * @extra:Route("/create", name="_calendar_event_create")
+     * @Route("/create", name="_calendar_event_create")
      */
     public function createAction()
     {
@@ -59,7 +61,7 @@ class EventController extends Controller
     }
 
     /**
-     * @extra:Route("/edit/{id}", name="_calendar_event_edit")
+     * @Route("/edit/{id}", name="_calendar_event_edit")
      */
     public function editAction($id)
     {
@@ -75,7 +77,7 @@ class EventController extends Controller
     }
 
     /**
-     * @extra:Route("/update/{id}", name="_calendar_event_update")
+     * @Route("/update/{id}", name="_calendar_event_update")
      */
     public function updateAction($id)
     {
@@ -95,7 +97,7 @@ class EventController extends Controller
     }
 
     /**
-     * @extra:Bundle("/delete/{id}", name="_calendar_event_delete")
+     * @Route("/delete/{id}", name="_calendar_event_delete")
      */
     public function deleteAction($id)
     {
@@ -109,7 +111,7 @@ class EventController extends Controller
      * Find an event by its id
      *
      * @param int $id
-     * @return Bundle\CalendarBundle\Model\Event
+     * @return Rizza\CalendarBundle\Model\Event
      * @throws NotFoundHttpException if the event cannot be found
      */
     public function findEvent($id)
