@@ -113,8 +113,6 @@ abstract class Recurrence implements RecurrenceInterface
      */
     protected $weekStartDay;
 
-    private $occurrences;
-
     public function getId()
     {
         return $this->id;
@@ -349,23 +347,23 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function getOccurrences(\DateTime $betweenStart = null, \DateTime $betweenEnd = null)
     {
-        if (null === $this->occurrences) {
-            if (!$betweenEnd) {
-                if (!$this->until) {
-                    throw new \InvalidArgumentException('Cannot get occurrences on an infinite recurrence without using an end constraint.');
-                }
-                $betweenEnd = $this->until;
+        if (!$betweenEnd) {
+            if (!$this->until) {
+                throw new \InvalidArgumentException('Cannot get occurrences on an infinite recurrence without using an end constraint.');
             }
-            $endDate = $betweenEnd->format('Y-m-d');
-
-            $this->occurrences = new ArrayCollection();
-            while (($date = $betweenStart->format('Y-m-d')) < $endDate) {
-                if ($this->contains($betweenStart))
-                    $this->occurrences->add($date);
-
-                $betweenStart->add('+1 days');
-            }
+            $betweenEnd = $this->until;
         }
-        return $this->occurrences;
+
+        $endDate = $betweenEnd->format('Y-m-d');
+
+        $occurrences = new ArrayCollection();
+        while (($date = $betweenStart->format('Y-m-d')) < $endDate) {
+            if ($this->contains($betweenStart))
+                $this->occurrences->add($date);
+
+            $betweenStart->add('+1 days');
+        }
+
+        return $occurrences;
     }
 }
