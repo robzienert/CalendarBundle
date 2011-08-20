@@ -11,12 +11,21 @@ class EventType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('category')
+            ->add('calendar', 'entity', array(
+                'class' => 'Rizza\CalendarBundle\Entity\Calendar'
+            ))
+            ->add('category', 'text', array(
+                'required' => false
+            ))
             ->add('startDate', 'datetime')
             ->add('endDate', 'datetime')
             ->add('description', 'textarea')
-            ->add('location')
-            ->add('url', 'url');
+            ->add('location', 'text', array(
+                'required' => false
+            ))
+            ->add('url', 'url', array(
+                'required' => false
+            ));
     }
 
     public function getName()
