@@ -33,9 +33,9 @@ class DayOfTheYearTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function getNextOccurrence()
+    public function testGetNextOccurrence()
     {
-        $this->markAsIncomplete('Test has not been implemented');
+        $this->markTestIncomplete('Test has not been implemented');
     }
 
     public function containsProvider()

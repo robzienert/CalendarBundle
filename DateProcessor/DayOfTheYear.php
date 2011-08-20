@@ -13,7 +13,7 @@ class DayOfTheYear implements Processor
 
     public function contains(\DateTime $dateTime)
     {
-        return $this->day == $dateTime->format('z');
+        return $this->day == ($dateTime->format('z') + 1);
     }
 
     public function getNextOccurrence(\DateTime $dateTime)

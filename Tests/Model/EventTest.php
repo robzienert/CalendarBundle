@@ -2,17 +2,11 @@
 
 namespace Rizza\CalendarBundle\Tests\Model;
 
-use Rizza\CalendarBundle\Model\Event as AbstractEvent;
-
-class Event extends AbstractEvent
-{
-}
-
 class EventTest extends \PHPUnit_Framework_TestCase
 {
     public function testTitle()
     {
-        $event = new Event();
+        $event = $this->getEvent();
 
         $this->assertNull($event->getTitle());
 
@@ -22,7 +16,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
     public function testDescription()
     {
-        $event = new Event();
+        $event = $this->getEvent();
 
         $this->assertNull($event->getDescription());
 
@@ -32,7 +26,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
     public function testCategory()
     {
-        $event = new Event();
+        $event = $this->getEvent();
 
         $this->assertNull($event->getCategory());
 
@@ -42,11 +36,21 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
     public function testCalendar()
     {
-        $event = new Event();
+        $event = $this->getEvent();
 
         $this->assertNull($event->getCalendar());
 
-        $event->setCalendar(new Calendar());
-        $this->assertType('Calendar', $event->getCalendar());
+        $event->setCalendar($this->getCalendar());
+        $this->assertType('Rizza\CalendarBundle\Model\Calendar', $event->getCalendar());
+    }
+
+    protected function getEvent()
+    {
+        return $this->getMockForAbstractClass('Rizza\CalendarBundle\Model\Event');
+    }
+
+    protected function getCalendar()
+    {
+        return $this->getMockForAbstractClass('Rizza\CalendarBundle\Model\Calendar');
     }
 }

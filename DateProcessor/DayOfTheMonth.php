@@ -13,18 +13,7 @@ class DayOfTheMonth implements Processor
 
     public function contains(\DateTime $dateTime)
     {
-        $value = ($this->day < 0) ? -1 : 1;
-
-        $compare = clone $dateTime();
-
-        $dayOfWeek = jddayofweek(cal_to_jd(CAL_GREGORIAN,
-                                           $dateTime->format('m'),
-                                           $dateTime->format('j'),
-                                           $dateTime->format('Y')));
-
-        return ($this->day == $dayOfWeek) 
-            && ($compare->add((-1 * $this->day) . ' days')->format('m') != $dateTime->format('m'))
-            && ($compare->setDate($dateTime->getTimestamp())->add((-1 * $this->day) + $value)->format('m') == $dateTime->format('m'));
+        return ($this->day == $dateTime->format('j'));
     }
 
     public function getNextOccurrence(\DateTime $dateTime)

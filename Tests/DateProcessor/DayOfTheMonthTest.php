@@ -42,7 +42,7 @@ class DayOfTheMonthTest extends \PHPUnit_Framework_TestCase
     {
         // date (Y-m-d H:i:s), check day, valid?
         return array(
-            array('2011-04-03 15:02:00', 3, true),
+            array('2011-08-03 15:02:00', 3, true),
             array('2011-07-03 15:02:00', 7, false),
             array('1986-11-21 06:32:00', 21, true),
             array('1986-12-22 12:32:00', 21, false)
