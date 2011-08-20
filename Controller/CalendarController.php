@@ -4,23 +4,12 @@ namespace Rizza\CalendarBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Rizza\CalendarBundle\Entity\Calendar;
 use Rizza\CalendarBundle\Form\Type\CalendarType;
 
-
-
-/**
- * @Route("/calendar")
- */
 class CalendarController extends Controller
 {
-    /**
-     * @Route("/", name="rizza_calendar_list")
-     */
     public function listAction()
     {
         $calendars = $this->getRepository()->findAll();
@@ -28,9 +17,6 @@ class CalendarController extends Controller
         return $this->render('RizzaCalendarBundle:Calendar:list.html.twig', array('calendars' => $calendars));
     }
 
-    /**
-     * @Route("/show/{id}", name="rizza_calendar_show")
-     */
     public function showAction($id)
     {
         $calendar = $this->findCalendar($id);
@@ -38,9 +24,6 @@ class CalendarController extends Controller
         return $this->render('RizzaCalendarBundle:Calendar:show.html.twig', array('calendar' => $calendar));
     }
 
-    /**
-     * @Route("/add", name="rizza_calendar_add")
-     */
     public function addAction(Request $request)
     {
         $calendar = new Calendar();
@@ -62,9 +45,6 @@ class CalendarController extends Controller
         return $this->render('RizzaCalendarBundle:Calendar:add.html.twig', array('form' => $form->createView()));
     }
 
-    /**
-     * @Route("/edit/{id}", name="rizza_calendar_edit")
-     */
     public function editAction($id)
     {
         $calendar = $this->findCalendar($id);
@@ -90,9 +70,6 @@ class CalendarController extends Controller
         ));
     }
 
-    /**
-     * @Route("/delete/{id}", name="rizza_calendar_delete")
-     */
     public function deleteAction($id)
     {
         $calendar = $this->findCalendar($id);

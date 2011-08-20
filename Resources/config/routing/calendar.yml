@@ -1,0 +1,19 @@
+rizza_calendar_list:
+  pattern:  /
+  defaults: { _controller: RizzaCalendarBundle:Calendar:list }
+
+rizza_calendar_show:
+  pattern:  /{id}
+  defaults: { _controller: RizzaCalendarBundle:Calendar:show }
+
+rizza_calendar_add:
+  pattern:  /add
+  defaults: { _controller: RizzaCalendarBundle:Calendar:add }
+
+rizza_calendar_edit:
+  pattern:  /{id}/edit
+  defaults: { _controller: RizzaCalendarBundle:Calendar:edit }
+
+rizza_calendar_delete:
+  pattern:  /{id}/delete
+  defaults: { _controller: RizzaCalendarBundle:Calendar:delete }

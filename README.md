@@ -28,16 +28,20 @@ Add to your config.yml:
 Add to your routing.yml:
 
     # app/config/routing.yml
-    rizza_calendar:
-      resource: "@RizzaCalendarBundle/Controller"
-      type:     annotation
+    rizza_calendar_calendar:
+      resource: "@RizzaCalendarBundle/Resources/config/routing/calendar.yml"
+      prefix: /calendar
+
+    # app/config/routing.yml
+    rizza_calendar_event:
+      resource: "@RizzaCalendarBundle/Resources/config/routing/event.yml"
+      prefix: /event
 
 TODO
 ----
 
 - Add support for ODM
 - Add support for different view engines
-- Remove dependency on FrameworkExtra
 - Commands
 - Alternative storage backaends (Google Calendar, iCal feeds, etc.)
 - Event hooks

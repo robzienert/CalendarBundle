@@ -4,21 +4,12 @@ namespace Rizza\CalendarBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Rizza\CalendarBundle\Entity\Event;
 use Rizza\CalendarBundle\Form\Type\EventType;
 
-/**
- * @Route("/event")
- */
 class EventController extends Controller
 {
-    /**
-     * @Route("/", name="rizza_calendar_event_list")
-     */
     public function listAction()
     {
         $events = $this->getRepository()->findAll();
@@ -26,9 +17,6 @@ class EventController extends Controller
         return $this->render('RizzaCalendarBundle:Event:list.html.twig', array('events' => $events));
     }
 
-    /**
-     * @Route("/show/{id}", name="rizza_calendar_event_show")
-     */
     public function showAction($id)
     {
         $event = $this->findEvent($id);
@@ -36,9 +24,6 @@ class EventController extends Controller
         return $this->render('RizzaCalendarBundle:Event:show.html.twig', array('event' => $event));
     }
 
-    /**
-     * @Route("/add", name="rizza_calendar_event_add")
-     */
     public function addAction(Request $request)
     {
         $event = new Event();
@@ -62,9 +47,6 @@ class EventController extends Controller
         ));
     }
 
-    /**
-     * @Route("/edit/{id}", name="rizza_calendar_event_edit")
-     */
     public function editAction($id)
     {
         $event = $this->findEvent($id);
@@ -90,9 +72,6 @@ class EventController extends Controller
         ));
     }
 
-    /**
-     * @Route("/delete/{id}", name="rizza_calendar_event_delete")
-     */
     public function deleteAction($id)
     {
         $event = $this->findEvent($id);
