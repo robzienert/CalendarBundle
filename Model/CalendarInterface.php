@@ -33,6 +33,13 @@ interface CalendarInterface
     public function getEvents();
 
     /**
+     * Get all associated events that fall on a given day.
+     *
+     * @return ArrayCollection
+     */
+    public function getEventsOnDay(\DateTime $dateTime);
+
+    /**
      * Add an event to the calendar.
      *
      * @param EventInterface $event

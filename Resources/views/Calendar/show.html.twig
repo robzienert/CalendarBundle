@@ -3,4 +3,9 @@
 This is the {{ calendar.getName() }} calendar. Riveting. 
   <a href="{{ path('rizza_calendar_edit', { 'id': calendar.getId() }) }}">(edit)</a>
   <a href="{{ path('rizza_calendar_delete', { 'id': calendar.getId() }) }}">(delete)</a>
+
+{% for event in calendar.getEvents() %}
+  <a href="{{ path('rizza_calendar_event_show', { 'id': event.getId() }) }}">{{ event.getTitle() }}</a>
+{% endfor %}
+
 {% endblock content %}

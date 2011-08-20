@@ -37,6 +37,16 @@ abstract class Calendar implements CalendarInterface
         return $this->events ?: $this->events = new ArrayCollection();
     }
 
+    public function getEventsOnDay(\DateTime $dateTime)
+    {
+        /** @var $event Event */
+        $p = function ($event) use ($dateTime) {
+            return $event->isOnDate($dateTime);
+        };
+
+        return $this->getEvents()->filter($p);
+    }
+
     public function addEvent(EventInterface $event)
     {
         if (!$this->getEvents()->contains($event)) {
