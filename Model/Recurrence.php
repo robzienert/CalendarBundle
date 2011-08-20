@@ -83,7 +83,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     /**
      * The frequency of this recurrence specified by a constant. Possible values
-     * are daily, weekly, monthly, or yearly.
+     * are 0 (daily), 1 (weekly), 2 (monthly), or 3 (yearly).
      *
      * @var string
      */
@@ -107,8 +107,8 @@ abstract class Recurrence implements RecurrenceInterface
 
     /**
      * A string that indicates the start day of the week. Possible values are
-     * sunday, monday, tuesday, wednesday, thursday, friday, and saturday.
-     *
+     * 0 (sunday) - 6 (saturday).
+     * 
      * @var int
      */
     protected $weekStartDay;
@@ -264,6 +264,13 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function setWeekStartDay($day)
     {
+        $validDays = array(self::DAY_SUNDAY, self::DAY_MONDAY, self::DAY_TUESDAY,
+                           self::DAY_WEDNESDAY, self::DAY_THURSDAY,
+                           self::DAY_FRIDAY, self::DAY_SATURDAY);
+        if (!in_array($day, $validDays)) {
+            throw new \InvalidArgumentException('Invalid week start day provided');
+        }
+
         $this->weekStartDay = $day;
     }
     
