@@ -45,3 +45,4 @@ TODO
 - Commands
 - Alternative storage backaends (Google Calendar, iCal feeds, etc.)
 - Event hooks
+- Convert event categories to labels?
