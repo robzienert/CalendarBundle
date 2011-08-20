@@ -111,6 +111,12 @@ abstract class Event implements EventInterface
 
     public function setStartDate(\DateTime $startDate)
     {
+        if ($this->endDate instanceof \DateTime
+            && $this->endDate->getTimestamp() < $startDate->getTimestamp()
+        ) {
+            throw new \InvalidArgumentException('The start date must come before the end date');
+        }
+        
         $this->startDate = $startDate;
     }
 
@@ -121,6 +127,12 @@ abstract class Event implements EventInterface
 
     public function setEndDate(\DateTime $endDate)
     {
+        if ($this->startDate instanceof \DateTime 
+            && $this->startDate->getTimestamp() > $endDate->getTimestamp()
+        ) {
+            throw new \InvalidArgumentException('The end date must come after the start date');
+        }
+        
         $this->endDate = $endDate;
     }
 
@@ -218,21 +230,30 @@ abstract class Event implements EventInterface
 
     public function isOnDate(\DateTime $dateTime)
     {
-        $onDate = false;
-        if (!$this->startDate->format('Y-m-d') > $dateTime->format('Y-m-d') || $this->endDate->format('Y-m-d') < $dateTime->format('Y-m-d')) {
+        if (!$this->startDate instanceof \DateTime) {
+            throw new \RuntimeException('Event does not have a start date');
+        }
+        if (!$this->endDate instanceof \DateTime) {
+            throw new \RunTimeException('Event does not have an end date');
+        }
+
+        $onDate = (($this->startDate->format('Y-m-d') <= $dateTime->format('Y-m-d')
+            && $this->endDate->format('Y-m-d') >= $dateTime->format('Y-m-d')));
+
+        if (!$onDate) {
             while ($this->getRecurrences()->next()) {
                 if ($this->getRecurrences()->current()->contains($dateTime)) {
                     $onDate = true;
                     break;
                 }
             }
+        }
 
-            if ($onDate) {
-                while ($this->getExceptions()->next()) {
-                    if ($this->getExceptions()->current()->contains($dateTime)) {
-                        $onDate = false;
-                        break;
-                    }
+        if ($onDate) {
+            while ($this->getExceptions()->next()) {
+                if ($this->getExceptions()->current()->contains($dateTime)) {
+                    $onDate = false;
+                    break;
                 }
             }
         }

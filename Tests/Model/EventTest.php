@@ -44,6 +44,60 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $this->assertType('Rizza\CalendarBundle\Model\Calendar', $event->getCalendar());
     }
 
+    public function testSetEndDateThrowsExceptionWithValueBeforeStart()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+
+        $event = $this->getEvent();
+        $event->setStartDate(\DateTime::createFromFormat('Y-m-d', '2011-11-01'));
+
+        $event->setEndDate(\DateTime::createFromFormat('Y-m-d', '2011-10-01'));
+    }
+
+    public function testSetStartDateThrowsExceptionWithValueAfterEnd()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+
+        $event = $this->getEvent();
+        $event->setEndDate(\DateTime::createFromFormat('Y-m-d', '2011-10-01'));
+
+        $event->setStartDate(\DateTime::createFromFormat('Y-m-d', '2011-11-01'));
+    }
+
+    public function testIsOnDateThrowsExceptionsWithoutStartEndDates()
+    {
+        $this->setExpectedException('RuntimeException');
+        
+        $event = $this->getEvent();
+        $event->isOnDate(new \DateTime());
+    }
+
+    /**
+     * @dataProvider dateTimeProvider
+     */
+    public function testIsOnDate(\DateTime $dateTime)
+    {
+        $event = $this->getEvent();
+        $event->setStartDate(\DateTime::createFromFormat('Y-m-d', '2011-10-01'));
+        $event->setEndDate(\DateTime::createFromFormat('Y-m-d', '2011-10-02'));
+
+        if ($event->getStartDate()->format('Y-m-d') > $dateTime->format('Y-m-d')) {
+            $this->assertFalse($event->isOnDate($dateTime));
+        } else {
+            $this->assertTrue($event->isOnDate($dateTime));
+        }
+    }
+
+    public function dateTimeProvider()
+    {
+        return array(
+            array(\DateTime::createFromFormat('Y-m-d H:i:s', '2011-10-01 12:00:00')),
+            array(\DateTime::createFromFormat('Y-m-d H:i:s', '2011-10-02 17:00:00')),
+            array(\DateTime::createFromFormat('Y-m-d H:i:s', '2011-03-14 20:30:00'))
+        );
+    }
+
+
     protected function getEvent()
     {
         return $this->getMockForAbstractClass('Rizza\CalendarBundle\Model\Event');
