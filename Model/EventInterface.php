@@ -196,7 +196,7 @@ interface EventInterface
     /**
      * Get the event organizer
      *
-     * @reutrn Organizer
+     * @return Organizer
      */
     public function getOrganizer();
 
