@@ -2,8 +2,6 @@
 
 namespace Rizza\CalendarBundle\Tests\Model;
 
-use Rizza\CalendarBundle\Model\Calendar as AbstractCalendar;
-
 class CalendarTest extends \PHPUnit_Framework_TestCase
 {
     public function testName()

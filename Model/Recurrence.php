@@ -135,6 +135,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function addDay($day)
     {
+        $day = intval($day);
         if (!$this->getDays()->contains($day)) {
             $this->getDays()->add($day);
         }
@@ -142,6 +143,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function removeDay($day)
     {
+        $day = intval($day);
         if ($this->getDays()->contains($day)) {
             $this->getDays()->remove($day);
         }
@@ -164,6 +166,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function addMonth($month)
     {
+        $month = intval($month);
         if (!$this->getMonths()->contains($month)) {
             $this->getMonths()->add($month);
         }
@@ -171,6 +174,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function removeMonth($month)
     {
+        $month = intval($month);
         if ($this->getMonths()->contains($month)) {
             $this->getMonths()->add($month);
         }
@@ -183,6 +187,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function addMonthDay($day)
     {
+        $day = intval($day);
         if (!$this->getMonthDays()->contains($day)) {
             $this->getMonthDays()->add($day);
         }
@@ -190,6 +195,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function removeMonthDay($day)
     {
+        $day = intval($day);
         if ($this->getMonthDays()->contains($day)) {
             $this->getMonthDays()->add($day);
         }
@@ -197,11 +203,12 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function getWeekNumbers()
     {
-        return $this->weekNumbers ?: $this->monthDays = new ArrayCollection();
+        return $this->weekNumbers ?: $this->weekNumbers = new ArrayCollection();
     }
 
     public function addWeekNumber($week)
     {
+        $week = intval($week);
         if (!$this->getWeekNumbers()->contains($week)) {
             $this->getWeekNumbers()->add($week);
         }
@@ -209,6 +216,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function removeWeekNumber($week)
     {
+        $week = intval($week);
         if ($this->getWeekNumbers()->contains($week)) {
             $this->getWeekNumbers()->remove($week);
         }
@@ -221,6 +229,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function addYearDay($day)
     {
+        $day = intval($day);
         if (!$this->getYearDays()->contains($day)) {
             $this->getYearDays()->add($day);
         }
@@ -228,6 +237,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function removeYearDay($day)
     {
+        $day = intval($day);
         if ($this->getYearDays()->contains($day)) {
             $this->getYearDays()->remove($day);
         }
@@ -253,10 +263,11 @@ abstract class Recurrence implements RecurrenceInterface
         return $this->interval;
     }
     
-    public function setUntil(DateTime $until)
+    public function setUntil(\DateTime $until)
     {
         $this->until = $until;
     }
+    
     public function getUntil()
     {
         return $this->until;
@@ -281,17 +292,30 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function contains(\DateTime $dateTime)
     {
-        $result = ($dateTime->format('Y-m-d') > $this->until->format('Y-m-d')
-            && $this->getMonths()->count()
-            && $this->getMonths()->contains($dateTime->format('n'))
-            && $this->getWeekNumbers()->count()
-            && $this->getWeekNumbers()->contains($dateTime->format('W'))
-            && $this->getDays()->count()
-            && $this->getDays()->contains($dateTime->format('N'))
-            && $this->onYearDays($dateTime)
-            && $this->onMonthDays($dateTime));
+        $onDate = true;
 
-        return $result;
+        if ($this->until instanceof \DateTime && $dateTime->format('Y-m-d') > $this->until->format('Y-m-d')) {
+            $onDate = false;
+        }
+
+        if ($this->getMonths()->count() && !$this->getMonths()->contains((int) $dateTime->format('n'))) {
+            $onDate = false;
+        }
+
+        if ($this->getWeekNumbers()->count() && !$this->getWeekNumbers()->contains((int) $dateTime->format('W'))) {
+            $onDate = false;
+        }
+
+
+        if ($this->getDays()->count() && !$this->getDays()->contains((int) $dateTime->format('W'))) {
+            $onDate = false;
+        }
+
+        if (!$this->onYearDays($dateTime) || !$this->onMonthDays($dateTime)) {
+            $onDate = false;
+        }
+
+        return $onDate;
     }
 
     protected function onDayFrequency(\DateTime $dateTime)
@@ -329,7 +353,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     protected function onMonthDays(\DateTime $dateTime)
     {
-        if (!$this->monthDays->count()) return true;
+        if (!$this->getMonthDays()->count()) return true;
 
         $dotm = new DayOfTheMonth();
         while ($this->monthDays->next()) {
@@ -341,7 +365,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     protected function onYearDays(\DateTime $dateTime)
     {
-        if (!$this->yearDays->count()) return true;
+        if (!$this->getYearDays()->count()) return true;
 
         $doty = new DayOfTheYear();
         while ($this->yearDays->next()) {

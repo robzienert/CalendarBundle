@@ -32,7 +32,7 @@ interface RecurrenceInterface
 
     public function addMonthDay($day);
 
-    public function removeMonthDay();
+    public function removeMonthDay($day);
 
     public function getWeekNumbers();
 
@@ -46,7 +46,7 @@ interface RecurrenceInterface
 
     public function removeYearDay($day);
 
-    public function setFrequency();
+    public function setFrequency($frequency);
 
     public function getFrequency();
 
