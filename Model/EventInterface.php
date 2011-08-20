@@ -42,10 +42,6 @@ interface EventInterface
 
     public function removeException(\DateTime $exception);
 
-    public function setStatus($status);
-
-    public function getStatus();
-
     public function setLocation($location);
 
     public function getLocation();

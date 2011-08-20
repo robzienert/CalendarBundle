@@ -1,7 +1,0 @@
-{% extends "RizzaCalendar::layout.html.twig" %}
-{% block content %}
-<form action="{{ path('_calendar_event_create') }}" {{ form_enctype(form) }} method="POST" class="calendar_event_new">
-    {{ form_field(form) }}
-    <input type="submit" value="Create Event" />
-</form>
-{% endblock content %}

@@ -5,8 +5,11 @@ namespace Rizza\CalendarBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Rizza\CalendarBundle\Entity\Event;
+use Rizza\CalendarBundle\Form\Type\EventType;
 
 /**
  * @Route("/event")
@@ -14,11 +17,11 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 class EventController extends Controller
 {
     /**
-     * @Route("/", name="rizza_calendar_event")
+     * @Route("/", name="rizza_calendar_event_list")
      */
     public function listAction()
     {
-        $events = $this->get('rizza_calendar.event_manager')->findEvents();
+        $events = $this->getRepository()->findAll();
 
         return $this->render('RizzaCalendarBundle:Event:list.html.twig', array('events' => $events));
     }
@@ -34,30 +37,29 @@ class EventController extends Controller
     }
 
     /**
-     * @Route("/new", name="rizza_calendar_event_new")
+     * @Route("/add", name="rizza_calendar_event_add")
      */
-    public function newAction()
+    public function addAction(Request $request)
     {
-        $form = $this->get('rizza_calendar.form.event');
+        $event = new Event();
+        $form = $this->createForm(new EventType(), $event);
 
-        $form->process();
+        if ('POST' == $request->getMethod()) {
+            $form->bindRequest($request);
 
-        return $this->render('RizzaCalendarBundle:Event:new.html.twig', array('form' => $form));
-    }
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($event);
+                $em->flush();
 
-    /**
-     * @Route("/create", name="rizza_calendar_event_create")
-     */
-    public function createAction()
-    {
-        $form = $this->get('rizza_calendar.form.event');
-
-        $process = $form->process();
-        if ($process) {
-            return $this->redirect($this->generateUrl('_rizza_calendar_event'));
+                // @todo add flash
+                return $this->redirect($this->generateUrl('rizza_calendar_event_list'));
+            }
         }
 
-        return $this->render('RizzaCalendarBundle:Event:new.html.twig', array('form' => $form));
+        return $this->render('RizzaCalendarBundle:Event:add.html.twig', array(
+            'form' => $form->createView()
+        ));
     }
 
     /**
@@ -66,33 +68,25 @@ class EventController extends Controller
     public function editAction($id)
     {
         $event = $this->findEvent($id);
-        $form = $this->get('rizza_calendar.form.event');
+        $form = $this->createForm(new EventType(), $event);
 
-        $form->process($event);
+        $request = $this->getRequest();
+        if ('POST' == $request->getMethod()) {
+            $form->bindRequest($request);
 
-        return $this->render('RizzaCalendarBundle:Event:edit.html.twig', array(
-            'form' => $form,
-            'title' => $event->getTitle(),
-        ));
-    }
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($event);
+                $em->flush();
 
-    /**
-     * @Route("/update/{id}", name="rizza_calendar_event_update")
-     */
-    public function updateAction($id)
-    {
-        $event = $this->findEvent($id);
-        $form = $this->get('rizza_calendar.form.event');
-
-        $process = $form->process($event);
-        if ($process) {
-            $eventUrl = $this->get('router')->generate('_rizza_calendar_event_show', array('id' => $event->getId()));
-            return new RedirectResponse($eventUrl);
+                // @todo add flash
+                return $this->redirect($this->generateUrl('rizza_calendar_event_list'));
+            }
         }
 
         return $this->render('RizzaCalendarBundle:Event:edit.html.twig', array(
-            'form' => $form,
-            'title' => $event->getId(),
+            'form' => $form->createView(),
+            'event' => $event,
         ));
     }
 
@@ -102,9 +96,12 @@ class EventController extends Controller
     public function deleteAction($id)
     {
         $event = $this->findEvent($id);
-        $this->get('rizza_calendar.event_manager')->deleteEvent($event);
 
-        return new RedirectResponse($this->get('router')->generate('_rizza_calendar_event'));
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($event);
+        $em->flush();
+
+        return $this->redirect($this->generateUrl('rizza_calendar_event_list'));
     }
 
     /**
@@ -118,7 +115,7 @@ class EventController extends Controller
     {
         $event = null;
         if (!empty($id)) {
-            $event = $this->get('rizza_calendar.event_manager')->findEventBy(array('id' => $id));
+            $event = $this->getRepository()->findOneBy(array('id' => $id));
         }
 
         if (empty($event)) {
@@ -126,5 +123,13 @@ class EventController extends Controller
         }
 
         return $event;
+    }
+
+    /**
+     * @return EntityRepository
+     */
+    protected function getRepository()
+    {
+        return $this->getDoctrine()->getRepository('Rizza\CalendarBundle\Entity\Event');
     }
 }

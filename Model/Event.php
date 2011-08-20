@@ -148,16 +148,6 @@ abstract class Event implements EventInterface
         }
     }
 
-    public function setStatus($status)
-    {
-        $this->status = $status;
-    }
-
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
     public function setLocation($location)
     {
         $this->location = $location;

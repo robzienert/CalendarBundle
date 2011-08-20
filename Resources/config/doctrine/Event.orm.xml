@@ -13,7 +13,6 @@
         <field name="allDay" column="all_day" type="boolean" />
         <field name="startDate" column="start_date" type="datetime" />
         <field name="endDate" column="end_date" type="datetime" />
-        <field name="status" column="status" type="smallint" />
         <field name="location" column="location" type="string" />
         <field name="url" column="url" type="string" />
 
