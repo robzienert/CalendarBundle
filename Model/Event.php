@@ -156,7 +156,7 @@ abstract class Event implements EventInterface
     public function removeException(\DateTime $exception)
     {
         if ($this->getExceptions()->contains($exception)) {
-            $this->getExceptions()->remove($exception);
+            $this->getExceptions()->removeElement($exception);
         }
     }
 
@@ -195,7 +195,7 @@ abstract class Event implements EventInterface
     public function removeRecurrence(RecurrenceInterface $recurrence)
     {
         if ($this->getRecurrences()->contains($recurrence)) {
-            $this->getRecurrences()->remove($recurrence);
+            $this->getRecurrences()->removeElement($recurrence);
         }
     }
 
@@ -224,7 +224,7 @@ abstract class Event implements EventInterface
     public function removeAttendee(Attendee $attendee)
     {
         if ($this->getAttendees()->contains($attendee)) {
-            $this->getAttendees()->remove($attendee);
+            $this->getAttendees()->removeElement($attendee);
         }
     }
 
