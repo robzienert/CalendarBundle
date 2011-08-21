@@ -145,18 +145,32 @@ abstract class Recurrence implements RecurrenceInterface
     {
         $day = intval($day);
         if ($this->getDays()->contains($day)) {
-            $this->getDays()->remove($day);
+            $this->getDays()->removeElement($day);
         }
     }
 
     public function getDayFrequency()
     {
-        return $this->dayFrequency;
+        return $this->dayFrequency ?: $this->dayFrequency = new ArrayCollection();
     }
 
     public function addDayFrequency($frequency)
     {
-        $this->dayFrequency;
+        $frequency = intval($frequency);
+        if (6 < $frequency || 0 > $frequency) {
+            throw new \RangeException('Day frequency cannot be less than 0 or greater than 6');
+        }
+
+        if (!$this->getDayFrequency()->contains($frequency)) {
+            $this->getDayFrequency()->add($frequency);
+        }
+    }
+
+    public function removeDayFrequency($frequency)
+    {
+        if ($this->getDayFrequency()->contains($frequency)) {
+            $this->getDayFrequency()->removeElement($frequency);
+        }
     }
 
     public function getMonths()
@@ -176,7 +190,7 @@ abstract class Recurrence implements RecurrenceInterface
     {
         $month = intval($month);
         if ($this->getMonths()->contains($month)) {
-            $this->getMonths()->add($month);
+            $this->getMonths()->removeElement($month);
         }
     }
 
@@ -188,6 +202,11 @@ abstract class Recurrence implements RecurrenceInterface
     public function addMonthDay($day)
     {
         $day = intval($day);
+
+        if (31 < $day || -31 > $day || 0 == $day) {
+            throw new \RangeException('Month day must be between -1 to -31 or 1 to 31');
+        }
+
         if (!$this->getMonthDays()->contains($day)) {
             $this->getMonthDays()->add($day);
         }
@@ -197,7 +216,7 @@ abstract class Recurrence implements RecurrenceInterface
     {
         $day = intval($day);
         if ($this->getMonthDays()->contains($day)) {
-            $this->getMonthDays()->add($day);
+            $this->getMonthDays()->removeElement($day);
         }
     }
 
@@ -218,7 +237,7 @@ abstract class Recurrence implements RecurrenceInterface
     {
         $week = intval($week);
         if ($this->getWeekNumbers()->contains($week)) {
-            $this->getWeekNumbers()->remove($week);
+            $this->getWeekNumbers()->removeElement($week);
         }
     }
 
@@ -239,12 +258,18 @@ abstract class Recurrence implements RecurrenceInterface
     {
         $day = intval($day);
         if ($this->getYearDays()->contains($day)) {
-            $this->getYearDays()->remove($day);
+            $this->getYearDays()->removeElement($day);
         }
     }
 
     public function setFrequency($frequency)
     {
+        $validFrequencies = array(self::FREQUENCY_DAILY, self::FREQUENCY_MONTHLY,
+                                  self::FREQUENCY_WEEKLY, self::FREQUENCY_YEARLY);
+        if (!in_array($frequency, $validFrequencies)) {
+            throw new \InvalidArgumentException('Invalid frequency value provided');
+        }
+        
         $this->frequency = $frequency;
     }
     
@@ -255,7 +280,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     public function setInterval($interval)
     {
-        $this->interval = $interval;
+        $this->interval = abs(intval($interval));
     }
 
     public function getInterval()
@@ -306,8 +331,7 @@ abstract class Recurrence implements RecurrenceInterface
             $onDate = false;
         }
 
-
-        if ($this->getDays()->count() && !$this->getDays()->contains((int) $dateTime->format('W'))) {
+        if ($this->getDays()->count() && !$this->getDays()->contains((int) $dateTime->format('j'))) {
             $onDate = false;
         }
 

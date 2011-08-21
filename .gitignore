@@ -4,3 +4,5 @@ catalog.xml
 INTERNAL_NOTES.txt
 phpunit.xml
 Tests/coverage
+Tests/autoload.php
+

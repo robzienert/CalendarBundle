@@ -24,6 +24,8 @@ class DayOfTheMonth implements Processor
     public function setDay($day)
     {
         $this->day = (int) $day;
+
+        return $this;
     }
 
     public function getDay()
