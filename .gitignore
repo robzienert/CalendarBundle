@@ -3,3 +3,4 @@ nbproject
 catalog.xml
 INTERNAL_NOTES.txt
 phpunit.xml
+Tests/coverage

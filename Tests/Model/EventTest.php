@@ -44,6 +44,32 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $this->assertType('Rizza\CalendarBundle\Model\Calendar', $event->getCalendar());
     }
 
+    public function testAllDay()
+    {
+        $event = $this->getEvent();
+
+        $this->assertFalse($event->getAllDay());
+        $this->assertFalse($event->isAllDay());
+
+        $event->setAllDay(true);
+
+        $this->assertTrue($event->getAllDay());
+        $this->assertTrue($event->isAllDay());
+    }
+
+    public function testDates()
+    {
+        $event = $this->getEvent();
+
+        $date = new \DateTime();
+
+        $event->setStartDate($date);
+        $this->assertEquals($date, $event->getStartDate());
+
+        $event->setEndDate($date);
+        $this->assertEquals($date, $event->getEndDate());
+    }
+
     public function testSetEndDateThrowsExceptionWithValueBeforeStart()
     {
         $this->setExpectedException('InvalidArgumentException');
@@ -64,11 +90,20 @@ class EventTest extends \PHPUnit_Framework_TestCase
         $event->setStartDate(\DateTime::createFromFormat('Y-m-d', '2011-11-01'));
     }
 
-    public function testIsOnDateThrowsExceptionsWithoutStartEndDates()
+    public function testIsOnDateThrowsExceptionsWithoutStartDate()
     {
         $this->setExpectedException('RuntimeException');
         
         $event = $this->getEvent();
+        $event->isOnDate(new \DateTime());
+    }
+    
+    public function testIsOnDateThrowsExceptionsWithoutEndDate()
+    {
+        $this->setExpectedException('RuntimeException');
+
+        $event = $this->getEvent();
+        $event->setStartDate(new \DateTime());
         $event->isOnDate(new \DateTime());
     }
 
