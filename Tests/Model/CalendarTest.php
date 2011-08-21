@@ -15,6 +15,32 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Home', $calendar->__toString());
     }
 
+    public function testAddRemoveEvent()
+    {
+        $calendar = $this->getCalendar();
+
+        $event1 = $this->getEvent();
+        $event1->setTitle('event1');
+        $event2 = $this->getEvent();
+        $event2->setTitle('event2');
+        $event2->setStartDate(\DateTime::createFromFormat('Y-m-d H:i:s', '2011-07-10 17:00:00'));
+        $event3 = $this->getEvent();
+        $event3->setTitle('event3');
+        $event2->setStartDate(\DateTime::createFromFormat('Y-m-d H:i:s', '2011-10-10 17:00:00'));
+
+        $calendar->addEvent($event1);
+        $calendar->addEvent($event2);
+        $calendar->addEvent($event3);
+
+        $this->assertEquals(array($event1, $event2, $event3), $calendar->getEvents()->getValues());
+
+        $calendar->removeEvent($event1);
+
+        $this->assertEquals(array($event2, $event3), $calendar->getEvents()->getValues());
+
+        $this->assertEquals(array($event2), $calendar->getEventsOnDay(\DateTime::createFromFormat('Y-m-d', '2011-07-10')));
+    }
+
     protected function getCalendar()
     {
         return $this->getMockForAbstractClass('Rizza\CalendarBundle\Model\Calendar');

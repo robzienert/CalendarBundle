@@ -57,7 +57,7 @@ abstract class Calendar implements CalendarInterface
     public function removeEvent(EventInterface $event)
     {
         if ($this->getEvents()->contains($event)) {
-            $this->getEvents()->remove($event);
+            $this->getEvents()->removeElement($event);
         }
     }
 
