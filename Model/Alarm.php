@@ -12,8 +12,6 @@ abstract class Alarm
 
     protected $recipients;
 
-    protected $description;
-
     /**
      * @var DateTime The date and time this alarm will trigger.
      */
@@ -21,7 +19,7 @@ abstract class Alarm
 
     public function __construct(EventInterface $event)
     {
-        $this->event = $event;
+        $this->setEvent($event);
     }
 
     public function getId()
@@ -34,7 +32,7 @@ abstract class Alarm
         $this->event = $event;
     }
 
-    public function getEvent(EventInterface $event)
+    public function getEvent()
     {
         return $this->event;
     }
@@ -54,17 +52,17 @@ abstract class Alarm
     public function removeRecipient(Recipient $recipient)
     {
         if ($this->getRecipients()->contains($recipient)) {
-            $this->getRecipients()->remove($recipient);
+            $this->getRecipients()->removeElement($recipient);
         }
     }
 
-    public function setDescription($description)
+    public function setTrigger(\DateTime $dateTime)
     {
-        $this->description = $description;
+        $this->triggerAt = $dateTime;
     }
 
-    public function getDescription()
+    public function getTrigger()
     {
-        return $this->description;
+        return $this->triggerAt;
     }
 }
