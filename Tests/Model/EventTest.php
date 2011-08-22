@@ -138,7 +138,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
 
         $event->setOrganizer(new MockOrganizer());
 
-        $this->assertType('MockOrganizer', $event->getOrganizer());
+        $this->assertType('Rizza\CalendarBundle\Model\Organizer', $event->getOrganizer());
     }
 
     public function testAddRemoveAttendee()
