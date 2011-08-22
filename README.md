@@ -31,8 +31,7 @@ Add to your routing.yml:
     rizza_calendar_calendar:
       resource: "@RizzaCalendarBundle/Resources/config/routing/calendar.yml"
       prefix: /calendar
-
-    # app/config/routing.yml
+      
     rizza_calendar_event:
       resource: "@RizzaCalendarBundle/Resources/config/routing/event.yml"
       prefix: /event
