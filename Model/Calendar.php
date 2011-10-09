@@ -5,13 +5,15 @@ namespace Rizza\CalendarBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Rizza\CalendarBundle\Model\EventInterface;
 
+use Symfony\Component\Validator\Constraints as validation;
+
 abstract class Calendar implements CalendarInterface
 {
     protected $id;
 
     /**
-     * @validation:MaxLength(255)
-     * @validation:NotBlank()
+     * @validation\MaxLength(255)
+     * @validation\NotBlank()
      */
     protected $name;
 
