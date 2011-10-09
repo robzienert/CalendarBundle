@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="rizza_calendar.calendar_manager.class">Rizza\CalendarBundle\Document\CalendarManager</parameter>
+        <parameter key="rizza_calendar.event_manager.class">Rizza\CalendarBundle\Document\EventManager</parameter>
+        <parameter key="rizza_calendar.calendar_document.class">Rizza\CalendarBundle\Document\Calendar</parameter>
+        <parameter key="rizza_calendar.event_document.class">Rizza\CalendarBundle\Document\Event</parameter>
+    </parameters>
+
+    <services>
+        <service id="rizza_calendar.calendar_manager" class="%rizza_calendar.calendar_manager.class%">
+            <argument type="service" id="doctrine.odm.mongodb.default_document_manager" />
+            <argument>%rizza_calendar.calendar_document.class%</argument>
+        </service>
+        <service id="rizza_calendar.event_manager" class="%rizza_calendar.event_manager.class%">
+            <argument type="service" id="doctrine.odm.mongodb.default_document_manager" />
+            <argument>%rizza_calendar.event_document.class%</argument>
+        </service>
+    </services>
+
+</container>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mongo-mapping xmlns="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping"
+                        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:schemaLocation="http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping
+                        http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
+
+    <document name="Rizza\CalendarBundle\Document\Event" table="calendar_event">
+        <field name="id" id="true"/>
+
+        <field name="title" fieldName="title" type="string" />
+        <field name="category" fieldName="category" type="string" />
+        <field name="description" fieldName="description" type="string" />
+        <field name="allDay" fieldName="allDay" type="boolean" />
+        <field name="startDate" fieldName="startDate" type="date" />
+        <field name="endDate" fieldName="endDate" type="date" />
+        <field name="location" fieldName="location" type="string" />
+        <field name="url" fieldName="url" type="string" />
+    </document>
+
+</doctrine-mongo-mapping>
