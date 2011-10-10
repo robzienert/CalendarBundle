@@ -39,7 +39,6 @@ Add to your routing.yml:
 TODO
 ----
 
-- Add support for ODM
 - Add support for different view engines
 - Commands
 - Alternative storage backaends (Google Calendar, iCal feeds, etc.)
