@@ -45,6 +45,17 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+
+                ->arrayNode('service')->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('manager')->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('calendar')->cannotBeEmpty()->defaultValue('rizza_calendar.manager.calendar.default')->end()
+                                ->scalarNode('event')->cannotBeEmpty()->defaultValue('rizza_calendar.manager.event.default')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;

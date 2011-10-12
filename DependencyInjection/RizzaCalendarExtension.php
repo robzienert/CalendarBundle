@@ -32,6 +32,9 @@ class RizzaCalendarExtension extends Extension
         }
 
         $this->loadRouting($config, $container);
+
+        $container->setAlias('rizza_calendar.manager.calendar', $config['service']['manager']['calendar']);
+        $container->setAlias('rizza_calendar.manager.event', $config['service']['manager']['event']);
     }
 
     protected function loadRouting(array $config, ContainerBuilder $container)
