@@ -7,36 +7,34 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Rizza\CalendarBundle\Entity\Event;
 use Rizza\CalendarBundle\Form\Type\EventType;
+use Rizza\CalendarBundle\Model\EventManagerInterface;
 
 class EventController extends Controller
 {
     public function listAction()
     {
-        $events = $this->getRepository()->findAll();
+        $events = $this->getEventManager()->findAll();
 
         return $this->render('RizzaCalendarBundle:Event:list.html.twig', array('events' => $events));
     }
 
     public function showAction($id)
     {
-        $event = $this->findEvent($id);
+        $event = $this->getEventManager()->find($id);
 
         return $this->render('RizzaCalendarBundle:Event:show.html.twig', array('event' => $event));
     }
 
     public function addAction(Request $request)
     {
-        $event = new Event();
+        $manager = $this->getEventManager();
+        $event = $manager->createEvent();
         $form = $this->createForm(new EventType(), $event);
 
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);
 
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($event);
-                $em->flush();
-
+            if ($form->isValid() && $manager->addEvent($event)) {
                 // @todo add flash
                 return $this->redirect($this->generateUrl($this->container->getParameter('rizza_calendar.routing.event.list')));
             }
@@ -49,18 +47,15 @@ class EventController extends Controller
 
     public function editAction($id)
     {
-        $event = $this->findEvent($id);
+        $manager = $this->getEventManager();
+        $event = $manager->find($id);
         $form = $this->createForm(new EventType(), $event);
 
         $request = $this->getRequest();
         if ('POST' == $request->getMethod()) {
             $form->bindRequest($request);
 
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($event);
-                $em->flush();
-
+            if ($form->isValid() && $manager->updateEvent($event)) {
                 // @todo add flash
                 return $this->redirect($this->generateUrl($this->container->getParameter('rizza_calendar.routing.event.list')));
             }
@@ -74,41 +69,19 @@ class EventController extends Controller
 
     public function deleteAction($id)
     {
-        $event = $this->findEvent($id);
+        $manager = $this->getEventManager();
+        $event = $manager->find($id);
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->remove($event);
-        $em->flush();
+        $manager->removeEvent($event);
 
         return $this->redirect($this->generateUrl($this->container->getParameter('rizza_calendar.routing.event.list')));
     }
 
     /**
-     * Find an event by its id
-     *
-     * @param int $id
-     * @return Rizza\CalendarBundle\Model\Event
-     * @throws NotFoundHttpException if the event cannot be found
+     * @return EventManagerInterface
      */
-    public function findEvent($id)
+    protected function getEventManager()
     {
-        $event = null;
-        if (!empty($id)) {
-            $event = $this->getRepository()->findOneBy(array('id' => $id));
-        }
-
-        if (empty($event)) {
-            throw new NotFoundHttpException(sprintf('The event "%d" does not exist', $id));
-        }
-
-        return $event;
-    }
-
-    /**
-     * @return EntityRepository
-     */
-    protected function getRepository()
-    {
-        return $this->getDoctrine()->getRepository('Rizza\CalendarBundle\Entity\Event');
+        return $this->container->get('rizza_calendar.manager.event');
     }
 }

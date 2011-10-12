@@ -12,11 +12,11 @@
     </parameters>
 
     <services>
-        <service id="rizza_calendar.calendar_manager" class="%rizza_calendar.calendar_manager.class%">
+        <service id="rizza_calendar.manager.calendar" class="%rizza_calendar.calendar_manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%rizza_calendar.calendar_entity.class%</argument>
         </service>
-        <service id="rizza_calendar.event_manager" class="%rizza_calendar.event_manager.class%">
+        <service id="rizza_calendar.manager.event" class="%rizza_calendar.event_manager.class%">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%rizza_calendar.event_entity.class%</argument>
         </service>
