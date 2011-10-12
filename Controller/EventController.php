@@ -31,7 +31,7 @@ class EventController extends BaseController
     {
         $manager = $this->getEventManager();
         $event = $manager->createEvent();
-        $form = $this->createForm(new EventType(), $event);
+        $form = $this->getEventFormFactory()->createForm($event);
 
         if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);
@@ -51,7 +51,7 @@ class EventController extends BaseController
     {
         $manager = $this->getEventManager();
         $event = $manager->find($id);
-        $form = $this->createForm(new EventType(), $event);
+        $form = $this->getEventFormFactory()->createForm($event);
 
         if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);

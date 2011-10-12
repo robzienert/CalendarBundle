@@ -31,7 +31,7 @@ class CalendarController extends BaseController
     {
         $manager = $this->getCalendarManager();
         $calendar = $manager->createCalendar();
-        $form = $this->createForm(new CalendarType(), $calendar);
+        $form = $this->getCalendarFormFactory()->createForm($calendar);
 
         if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);
@@ -51,7 +51,7 @@ class CalendarController extends BaseController
     {
         $manager = $this->getCalendarManager();
         $calendar = $manager->find($id);
-        $form = $this->createForm(new CalendarType(), $calendar);
+        $form = $this->getCalendarFormFactory()->createForm($calendar);
 
         if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);

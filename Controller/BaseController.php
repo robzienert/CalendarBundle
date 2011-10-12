@@ -5,7 +5,8 @@ namespace Rizza\CalendarBundle\Controller;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Rizza\CalendarBundle\Model\CalendarManagerInterface;
 use Rizza\CalendarBundle\Model\EventManagerInterface;
-use Symfony\Component\Form\Form;
+use Rizza\CalendarBundle\FormFactory\CalendarFormFactoryInterface;
+use Rizza\CalendarBundle\FormFactory\EventFormFactoryInterface;
 
 abstract class BaseController extends ContainerAware
 {
@@ -27,17 +28,19 @@ abstract class BaseController extends ContainerAware
     }
 
     /**
-     * Creates and returns a Form instance from the type of the form.
-     *
-     * @param string|FormTypeInterface $type    The built type of the form
-     * @param mixed $data                       The initial data for the form
-     * @param array $options                    Options for the form
-     *
-     * @return Form
+     * @return CalendarFormFactoryInterface
      */
-    public function createForm($type, $data = null, array $options = array())
+    public function getCalendarFormFactory()
     {
-        return $this->container->get('form.factory')->create($type, $data, $options);
+        return $this->container->get('rizza_calendar.form_factory.calendar');
+    }
+
+    /**
+     * @return EventFormFactoryInterface
+     */
+    public function getEventFormFactory()
+    {
+        return $this->container->get('rizza_calendar.form_factory.event');
     }
 
 }

@@ -27,14 +27,27 @@ class RizzaCalendarExtension extends Extension
         }
         $loader->load(sprintf('%s.xml', $config['db_driver']));
 
-        foreach (array('twig') as $base) {
+        foreach (array('twig', 'form') as $base) {
             $loader->load(sprintf('%s.xml', $base));
         }
 
+        $this->loadForm($config, $container);
         $this->loadRouting($config, $container);
 
         $container->setAlias('rizza_calendar.manager.calendar', $config['service']['manager']['calendar']);
         $container->setAlias('rizza_calendar.manager.event', $config['service']['manager']['event']);
+
+        $container->setAlias('rizza_calendar.form_factory.calendar', $config['service']['form_factory']['calendar']);
+        $container->setAlias('rizza_calendar.form_factory.event', $config['service']['form_factory']['event']);
+    }
+
+    protected function loadForm(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter('rizza_calendar.form.calendar.type', $config['form']['calendar']['type']);
+        $container->setParameter('rizza_calendar.form.calendar.name', $config['form']['calendar']['name']);
+
+        $container->setParameter('rizza_calendar.form.event.type', $config['form']['event']['type']);
+        $container->setParameter('rizza_calendar.form.event.name', $config['form']['event']['name']);
     }
 
     protected function loadRouting(array $config, ContainerBuilder $container)
