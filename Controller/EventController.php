@@ -23,7 +23,7 @@ class EventController extends BaseController
         $event = $this->getEventManager()->find($id);
 
         return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Event:show.html.twig', array(
-            'event' => $events,
+            'event' => $event,
         ));
     }
 

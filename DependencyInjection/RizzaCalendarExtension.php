@@ -45,9 +45,9 @@ class RizzaCalendarExtension extends Extension
         $container->setParameter('rizza_calendar.routing.calendar.edit', $config['routing']['calendar']['edit']);
         $container->setParameter('rizza_calendar.routing.calendar.delete', $config['routing']['calendar']['delete']);
 
-        $container->setParameter('rizza_calendar.routing.event.list', $config['routing']['calendar']['list']);
-        $container->setParameter('rizza_calendar.routing.event.add', $config['routing']['calendar']['add']);
-        $container->setParameter('rizza_calendar.routing.event.show', $config['routing']['calendar']['show']);
-        $container->setParameter('rizza_calendar.routing.event.edit', $config['routing']['calendar']['edit']);
+        $container->setParameter('rizza_calendar.routing.event.list', $config['routing']['event']['list']);
+        $container->setParameter('rizza_calendar.routing.event.add', $config['routing']['event']['add']);
+        $container->setParameter('rizza_calendar.routing.event.show', $config['routing']['event']['show']);
+        $container->setParameter('rizza_calendar.routing.event.edit', $config['routing']['event']['edit']);
     }
 }

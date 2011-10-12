@@ -2,10 +2,11 @@
 
 namespace Rizza\CalendarBundle\Entity;
 
-use Rizza\CalendarBundle\Model\EventManager;
+use Rizza\CalendarBundle\Model\EventManager as BaseEventManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Rizza\CalendarBundle\Model\EventInterface;
 
 class EventManager extends BaseEventManager
 {
@@ -64,6 +65,11 @@ class EventManager extends BaseEventManager
         }
 
         return $event;
+    }
+
+    public function findAll()
+    {
+        return $this->repo->findAll();
     }
 
     public function getClass()
