@@ -4,7 +4,6 @@ namespace Rizza\CalendarBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Rizza\CalendarBundle\Form\Type\CalendarType;
-use Rizza\CalendarBundle\Model\CalendarManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class CalendarController extends BaseController
