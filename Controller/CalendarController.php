@@ -38,7 +38,7 @@ class CalendarController extends Controller
                 $em->flush();
 
                 // @todo Add flash
-                return $this->redirect($this->generateUrl('rizza_calendar_list'));
+                return $this->redirect($this->generateUrl($this->container->getParameter('rizza_calendar.routing.calendar.list')));
             }
         }
 
@@ -60,7 +60,7 @@ class CalendarController extends Controller
                 $em->flush();
 
                 // @todo Add flash
-                return $this->redirect($this->generateUrl('rizza_calendar_list'));
+                return $this->redirect($this->generateUrl($this->container->getParameter('rizza_calendar.routing.calendar.list')));
             }
         }
 
@@ -78,7 +78,7 @@ class CalendarController extends Controller
         $em->remove($calendar);
         $em->flush();
 
-        return $this->redirect($this->generateUrl('rizza_calendar_list'));
+        return $this->redirect($this->generateUrl($this->container->getParameter('rizza_calendar.routing.calendar.list')));
     }
 
     /**

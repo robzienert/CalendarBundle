@@ -1,7 +1,7 @@
 {% extends "RizzaCalendarBundle::layout.html.twig" %}
 {% block content %}
 <h2>Edit &quot;{{ event.getTitle() }}&quot;</h2>
-<form action="{{ path('rizza_calendar_event_edit', { 'id': event.getId() }) }}" {{ form_enctype(form) }} method="POST">
+<form action="{{ path(rizza_calendar_route('event', 'edit'), { 'id': event.getId() }) }}" {{ form_enctype(form) }} method="POST">
     {{ form_errors(form) }}
 
     {{ form_rest(form) }}

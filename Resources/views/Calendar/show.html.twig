@@ -1,13 +1,13 @@
 {% extends "RizzaCalendarBundle::layout.html.twig" %}
 {% block content %}
 This is the {{ calendar.getName() }} calendar. Riveting. 
-  <a href="{{ path('rizza_calendar_edit', { 'id': calendar.getId() }) }}">(edit)</a>
-  <a href="{{ path('rizza_calendar_delete', { 'id': calendar.getId() }) }}">(delete)</a>
+  <a href="{{ path(rizza_calendar_route('calendar', 'edit'), { 'id': calendar.getId() }) }}">(edit)</a>
+  <a href="{{ path(rizza_calendar_route('calendar', 'delete'), { 'id': calendar.getId() }) }}">(delete)</a>
 
 {{ calendar|calendarMonth(7, 2011) }}
 
 {% for event in calendar.getEvents() %}
-  <a href="{{ path('rizza_calendar_event_show', { 'id': event.getId() }) }}">{{ event.getTitle() }}</a>
+  <a href="{{ path(rizza_calendar_route('event', 'show'), { 'id': event.getId() }) }}">{{ event.getTitle() }}</a>
 {% endfor %}
 
 {% endblock content %}

@@ -23,6 +23,28 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
+
+                ->arrayNode('routing')->addDefaultsIfNotSet()
+                    ->children()
+                        ->arrayNode('calendar')->isRequired()->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('list')->defaultValue('rizza_calendar_list')->end()
+                                ->scalarNode('add')->defaultValue('rizza_calendar_add')->end()
+                                ->scalarNode('show')->defaultValue('rizza_calendar_show')->end()
+                                ->scalarNode('edit')->defaultValue('rizza_calendar_edit')->end()
+                                ->scalarNode('delete')->defaultValue('rizza_calendar_delete')->end()
+                            ->end()
+                        ->end()
+                        ->arrayNode('event')->isRequired()->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('list')->defaultValue('rizza_calendar_event_list')->end()
+                                ->scalarNode('add')->defaultValue('rizza_calendar_event_add')->end()
+                                ->scalarNode('show')->defaultValue('rizza_calendar_event_show')->end()
+                                ->scalarNode('edit')->defaultValue('rizza_calendar_event_edit')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end();
 
         return $treeBuilder;
