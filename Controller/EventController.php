@@ -26,10 +26,11 @@ class EventController extends BaseController
         ));
     }
 
-    public function addAction(Request $request)
+    public function addAction($calendar_id, Request $request)
     {
+        $calendar = $this->getCalendarManager()->find($calendar_id);
         $manager = $this->getEventManager();
-        $event = $manager->createEvent();
+        $event = $manager->createEvent($calendar);
         $form = $this->getEventFormFactory()->createForm($event);
 
         if ('POST' === $request->getMethod()) {
@@ -43,6 +44,7 @@ class EventController extends BaseController
 
         return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Event:add.html.twig', array(
             'form' => $form->createView(),
+            'calendar' => $calendar,
         ));
     }
 

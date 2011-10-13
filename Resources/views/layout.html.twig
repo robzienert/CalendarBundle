@@ -11,7 +11,9 @@
     {% endif %}
     <ul>
       <li><a href="{{ path(rizza_calendar_route('calendar', 'add')) }}">New Calendar</a></li>
-      <li><a href="{{ path(rizza_calendar_route('event', 'add')) }}">New Event</a></li>
+{% if calendar is defined %}
+      <li><a href="{{ path(rizza_calendar_route('event', 'add'), {"calendar_id": calendar.getId()}) }}">New Event</a></li>
+{% endif %}
     </ul>
     <div>
       {% block content %}

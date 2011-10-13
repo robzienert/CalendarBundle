@@ -11,9 +11,6 @@ class EventType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('calendar', 'entity', array(
-                'class' => 'Rizza\CalendarBundle\Entity\Calendar'
-            ))
             ->add('category', 'text', array(
                 'required' => false
             ))

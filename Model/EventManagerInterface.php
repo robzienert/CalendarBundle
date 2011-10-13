@@ -8,7 +8,7 @@ interface EventManagerInterface
     /**
      * @return EventInterface
      */
-    public function createEvent();
+    public function createEvent(CalendarInterface $calendar);
 
     /**
      * @return boolean whether the event was successfully persisted
