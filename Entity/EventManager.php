@@ -33,7 +33,7 @@ class EventManager extends BaseEventManager
         $this->class = $class;
     }
 
-    function addEvent(EventInterface $event)
+    public function addEvent(EventInterface $event)
     {
         $this->em->persist($event);
         $this->em->flush();
@@ -41,7 +41,7 @@ class EventManager extends BaseEventManager
         return true;
     }
 
-    function updateEvent(EventInterface $event)
+    public function updateEvent(EventInterface $event)
     {
         $this->em->persist($event);
         $this->em->flush();
@@ -49,7 +49,7 @@ class EventManager extends BaseEventManager
         return true;
     }
 
-    function removeEvent(EventInterface $event)
+    public function removeEvent(EventInterface $event)
     {
         $this->em->remove($event);
         $this->em->flush();
