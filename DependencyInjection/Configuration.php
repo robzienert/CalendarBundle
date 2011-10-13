@@ -24,6 +24,17 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('db_driver')->cannotBeOverwritten()->isRequired()->cannotBeEmpty()->end()
 
+                ->arrayNode('class')->isRequired()
+                    ->children()
+                        ->arrayNode('model')
+                            ->children()
+                                ->scalarNode('calendar')->isRequired()->end()
+                                ->scalarNode('event')->isRequired()->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+
                 ->arrayNode('form')->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('calendar')->isRequired()->addDefaultsIfNotSet()

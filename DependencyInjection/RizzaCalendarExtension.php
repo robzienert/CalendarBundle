@@ -31,6 +31,7 @@ class RizzaCalendarExtension extends Extension
             $loader->load(sprintf('%s.xml', $base));
         }
 
+        $this->loadClass($config, $container);
         $this->loadForm($config, $container);
         $this->loadRouting($config, $container);
 
@@ -39,6 +40,12 @@ class RizzaCalendarExtension extends Extension
 
         $container->setAlias('rizza_calendar.form_factory.calendar', $config['service']['form_factory']['calendar']);
         $container->setAlias('rizza_calendar.form_factory.event', $config['service']['form_factory']['event']);
+    }
+
+    protected function loadClass(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter('rizza_calendar.model.calendar.class', $config['class']['model']['calendar']);
+        $container->setParameter('rizza_calendar.model.event.class', $config['class']['model']['event']);
     }
 
     protected function loadForm(array $config, ContainerBuilder $container)

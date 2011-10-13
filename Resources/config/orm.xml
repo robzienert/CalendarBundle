@@ -5,20 +5,18 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="rizza_calendar.calendar_manager.class">Rizza\CalendarBundle\Entity\CalendarManager</parameter>
-        <parameter key="rizza_calendar.event_manager.class">Rizza\CalendarBundle\Entity\EventManager</parameter>
-        <parameter key="rizza_calendar.calendar_entity.class">Rizza\CalendarBundle\Entity\Calendar</parameter>
-        <parameter key="rizza_calendar.event_entity.class">Rizza\CalendarBundle\Entity\Event</parameter>
+        <parameter key="rizza_calendar.manager.calendar.class">Rizza\CalendarBundle\Entity\CalendarManager</parameter>
+        <parameter key="rizza_calendar.manager.event.class">Rizza\CalendarBundle\Entity\EventManager</parameter>
     </parameters>
 
     <services>
-        <service id="rizza_calendar.manager.calendar.default" class="%rizza_calendar.calendar_manager.class%" public="false">
+        <service id="rizza_calendar.manager.calendar.default" class="%rizza_calendar.manager.calendar.class%" public="false">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument>%rizza_calendar.calendar_entity.class%</argument>
+            <argument>%rizza_calendar.model.calendar.class%</argument>
         </service>
-        <service id="rizza_calendar.manager.event.default" class="%rizza_calendar.event_manager.class%" public="false">
+        <service id="rizza_calendar.manager.event.default" class="%rizza_calendar.manager.event.class%" public="false">
             <argument type="service" id="doctrine.orm.entity_manager" />
-            <argument>%rizza_calendar.event_entity.class%</argument>
+            <argument>%rizza_calendar.model.event.class%</argument>
         </service>
     </services>
 
