@@ -7,7 +7,7 @@ rizza_calendar_event_show:
   defaults: { _controller: RizzaCalendarBundle:Event:show }
 
 rizza_calendar_event_add:
-  pattern:  /add
+  pattern:  /add/{calendarId}
   defaults: { _controller: RizzaCalendarBundle:Event:add }
 
 rizza_calendar_event_edit:
