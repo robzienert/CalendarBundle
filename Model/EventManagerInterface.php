@@ -8,31 +8,31 @@ interface EventManagerInterface
     /**
      * @return EventInterface
      */
-    function createEvent();
+    public function createEvent();
 
     /**
      * @return boolean whether the event was successfully persisted
      */
-    function addEvent(EventInterface $event);
+    public function addEvent(EventInterface $event);
 
     /**
      * @return boolean whether the event was successfully updated
      */
-    function updateEvent(EventInterface $event);
+    public function updateEvent(EventInterface $event);
 
     /**
      * @return boolean whether the event was successfully removed
      */
-    function removeEvent(EventInterface $event);
+    public function removeEvent(EventInterface $event);
 
     /**
      * @return EventInterface
      * @throws NotFoundHttpException if the event cannot be found
      */
-    function find($id);
+    public function find($id);
 
-    function findAll();
+    public function findAll();
 
-    function getClass();
+    public function getClass();
 
 }

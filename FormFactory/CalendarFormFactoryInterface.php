@@ -10,6 +10,6 @@ interface CalendarFormFactoryInterface
     /**
      * @return Form
      */
-    function createForm($data = null);
+    public function createForm($data = null);
 
 }
