@@ -1,6 +1,6 @@
 {% extends "RizzaCalendarBundle::layout.html.twig" %}
 {% block content %}
-<form action="{{ path(rizza_calendar_route('event', 'add'), {"calendar_id": calendar.getId()}) }}" {{ form_enctype(form) }} method="POST">
+<form action="{{ path(rizza_calendar_route('event', 'add'), {"calendarId": calendar.getId()}) }}" {{ form_enctype(form) }} method="POST">
     <p>Adding event for calendar {{ calendar.getName() }}. Riveting.</p>
     {{ form_errors(form) }}
 

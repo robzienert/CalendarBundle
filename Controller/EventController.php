@@ -26,9 +26,9 @@ class EventController extends BaseController
         ));
     }
 
-    public function addAction($calendar_id, Request $request)
+    public function addAction($calendarId, Request $request)
     {
-        $calendar = $this->getCalendarManager()->find($calendar_id);
+        $calendar = $this->getCalendarManager()->find($calendarId);
         $manager = $this->getEventManager();
         $event = $manager->createEvent($calendar);
         $form = $this->getEventFormFactory()->createForm($event);
