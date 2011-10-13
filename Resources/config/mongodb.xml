@@ -12,11 +12,11 @@
     </parameters>
 
     <services>
-        <service id="rizza_calendar.calendar_manager" class="%rizza_calendar.calendar_manager.class%">
+        <service id="rizza_calendar.manager.calendar.default" class="%rizza_calendar.calendar_manager.class%" public="false">
             <argument type="service" id="doctrine.odm.mongodb.default_document_manager" />
             <argument>%rizza_calendar.calendar_document.class%</argument>
         </service>
-        <service id="rizza_calendar.event_manager" class="%rizza_calendar.event_manager.class%">
+        <service id="rizza_calendar.manager.event.default" class="%rizza_calendar.event_manager.class%" public="false">
             <argument type="service" id="doctrine.odm.mongodb.default_document_manager" />
             <argument>%rizza_calendar.event_document.class%</argument>
         </service>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="rizza_calendar.form_type.calendar.default" class="Rizza\CalendarBundle\Form\Type\CalendarType">
+            <tag name="form.type" alias="rizza_calendar.calendar" />
+        </service>
+        <service id="rizza_calendar.form_type.event.default" class="Rizza\CalendarBundle\Form\Type\EventType">
+            <tag name="form.type" alias="rizza_calendar.event" />
+        </service>
+
+        <service id="rizza_calendar.form_factory.calendar.default" class="Rizza\CalendarBundle\FormFactory\CalendarFormFactory" public="false">
+            <argument type="service" id="form.factory" />
+            <argument>%rizza_calendar.form.calendar.type%</argument>
+            <argument>%rizza_calendar.form.calendar.name%</argument>
+        </service>
+        <service id="rizza_calendar.form_factory.event.default" class="Rizza\CalendarBundle\FormFactory\EventFormFactory" public="false">
+            <argument type="service" id="form.factory" />
+            <argument>%rizza_calendar.form.event.type%</argument>
+            <argument>%rizza_calendar.form.event.name%</argument>
+        </service>
+    </services>
+
+</container>

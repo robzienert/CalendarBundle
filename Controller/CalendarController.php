@@ -2,69 +2,66 @@
 
 namespace Rizza\CalendarBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
-use Rizza\CalendarBundle\Entity\Calendar;
 use Rizza\CalendarBundle\Form\Type\CalendarType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class CalendarController extends Controller
+class CalendarController extends BaseController
 {
     public function listAction()
     {
-        $calendars = $this->getRepository()->findAll();
+        $calendars = $this->getCalendarManager()->findAll();
 
-        return $this->render('RizzaCalendarBundle:Calendar:list.html.twig', array('calendars' => $calendars));
+        return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Calendar:list.html.twig', array(
+            'calendars' => $calendars,
+        ));
     }
 
     public function showAction($id)
     {
-        $calendar = $this->findCalendar($id);
+        $calendar = $this->getCalendarManager()->find($id);
 
-        return $this->render('RizzaCalendarBundle:Calendar:show.html.twig', array('calendar' => $calendar));
+        return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Calendar:show.html.twig', array(
+            'calendar' => $calendar,
+        ));
     }
 
     public function addAction(Request $request)
     {
-        $calendar = new Calendar();
-        $form = $this->createForm(new CalendarType(), $calendar);
+        $manager = $this->getCalendarManager();
+        $calendar = $manager->createCalendar();
+        $form = $this->getCalendarFormFactory()->createForm($calendar);
 
-        if ('POST' == $request->getMethod()) {
+        if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);
 
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($calendar);
-                $em->flush();
-
+            if ($form->isValid() && $manager->addCalendar($calendar)) {
                 // @todo Add flash
-                return $this->redirect($this->generateUrl('rizza_calendar_list'));
+                return new RedirectResponse($this->container->get('router')->generate($this->container->getParameter('rizza_calendar.routing.calendar.list')));
             }
         }
 
-        return $this->render('RizzaCalendarBundle:Calendar:add.html.twig', array('form' => $form->createView()));
+        return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Calendar:add.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
-    public function editAction($id)
+    public function editAction($id, Request $request)
     {
-        $calendar = $this->findCalendar($id);
-        $form = $this->createForm(new CalendarType(), $calendar);
+        $manager = $this->getCalendarManager();
+        $calendar = $manager->find($id);
+        $form = $this->getCalendarFormFactory()->createForm($calendar);
 
-        $request = $this->getRequest();
-        if ('POST' == $request->getMethod()) {
+        if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);
 
-            if ($form->isValid()) {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($calendar);
-                $em->flush();
-
+            if ($form->isValid() && $manager->updateCalendar($calendar)) {
                 // @todo Add flash
-                return $this->redirect($this->generateUrl('rizza_calendar_list'));
+                return new RedirectResponse($this->container->get('router')->generate($this->container->getParameter('rizza_calendar.routing.calendar.list')));
             }
         }
 
-        return $this->render('RizzaCalendarBundle:Calendar:edit.html.twig', array(
+        return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Calendar:edit.html.twig', array(
             'form' => $form->createView(),
             'calendar' => $calendar,
         ));
@@ -72,41 +69,12 @@ class CalendarController extends Controller
 
     public function deleteAction($id)
     {
-        $calendar = $this->findCalendar($id);
+        $manager = $this->getCalendarManager();
+        $calendar = $manager->find($id);
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->remove($calendar);
-        $em->flush();
+        $manager->removeCalendar($calendar);
 
-        return $this->redirect($this->generateUrl('rizza_calendar_list'));
+        return new RedirectResponse($this->container->get('router')->generate($this->container->getParameter('rizza_calendar.routing.calendar.list')));
     }
 
-    /**
-     * Find a calendar by its id
-     *
-     * @param string $id
-     * @return Rizza\CalendarBundle\Model\CalendarInterface
-     * @throws NotFoundHttpException if the calendar cannot be found
-     */
-    protected function findCalendar($id)
-    {
-        $calendar = null;
-        if (!empty($id)) {
-            $calendar = $this->getRepository()->findOneBy(array('id' => $id));
-        }
-
-        if (empty($calendar)) {
-            throw new NotFoundHttpException(sprintf('The calendar "%s" does not exist', $id));
-        }
-
-        return $calendar;
-    }
-
-    /**
-     * @return EntityRepository
-     */
-    protected function getRepository()
-    {
-        return $this->getDoctrine()->getRepository('Rizza\CalendarBundle\Entity\Calendar');
-    }
 }

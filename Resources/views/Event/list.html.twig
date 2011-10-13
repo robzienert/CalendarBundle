@@ -3,7 +3,7 @@
 <div class="event_list">
     <ul>
         {% for event in events %}
-        <li><a href="{{ path('rizza_calendar_event_show', {'id': event.getId()} ) }}">{{ event.getTitle() }}</li>
+        <li><a href="{{ path(rizza_calendar_route('event', 'show'), {'id': event.getId()} ) }}">{{ event.getTitle() }}</li>
         {% endfor %}
     </ul>
 </div>

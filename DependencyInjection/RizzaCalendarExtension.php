@@ -27,8 +27,47 @@ class RizzaCalendarExtension extends Extension
         }
         $loader->load(sprintf('%s.xml', $config['db_driver']));
 
-        $definition = new Definition('Rizza\CalendarBundle\Twig\Extension\CalendarExtension');
-        $definition->addTag('twig.extension');
-        $container->setDefinition('rizza_calendar', $definition);
+        foreach (array('twig', 'form') as $base) {
+            $loader->load(sprintf('%s.xml', $base));
+        }
+
+        $this->loadClass($config, $container);
+        $this->loadForm($config, $container);
+        $this->loadRouting($config, $container);
+
+        $container->setAlias('rizza_calendar.manager.calendar', $config['service']['manager']['calendar']);
+        $container->setAlias('rizza_calendar.manager.event', $config['service']['manager']['event']);
+
+        $container->setAlias('rizza_calendar.form_factory.calendar', $config['service']['form_factory']['calendar']);
+        $container->setAlias('rizza_calendar.form_factory.event', $config['service']['form_factory']['event']);
+    }
+
+    protected function loadClass(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter('rizza_calendar.model.calendar.class', $config['class']['model']['calendar']);
+        $container->setParameter('rizza_calendar.model.event.class', $config['class']['model']['event']);
+    }
+
+    protected function loadForm(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter('rizza_calendar.form.calendar.type', $config['form']['calendar']['type']);
+        $container->setParameter('rizza_calendar.form.calendar.name', $config['form']['calendar']['name']);
+
+        $container->setParameter('rizza_calendar.form.event.type', $config['form']['event']['type']);
+        $container->setParameter('rizza_calendar.form.event.name', $config['form']['event']['name']);
+    }
+
+    protected function loadRouting(array $config, ContainerBuilder $container)
+    {
+        $container->setParameter('rizza_calendar.routing.calendar.list', $config['routing']['calendar']['list']);
+        $container->setParameter('rizza_calendar.routing.calendar.add', $config['routing']['calendar']['add']);
+        $container->setParameter('rizza_calendar.routing.calendar.show', $config['routing']['calendar']['show']);
+        $container->setParameter('rizza_calendar.routing.calendar.edit', $config['routing']['calendar']['edit']);
+        $container->setParameter('rizza_calendar.routing.calendar.delete', $config['routing']['calendar']['delete']);
+
+        $container->setParameter('rizza_calendar.routing.event.list', $config['routing']['event']['list']);
+        $container->setParameter('rizza_calendar.routing.event.add', $config['routing']['event']['add']);
+        $container->setParameter('rizza_calendar.routing.event.show', $config['routing']['event']['show']);
+        $container->setParameter('rizza_calendar.routing.event.edit', $config['routing']['event']['edit']);
     }
 }

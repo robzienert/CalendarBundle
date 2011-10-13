@@ -1,17 +1,37 @@
 <?php
 
-namespace Rizza\CalendarBundle\Twig\Extension;
+namespace Rizza\CalendarBundle\Twig;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Rizza\CalendarBundle\Model\CalendarInterface;
 
 class CalendarExtension extends \Twig_Extension
 {
+
+    protected $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     public function getFilters()
     {
         return array(
             'calendarMonth' => new \Twig_Filter_Method($this, 'calendarMonth', array('is_safe' => array('html'))),
         );
+    }
+
+    public function getFunctions()
+    {
+        return array(
+            'rizza_calendar_route' => new \Twig_Function_Method($this, 'rizza_calendar_route'),
+        );
+    }
+
+    public function rizza_calendar_route($controller, $action)
+    {
+        return $this->container->getParameter(sprintf('rizza_calendar.routing.%s.%s', $controller, $action));
     }
 
     public function calendarMonth(CalendarInterface $calendar, $month, $year)
@@ -95,6 +115,6 @@ class CalendarExtension extends \Twig_Extension
 
     public function getName()
     {
-        return 'calendar';
+        return 'rizza_calendar';
     }
 }
