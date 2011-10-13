@@ -76,6 +76,12 @@ class Configuration implements ConfigurationInterface
 
                 ->arrayNode('service')->addDefaultsIfNotSet()
                     ->children()
+                        ->arrayNode('blamer')->addDefaultsIfNotSet()
+                            ->children()
+                                ->scalarNode('calendar')->cannotBeEmpty()->defaultValue('rizza_calendar.blamer.calendar.security')->end()
+                                ->scalarNode('event')->cannotBeEmpty()->defaultValue('rizza_calendar.blamer.event.security')->end()
+                            ->end()
+                        ->end()
                         ->arrayNode('form_factory')->addDefaultsIfNotSet()
                             ->children()
                                 ->scalarNode('calendar')->cannotBeEmpty()->defaultValue('rizza_calendar.form_factory.calendar.default')->end()

@@ -6,10 +6,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Rizza\CalendarBundle\Model\EventInterface;
 
 use Symfony\Component\Validator\Constraints as validation;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class Calendar implements CalendarInterface
 {
     protected $id;
+
+    protected $owner;
 
     /**
      * @validation\MaxLength(255)
@@ -19,9 +22,21 @@ abstract class Calendar implements CalendarInterface
 
     protected $events;
 
+    protected $visibility;
+
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setOwner(UserInterface $owner)
+    {
+        $this->owner = $owner;
+    }
+
+    public function getOwner()
+    {
+        return $this->owner;
     }
 
     public function setName($name)
@@ -66,5 +81,25 @@ abstract class Calendar implements CalendarInterface
     public function __toString()
     {
         return $this->getName();
+    }
+
+    public function setVisibility($visibility)
+    {
+        $this->visibility = $visibility;
+    }
+
+    public function getVisibility()
+    {
+        return $this->visibility;
+    }
+
+    public function isPublic()
+    {
+        return $this->visibility === CalendarInterface::VISIBILITY_PUBLIC;
+    }
+
+    public function isPrivate()
+    {
+        return $this->visibility === CalendarInterface::VISIBILITY_PRIVATE;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Rizza\CalendarBundle\Model;
 
+use Symfony\Component\Security\Core\User\UserInterface;
+
 interface EventInterface
 {
     /**
@@ -10,6 +12,20 @@ interface EventInterface
      * @return int
      */
     public function getId();
+
+    /**
+     * Set the owner user of the event.
+     *
+     * @param UserInterface $owner
+     */
+    public function setOwner(UserInterface $owner);
+
+    /**
+     * Get the owner user of the event.
+     *
+     * @return UserInterface
+     */
+    public function getOwner();
 
     /**
      * Set the title of the event

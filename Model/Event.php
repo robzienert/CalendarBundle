@@ -3,6 +3,7 @@
 namespace Rizza\CalendarBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 abstract class Event implements EventInterface
 {
@@ -12,6 +13,8 @@ abstract class Event implements EventInterface
     const STATUS_CANCELLED = -1;
     
     protected $id;
+
+    protected $owner;
 
     protected $category;
 
@@ -52,6 +55,16 @@ abstract class Event implements EventInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setOwner(UserInterface $owner)
+    {
+        $this->owner = $owner;
+    }
+
+    public function getOwner()
+    {
+        return $this->owner;
     }
 
     public function setTitle($title)
