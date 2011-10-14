@@ -1,10 +1,10 @@
 <?php
 
-namespace Rizza\CalendarBundle\FormFactory;
+namespace Rizza\CalendarBundle\Form\Factory;
 
 use Symfony\Component\Form\FormFactoryInterface;
 
-class CalendarFormFactory implements CalendarFormFactoryInterface
+class EventFormFactory implements EventFormFactoryInterface
 {
 
     protected $formFactory;

@@ -5,8 +5,8 @@ namespace Rizza\CalendarBundle\Controller;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Rizza\CalendarBundle\Model\CalendarManagerInterface;
 use Rizza\CalendarBundle\Model\EventManagerInterface;
-use Rizza\CalendarBundle\FormFactory\CalendarFormFactoryInterface;
-use Rizza\CalendarBundle\FormFactory\EventFormFactoryInterface;
+use Rizza\CalendarBundle\Form\Factory\CalendarFormFactoryInterface;
+use Rizza\CalendarBundle\Form\Factory\EventFormFactoryInterface;
 
 abstract class BaseController extends ContainerAware
 {
