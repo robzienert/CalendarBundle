@@ -2,6 +2,8 @@
 
 namespace Rizza\CalendarBundle\Model;
 
+use Symfony\Component\Security\Core\User\UserInterface;
+
 interface EventInterface
 {
     /**

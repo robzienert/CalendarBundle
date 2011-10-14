@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Rizza\CalendarBundle\Model\EventInterface;
+use Rizza\CalendarBundle\Blamer\EventBlamerInterface;
 
 class EventManager extends BaseEventManager
 {
@@ -26,15 +27,22 @@ class EventManager extends BaseEventManager
      */
     protected $class;
 
-    public function __construct(EntityManager $em, $class)
+    /**
+     * @var EventBlamerInterface
+     */
+    protected $blamer;
+
+    public function __construct(EntityManager $em, $class, EventBlamerInterface $blamer)
     {
         $this->em = $em;
         $this->repo = $em->getRepository($class);
         $this->class = $class;
+        $this->blamer = $blamer;
     }
 
     public function addEvent(EventInterface $event)
     {
+        $this->blamer->blame($event);
         $this->em->persist($event);
         $this->em->flush();
 

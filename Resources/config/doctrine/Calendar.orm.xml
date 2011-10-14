@@ -5,6 +5,7 @@
 
     <mapped-superclass name="Rizza\CalendarBundle\Entity\Calendar">
         <field name="name" column="name" type="string" length="255" />
+        <field name="visibility" column="visibility" type="integer" />
     </mapped-superclass>
 
 </doctrine-mapping>
