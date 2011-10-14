@@ -54,7 +54,7 @@ class CalendarVoter implements VoterInterface
 
     protected function canCreate(TokenInterface $token, CalendarInterface $calendar)
     {
-        return true;
+        return is_object($token->getUser());
     }
 
     protected function canEdit(TokenInterface $token, CalendarInterface $calendar)

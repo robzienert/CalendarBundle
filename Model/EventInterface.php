@@ -14,20 +14,6 @@ interface EventInterface
     public function getId();
 
     /**
-     * Set the owner user of the event.
-     *
-     * @param UserInterface $owner
-     */
-    public function setOwner(UserInterface $owner);
-
-    /**
-     * Get the owner user of the event.
-     *
-     * @return UserInterface
-     */
-    public function getOwner();
-
-    /**
      * Set the title of the event
      *
      * @param string $title

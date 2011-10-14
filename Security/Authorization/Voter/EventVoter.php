@@ -5,6 +5,7 @@ namespace Rizza\CalendarBundle\Security\Authorization\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Rizza\CalendarBundle\Model\EventInterface;
+use Rizza\CalendarBundle\Model\Organizer;
 
 class EventVoter implements VoterInterface
 {
@@ -54,7 +55,8 @@ class EventVoter implements VoterInterface
 
     protected function canCreate(TokenInterface $token, EventInterface $event)
     {
-        return true;
+        // todo: need to be able to check calendar permissions here
+        return $token->getUser() instanceof Organizer;
     }
 
     protected function canEdit(TokenInterface $token, EventInterface $event)
@@ -74,7 +76,7 @@ class EventVoter implements VoterInterface
 
     private function isOwner(TokenInterface $token, EventInterface $event)
     {
-        return $token->getUser() === $event->getOwner();
+        return $token->getUser() === $event->getOrganizer();
     }
 
 }

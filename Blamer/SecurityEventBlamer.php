@@ -22,7 +22,7 @@ class SecurityEventBlamer implements EventBlamerInterface
         }
 
         if ($this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $event->setOwner($this->securityContext->getToken()->getUser());
+            $event->setOrganizer($this->securityContext->getToken()->getUser());
         }
     }
 

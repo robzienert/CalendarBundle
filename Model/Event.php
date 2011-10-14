@@ -14,8 +14,6 @@ abstract class Event implements EventInterface
     
     protected $id;
 
-    protected $owner;
-
     protected $category;
 
     protected $calendar;
@@ -55,16 +53,6 @@ abstract class Event implements EventInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    public function setOwner(UserInterface $owner)
-    {
-        $this->owner = $owner;
-    }
-
-    public function getOwner()
-    {
-        return $this->owner;
     }
 
     public function setTitle($title)
