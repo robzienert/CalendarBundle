@@ -5,6 +5,7 @@ namespace Rizza\CalendarBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Rizza\CalendarBundle\Form\Type\CalendarType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CalendarController extends BaseController
 {
@@ -21,6 +22,10 @@ class CalendarController extends BaseController
     {
         $calendar = $this->getCalendarManager()->find($id);
 
+        if (!$this->container->get('security.context')->isGranted('view', $calendar)) {
+            throw new AccessDeniedException();
+        }
+
         return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Calendar:show.html.twig', array(
             'calendar' => $calendar,
         ));
@@ -30,6 +35,11 @@ class CalendarController extends BaseController
     {
         $manager = $this->getCalendarManager();
         $calendar = $manager->createCalendar();
+
+        if (!$this->container->get('security.context')->isGranted('create', $calendar)) {
+            throw new AccessDeniedException();
+        }
+
         $form = $this->getCalendarFormFactory()->createForm($calendar);
 
         if ('POST' === $request->getMethod()) {
@@ -50,6 +60,11 @@ class CalendarController extends BaseController
     {
         $manager = $this->getCalendarManager();
         $calendar = $manager->find($id);
+
+        if (!$this->container->get('security.context')->isGranted('edit', $calendar)) {
+            throw new AccessDeniedException();
+        }
+
         $form = $this->getCalendarFormFactory()->createForm($calendar);
 
         if ('POST' === $request->getMethod()) {
@@ -71,6 +86,10 @@ class CalendarController extends BaseController
     {
         $manager = $this->getCalendarManager();
         $calendar = $manager->find($id);
+
+        if (!$this->container->get('security.context')->isGranted('delete', $calendar)) {
+            throw new AccessDeniedException();
+        }
 
         $manager->removeCalendar($calendar);
 

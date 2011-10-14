@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Rizza\CalendarBundle\Model\CalendarInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Rizza\CalendarBundle\Blamer\CalendarBlamerInterface;
 
 class CalendarManager extends BaseCalendarManager
 {
@@ -26,15 +27,22 @@ class CalendarManager extends BaseCalendarManager
      */
     protected $class;
 
-    public function __construct(EntityManager $em, $class)
+    /**
+     * @var CalendarBlamerInterface
+     */
+    protected $blamer;
+
+    public function __construct(EntityManager $em, $class, CalendarBlamerInterface $blamer)
     {
         $this->em = $em;
         $this->repo = $em->getRepository($class);
         $this->class = $class;
+        $this->blamer = $blamer;
     }
 
     public function addCalendar(CalendarInterface $calendar)
     {
+        $this->blamer->blame($calendar);
         $this->em->persist($calendar);
         $this->em->flush();
 
