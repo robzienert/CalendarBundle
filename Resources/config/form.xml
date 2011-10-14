@@ -12,12 +12,12 @@
             <tag name="form.type" alias="rizza_calendar.event" />
         </service>
 
-        <service id="rizza_calendar.form_factory.calendar.default" class="Rizza\CalendarBundle\FormFactory\CalendarFormFactory" public="false">
+        <service id="rizza_calendar.form_factory.calendar.default" class="Rizza\CalendarBundle\Form\Factory\CalendarFormFactory" public="false">
             <argument type="service" id="form.factory" />
             <argument>%rizza_calendar.form.calendar.type%</argument>
             <argument>%rizza_calendar.form.calendar.name%</argument>
         </service>
-        <service id="rizza_calendar.form_factory.event.default" class="Rizza\CalendarBundle\FormFactory\EventFormFactory" public="false">
+        <service id="rizza_calendar.form_factory.event.default" class="Rizza\CalendarBundle\Form\Factory\EventFormFactory" public="false">
             <argument type="service" id="form.factory" />
             <argument>%rizza_calendar.form.event.type%</argument>
             <argument>%rizza_calendar.form.event.name%</argument>
