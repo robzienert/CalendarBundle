@@ -1,5 +1,5 @@
 {% extends "RizzaCalendarBundle::layout.html.twig" %}
-{% block content %}
+{% block rizza_calendar_content %}
 <form action="{{ path(rizza_calendar_route('calendar', 'add')) }}" {{ form_enctype(form) }} method="POST">
     {{ form_errors(form) }}
 
@@ -9,4 +9,4 @@
     
     <input type="submit" value="Create Calendar" />
 </form>
-{% endblock content %}
+{% endblock rizza_calendar_content %}

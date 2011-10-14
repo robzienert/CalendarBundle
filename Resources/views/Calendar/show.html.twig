@@ -1,13 +1,19 @@
 {% extends "RizzaCalendarBundle::layout.html.twig" %}
-{% block content %}
-This is the {{ calendar.getName() }} calendar. Riveting. 
-  <a href="{{ path(rizza_calendar_route('calendar', 'edit'), { 'id': calendar.getId() }) }}">(edit)</a>
-  <a href="{{ path(rizza_calendar_route('calendar', 'delete'), { 'id': calendar.getId() }) }}">(delete)</a>
+{% block rizza_calendar_content %}
+<h1>Calendar: {{ calendar.getName() }}</h1>
+<p>Owner: {{ calendar.getOwner() ? calendar.getOwner().getUsername() : 'the community' }}</p>
+<p>Visibility: {{ calendar.isPublic ? 'Public' : 'Private' }}</p>
+  {% if is_granted('edit', calendar) %}<a href="{{ path(rizza_calendar_route('calendar', 'edit'), { 'id': calendar.getId() }) }}">(edit)</a>{% endif %}
+  {% if is_granted('delete', calendar) %}<a href="{{ path(rizza_calendar_route('calendar', 'delete'), { 'id': calendar.getId() }) }}">(delete)</a>{% endif %}
 
 {{ calendar|calendarMonth(7, 2011) }}
 
+<h3>Events ({{ calendar.getEvents().count() }})</h3>
+<ul>
 {% for event in calendar.getEvents() %}
-  <a href="{{ path(rizza_calendar_route('event', 'show'), { 'id': event.getId() }) }}">{{ event.getTitle() }}</a>
+    <li><a href="{{ path(rizza_calendar_route('event', 'show'), { 'id': event.getId() }) }}">{{ event.getTitle() }}</a> by {{ event.getOrganizer().getUsername() }}</li>
 {% endfor %}
+</ul>
+<p>{% if calendar.getEvents() is empty %}None yet. {% endif %}<a href="{{ path(rizza_calendar_route('event', 'add'), {'calendarId': calendar.getId()}) }}">Create a new event?</a></p>
 
-{% endblock content %}
+{% endblock rizza_calendar_content %}

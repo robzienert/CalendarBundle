@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Rizza\CalendarBundle\Model\EventInterface;
 use Rizza\CalendarBundle\Blamer\EventBlamerInterface;
+use Rizza\CalendarBundle\Model\CalendarInterface;
 
 class EventManager extends BaseEventManager
 {
@@ -60,7 +61,7 @@ class EventManager extends BaseEventManager
     {
         $event = $this->repo->find($id);
         if (null === $event) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException(sprintf("Couldn't find event with id '%d'", $id));
         }
 
         return $event;
