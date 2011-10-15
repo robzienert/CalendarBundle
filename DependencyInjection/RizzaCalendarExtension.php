@@ -40,6 +40,7 @@ class RizzaCalendarExtension extends Extension
 
         $container->setAlias('rizza_calendar.manager.calendar', $config['service']['manager']['calendar']);
         $container->setAlias('rizza_calendar.manager.event', $config['service']['manager']['event']);
+        $container->setAlias('rizza_calendar.manager.user', $config['service']['manager']['user']);
 
         $container->setAlias('rizza_calendar.form_factory.calendar', $config['service']['form_factory']['calendar']);
         $container->setAlias('rizza_calendar.form_factory.event', $config['service']['form_factory']['event']);
@@ -49,6 +50,7 @@ class RizzaCalendarExtension extends Extension
     {
         $container->setParameter('rizza_calendar.model.calendar.class', $config['class']['model']['calendar']);
         $container->setParameter('rizza_calendar.model.event.class', $config['class']['model']['event']);
+        $container->setParameter('rizza_calendar.model.user.class', $config['class']['model']['user']);
     }
 
     protected function loadForm(array $config, ContainerBuilder $container)
