@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="rizza_calendar.manager.calendar.class">Rizza\CalendarBundle\Entity\CalendarManager</parameter>
         <parameter key="rizza_calendar.manager.event.class">Rizza\CalendarBundle\Entity\EventManager</parameter>
+        <parameter key="rizza_calendar.manager.user.class">Rizza\CalendarBundle\Entity\UserManager</parameter>
     </parameters>
 
     <services>
@@ -19,6 +20,10 @@
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%rizza_calendar.model.event.class%</argument>
             <argument type="service" id="rizza_calendar.blamer.event" />
+        </service>
+        <service id="rizza_calendar.manager.user.default" class="%rizza_calendar.manager.user.class%" public="false">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%rizza_calendar.model.user.class%</argument>
         </service>
     </services>
 
