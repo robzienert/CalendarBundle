@@ -46,7 +46,7 @@ class EventController extends BaseController
         if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);
 
-            if ($form->isValid() && $manager->addEvent($event)) {
+            if ($form->isValid() && $this->container->get('rizza_calendar.creator.event')->create($event)) {
                 // @todo add flash
                 return new RedirectResponse($this->container->get('router')->generate($this->container->getParameter('rizza_calendar.routing.event.list')));
             }

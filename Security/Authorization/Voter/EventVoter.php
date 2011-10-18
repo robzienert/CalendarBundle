@@ -6,14 +6,20 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Rizza\CalendarBundle\Model\EventInterface;
 use Rizza\CalendarBundle\Model\Organizer;
+use Rizza\CalendarBundle\Model\EventManagerInterface;
+use Rizza\CalendarBundle\Model\CalendarManagerInterface;
 
 class EventVoter implements VoterInterface
 {
 
+    protected $eventManager;
+    protected $calendarManager;
     protected $class;
 
-    public function __construct($class)
+    public function __construct(EventManagerInterface $eventManager, CalendarManagerInterface $calendarManager, $class)
     {
+        $this->eventManager = $eventManager;
+        $this->calendarManager = $calendarManager;
         $this->class = $class;
     }
 
@@ -55,28 +61,22 @@ class EventVoter implements VoterInterface
 
     protected function canCreate(TokenInterface $token, EventInterface $event)
     {
-        // todo: need to be able to check calendar permissions here
-        return $token->getUser() instanceof Organizer;
+        return $event->getCalendar()->isPublic() || $this->calendarManager->isAdmin($token->getUser(), $event->getCalendar());
     }
 
     protected function canEdit(TokenInterface $token, EventInterface $event)
     {
-        return $this->isOwner($token, $event);
+        return $this->calendarManager->isAdmin($token->getUser(), $event->getCalendar());
     }
 
     protected function canDelete(TokenInterface $token, EventInterface $event)
     {
-        return $this->isOwner($token, $event);
+        return $this->calendarManager->isAdmin($token->getUser(), $event->getCalendar());
     }
 
     protected function canView(TokenInterface $token, EventInterface $event)
     {
         return $event->getCalendar()->isPublic() || $this->isOwner($token, $event);
-    }
-
-    private function isOwner(TokenInterface $token, EventInterface $event)
-    {
-        return $token->getUser() === $event->getOrganizer();
     }
 
 }

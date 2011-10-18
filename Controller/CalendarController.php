@@ -45,7 +45,7 @@ class CalendarController extends BaseController
         if ('POST' === $request->getMethod()) {
             $form->bindRequest($request);
 
-            if ($form->isValid() && $manager->addCalendar($calendar)) {
+            if ($form->isValid() && $this->container->get('rizza_calendar.creator.calendar')->create($calendar)) {
                 // @todo Add flash
                 return new RedirectResponse($this->container->get('router')->generate($this->container->getParameter('rizza_calendar.routing.calendar.list')));
             }

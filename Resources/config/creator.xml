@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="rizza_calendar.creator.calendar.class">Rizza\CalendarBundle\Creator\CalendarCreator</parameter>
+        <parameter key="rizza_calendar.creator.event.class">Rizza\CalendarBundle\Creator\EventCreator</parameter>
+    </parameters>
+
+    <services>
+        <service id="rizza_calendar.creator.calendar.default" class="%rizza_calendar.creator.calendar.class%" public="false">
+            <argument type="service" id="rizza_calendar.manager.calendar" />
+            <argument type="service" id="rizza_calendar.blamer.calendar" />
+        </service>
+        <service id="rizza_calendar.creator.event.default" class="%rizza_calendar.creator.event.class%" public="false">
+            <argument type="service" id="rizza_calendar.manager.event" />
+            <argument type="service" id="rizza_calendar.blamer.event" />
+        </service>
+    </services>
+
+</container>

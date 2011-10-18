@@ -27,13 +27,16 @@ class RizzaCalendarExtension extends Extension
         }
         $loader->load(sprintf('%s.xml', $config['db_driver']));
 
-        foreach (array('twig', 'form', 'security', 'blamer') as $base) {
+        foreach (array('twig', 'form', 'security', 'blamer', 'creator') as $base) {
             $loader->load(sprintf('%s.xml', $base));
         }
 
         $this->loadClass($config, $container);
         $this->loadForm($config, $container);
         $this->loadRouting($config, $container);
+
+        $container->setAlias('rizza_calendar.creator.calendar', $config['service']['creator']['calendar']);
+        $container->setAlias('rizza_calendar.creator.event', $config['service']['creator']['event']);
 
         $container->setAlias('rizza_calendar.blamer.calendar', $config['service']['blamer']['calendar']);
         $container->setAlias('rizza_calendar.blamer.event', $config['service']['blamer']['event']);
