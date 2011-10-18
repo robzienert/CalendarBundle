@@ -35,4 +35,6 @@ interface CalendarManagerInterface
 
     public function getClass();
 
+    public function isAdmin($user, CalendarInterface $calendar);
+
 }

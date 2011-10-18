@@ -27,26 +27,17 @@ class CalendarManager extends BaseCalendarManager
      */
     protected $class;
 
-    /**
-     * @var CalendarBlamerInterface
-     */
-    protected $blamer;
-
-    public function __construct(EntityManager $em, $class, CalendarBlamerInterface $blamer)
+    public function __construct(EntityManager $em, $class)
     {
         $this->em = $em;
         $this->repo = $em->getRepository($class);
         $this->class = $class;
-        $this->blamer = $blamer;
     }
 
     public function addCalendar(CalendarInterface $calendar)
     {
-        $this->blamer->blame($calendar);
         $this->em->persist($calendar);
         $this->em->flush();
-
-        return true;
     }
 
     public function updateCalendar(CalendarInterface $calendar)
@@ -83,6 +74,15 @@ class CalendarManager extends BaseCalendarManager
     public function getClass()
     {
         return $this->class;
+    }
+
+    public function isAdmin($user, CalendarInterface $calendar)
+    {
+        if (!$user instanceof UserInterface) {
+            return false;
+        }
+
+        return $user->equals($calendar->getOwner());
     }
 
 }

@@ -14,12 +14,10 @@
         <service id="rizza_calendar.manager.calendar.default" class="%rizza_calendar.manager.calendar.class%" public="false">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%rizza_calendar.model.calendar.class%</argument>
-            <argument type="service" id="rizza_calendar.blamer.calendar" />
         </service>
         <service id="rizza_calendar.manager.event.default" class="%rizza_calendar.manager.event.class%" public="false">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%rizza_calendar.model.event.class%</argument>
-            <argument type="service" id="rizza_calendar.blamer.event" />
         </service>
         <service id="rizza_calendar.manager.user.default" class="%rizza_calendar.manager.user.class%" public="false">
             <argument type="service" id="doctrine.orm.entity_manager" />

@@ -5,14 +5,17 @@ namespace Rizza\CalendarBundle\Security\Authorization\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Rizza\CalendarBundle\Model\CalendarInterface;
+use Rizza\CalendarBundle\Model\CalendarManagerInterface;
 
 class CalendarVoter implements VoterInterface
 {
-    
+
+    protected $calendarManager;
     protected $class;
 
-    public function __construct($class)
+    public function __construct(CalendarManagerInterface $calendarManager, $class)
     {
+        $this->calendarManager = $calendarManager;
         $this->class = $class;
     }
 
