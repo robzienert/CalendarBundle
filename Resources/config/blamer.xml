@@ -11,9 +11,13 @@
         <service id="rizza_calendar.blamer.event.security" class="Rizza\CalendarBundle\Blamer\SecurityEventBlamer">
             <argument type="service" id="security.context" />
         </service>
+        <service id="rizza_calendar.blamer.attendee.security" class="Rizza\CalendarBundle\Blamer\SecurityAttendeeBlamer">
+            <argument type="service" id="security.context" />
+        </service>
 
         <service id="rizza_calendar.blamer.calendar.noop" class="Rizza\CalendarBundle\Blamer\NoopCalendarBlamer" />
         <service id="rizza_calendar.blamer.event.noop" class="Rizza\CalendarBundle\Blamer\NoopEventBlamer" />
+        <service id="rizza_calendar.blamer.attendee.noop" class="Rizza\CalendarBundle\Blamer\NoopAttendeeBlamer" />
     </services>
 
 </container>
