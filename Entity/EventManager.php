@@ -27,26 +27,17 @@ class EventManager extends BaseEventManager
      */
     protected $class;
 
-    /**
-     * @var EventBlamerInterface
-     */
-    protected $blamer;
-
-    public function __construct(EntityManager $em, $class, EventBlamerInterface $blamer)
+    public function __construct(EntityManager $em, $class)
     {
         $this->em = $em;
         $this->repo = $em->getRepository($class);
         $this->class = $class;
-        $this->blamer = $blamer;
     }
 
     public function addEvent(EventInterface $event)
     {
-        $this->blamer->blame($event);
         $this->em->persist($event);
         $this->em->flush();
-
-        return true;
     }
 
     public function updateEvent(EventInterface $event)

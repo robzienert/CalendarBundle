@@ -11,10 +11,13 @@
 
     <services>
         <service id="rizza_calendar.voter.calendar" class="%rizza_calendar.voter.calendar.class%">
+            <argument type="service" id="rizza_calendar.manager.calendar" />
             <argument>%rizza_calendar.model.calendar.class%</argument>
             <tag name="security.voter" />
         </service>
         <service id="rizza_calendar.voter.event" class="%rizza_calendar.voter.event.class%">
+            <argument type="service" id="rizza_calendar.manager.event" />
+            <argument type="service" id="rizza_calendar.manager.calendar" />
             <argument>%rizza_calendar.model.event.class%</argument>
             <tag name="security.voter" />
         </service>
