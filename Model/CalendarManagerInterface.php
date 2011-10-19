@@ -2,6 +2,8 @@
 
 namespace Rizza\CalendarBundle\Model;
 
+use Symfony\Component\Security\Core\User\UserInterface;
+
 interface CalendarManagerInterface
 {
 
@@ -32,6 +34,8 @@ interface CalendarManagerInterface
     public function find($id);
 
     public function findAll();
+
+    public function findVisible($user);
 
     public function getClass();
 

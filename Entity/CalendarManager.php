@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityRepository;
 use Rizza\CalendarBundle\Model\CalendarInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Rizza\CalendarBundle\Blamer\CalendarBlamerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class CalendarManager extends BaseCalendarManager
 {
@@ -60,7 +61,7 @@ class CalendarManager extends BaseCalendarManager
     {
         $calendar = $this->repo->find($id);
         if (null === $calendar) {
-            throw new NotFoundHttpException();
+            throw new NotFoundHttpException(sprintf("Couldn't find calendar with id '%d'", $id));
         }
 
         return $calendar;
@@ -69,6 +70,24 @@ class CalendarManager extends BaseCalendarManager
     public function findAll()
     {
         return $this->repo->findAll();
+    }
+
+    public function findVisible($owner)
+    {
+        if (!$owner instanceof UserInterface) {
+            $owner = null;
+        }
+        $qb = $this->repo->createQueryBuilder('c');
+        $qb
+            ->andWhere('c.owner = :owner')
+            ->orWhere('c.visibility = :visibility')
+        ;
+        $qb->setParameters(array(
+            'visibility' => CalendarInterface::VISIBILITY_PUBLIC,
+            'owner' => $owner,
+        ));
+
+        return $qb->getQuery()->execute();
     }
 
     public function getClass()

@@ -33,6 +33,8 @@ interface EventManagerInterface
 
     public function findAll();
 
+    public function findVisible($organizer);
+
     public function getClass();
 
 }

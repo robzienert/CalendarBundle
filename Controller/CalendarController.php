@@ -3,18 +3,33 @@
 namespace Rizza\CalendarBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Rizza\CalendarBundle\Form\Type\CalendarType;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class CalendarController extends BaseController
 {
     public function listAction()
     {
-        $calendars = $this->getCalendarManager()->findAll();
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $calendars = $this->getCalendarManager()->findVisible($user);
 
         return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Calendar:list.html.twig', array(
             'calendars' => $calendars,
+        ));
+    }
+
+    public function listEventsAction($id)
+    {
+        $calendar = $this->getCalendarManager()->find($id);
+
+        if (!$this->container->get('security.context')->isGranted('view', $calendar)) {
+            throw new AccessDeniedException();
+        }
+
+        $events = $calendar->getEvents();
+
+        return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Calendar:listEvents.html.twig', array(
+            'events' => $events,
+            'calendar' => $calendar,
         ));
     }
 
@@ -47,7 +62,9 @@ class CalendarController extends BaseController
 
             if ($form->isValid() && $this->container->get('rizza_calendar.creator.calendar')->create($calendar)) {
                 // @todo Add flash
-                return new RedirectResponse($this->container->get('router')->generate($this->container->getParameter('rizza_calendar.routing.calendar.list')));
+                return $this->createRedirect('calendar', 'show', array(
+                    'id' => $calendar->getId(),
+                ));
             }
         }
 
@@ -72,7 +89,9 @@ class CalendarController extends BaseController
 
             if ($form->isValid() && $manager->updateCalendar($calendar)) {
                 // @todo Add flash
-                return new RedirectResponse($this->container->get('router')->generate($this->container->getParameter('rizza_calendar.routing.calendar.list')));
+                return $this->createRedirect('calendar', 'show', array(
+                    'id' => $calendar->getId(),
+                ));
             }
         }
 
@@ -82,7 +101,7 @@ class CalendarController extends BaseController
         ));
     }
 
-    public function deleteAction($id)
+    public function deleteAction($id, Request $request)
     {
         $manager = $this->getCalendarManager();
         $calendar = $manager->find($id);
@@ -91,9 +110,15 @@ class CalendarController extends BaseController
             throw new AccessDeniedException();
         }
 
-        $manager->removeCalendar($calendar);
+        if ('POST' === $request->getMethod()) {
+            $manager->removeCalendar($calendar);
 
-        return new RedirectResponse($this->container->get('router')->generate($this->container->getParameter('rizza_calendar.routing.calendar.list')));
+            return $this->createRedirect('calendar', 'list');
+        }
+
+        return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Calendar:delete.html.twig', array(
+            'calendar' => $calendar,
+        ));
     }
 
 }
