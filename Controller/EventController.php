@@ -3,15 +3,14 @@
 namespace Rizza\CalendarBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Rizza\CalendarBundle\Form\Type\EventType;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class EventController extends BaseController
 {
     public function listAction()
     {
-        $events = $this->getEventManager()->findAll();
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $events = $this->getEventManager()->findVisible($user);
 
         return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Event:list.html.twig', array(
             'events' => $events,
@@ -48,7 +47,9 @@ class EventController extends BaseController
 
             if ($form->isValid() && $this->container->get('rizza_calendar.creator.event')->create($event)) {
                 // @todo add flash
-                return new RedirectResponse($this->container->get('router')->generate($this->container->getParameter('rizza_calendar.routing.event.list')));
+                return $this->createRedirect('event', 'show', array(
+                    'id' => $event->getId(),
+                ));
             }
         }
 
@@ -74,7 +75,9 @@ class EventController extends BaseController
 
             if ($form->isValid() && $manager->updateEvent($event)) {
                 // @todo add flash
-                return new RedirectResponse($this->container->get('router')->generate($this->container->getParameter('rizza_calendar.routing.event.list')));
+                return $this->createRedirect('event', 'show', array(
+                    'id' => $event->getId(),
+                ));
             }
         }
 
@@ -84,7 +87,7 @@ class EventController extends BaseController
         ));
     }
 
-    public function deleteAction($id)
+    public function deleteAction($id, Request $request)
     {
         $manager = $this->getEventManager();
         $event = $manager->find($id);
@@ -93,9 +96,19 @@ class EventController extends BaseController
             throw new AccessDeniedException();
         }
 
-        $manager->removeEvent($event);
+        if ('POST' === $request->getMethod()) {
+            $calendarId = $event->getCalendar()->getId();
+            $manager->removeEvent($event);
 
-        return new RedirectResponse($this->container->get('router')->generate($this->container->getParameter('rizza_calendar.routing.event.list')));
+            return $this->createRedirect('event', 'list', array(
+                'calendarId' => $calendarId,
+            ));
+        }
+
+        return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Event:delete.html.twig', array(
+            'event' => $event,
+        ));
+
     }
 
 }

@@ -9,15 +9,9 @@
       <em>Notice</em>: {{ app.session.flash('notice') }}
     </div>
     {% endif %}
-    <ul>
-      <li><a href="{{ path(rizza_calendar_route('calendar', 'add')) }}">New Calendar</a></li>
-{% if calendar is defined %}
-      <li><a href="{{ path(rizza_calendar_route('event', 'add'), {"calendarId": calendar.getId()}) }}">New Event</a></li>
-{% endif %}
-    </ul>
     <div>
-      {% block content %}
-      {% endblock content %}
+      {% block rizza_calendar_content %}
+      {% endblock rizza_calendar_content %}
     </div>
   </body>
 </html>

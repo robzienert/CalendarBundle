@@ -1,0 +1,9 @@
+{% extends "RizzaCalendarBundle::layout.html.twig" %}
+
+{% block rizza_calendar_content %}
+<form method="post">
+    <h3>Are you SURE you want to delete the event {{ event.getTitle() }}? This cannot be undone!</h3>
+    <input type="submit" value="Confirm" />
+    <a href="{{ path(rizza_calendar_route('event', 'show'), {'id': event.getId()}) }}">Cancel</a>
+</form>
+{% endblock rizza_calendar_content %}

@@ -1,10 +1,10 @@
 {% extends "RizzaCalendarBundle::layout.html.twig" %}
-{% block content %}
-<div class="calendar_list">
-    <ul>
-        {% for calendar in calendars %}
-        <li><a href="{{ path(rizza_calendar_route('calendar', 'show'), {'id': calendar.getId()} ) }}">{{ calendar.getName() }}</li>
-        {% endfor %}
-    </ul>
-</div>
-{% endblock content %}
+{% block rizza_calendar_content %}
+<h3>Your calendars:</h3>
+<ul class="calendar_list">
+{% for calendar in calendars %}
+    <li><a href="{{ path(rizza_calendar_route('calendar', 'show'), {'id': calendar.getId()} ) }}">{{ calendar.getName() }}</a> (owned by {{ calendar.getOwner() ? calendar.getOwner().getUsername() : 'the community' }})</li>
+{% endfor %}
+</ul>
+<p>{% if calendars is empty %}None yet. {% endif %}<a href="{{ path(rizza_calendar_route('calendar', 'add')) }}">Create a new calendar?</a></p>
+{% endblock rizza_calendar_content %}
