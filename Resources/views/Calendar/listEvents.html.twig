@@ -1,0 +1,11 @@
+{% extends "RizzaCalendarBundle::layout.html.twig" %}
+{% block rizza_calendar_content %}
+<div class="event_list">
+    <p>Listing events for calendar "{{ calendar.getName() }}"</p>
+    <ul>
+        {% for event in events %}
+        <li><a href="{{ path(rizza_calendar_route('event', 'show'), {'id': event.getId()} ) }}">{{ event.getTitle() }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock rizza_calendar_content %}
