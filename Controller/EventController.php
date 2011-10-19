@@ -7,14 +7,13 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class EventController extends BaseController
 {
-    public function listAction($calendarId)
+    public function listAction()
     {
-        $calendar = $this->getCalendarManager()->find($calendarId);
-        $events = $calendar->getEvents();
+        $user = $this->container->get('security.context')->getToken()->getUser();
+        $events = $this->getEventManager()->findVisible($user);
 
         return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Event:list.html.twig', array(
             'events' => $events,
-            'calendar' => $calendar,
         ));
     }
 

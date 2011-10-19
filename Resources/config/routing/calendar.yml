@@ -2,6 +2,10 @@ rizza_calendar_list:
   pattern:  /
   defaults: { _controller: RizzaCalendarBundle:Calendar:list }
 
+rizza_calendar_listEvents:
+  pattern:  /{id}/events
+  defaults: { _controller: RizzaCalendarBundle:Calendar:listEvents }
+
 rizza_calendar_show:
   pattern:  /show/{id}
   defaults: { _controller: RizzaCalendarBundle:Calendar:show }

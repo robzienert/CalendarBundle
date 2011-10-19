@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Rizza\CalendarBundle\Model\EventInterface;
 use Rizza\CalendarBundle\Blamer\EventBlamerInterface;
 use Rizza\CalendarBundle\Model\CalendarInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class EventManager extends BaseEventManager
 {
@@ -70,6 +71,25 @@ class EventManager extends BaseEventManager
     public function findAll()
     {
         return $this->repo->findAll();
+    }
+
+    public function findVisible($organizer)
+    {
+        if (!$organizer instanceof UserInterface) {
+            $organizer = null;
+        }
+        $qb = $this->repo->createQueryBuilder('e');
+        $qb
+            ->join('e.calendar', 'c')
+            ->andWhere('e.organizer = :organizer')
+            ->orWhere('c.visibility = :calendarVisibility')
+        ;
+        $qb->setParameters(array(
+            'organizer' => $organizer,
+            'calendarVisibility' => CalendarInterface::VISIBILITY_PUBLIC,
+        ));
+
+        return $qb->getQuery()->execute();
     }
 
     public function getClass()

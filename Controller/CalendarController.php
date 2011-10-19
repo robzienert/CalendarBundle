@@ -10,13 +10,26 @@ class CalendarController extends BaseController
     public function listAction()
     {
         $user = $this->container->get('security.context')->getToken()->getUser();
-        if (!is_object($user)) {
-            $user = null;
-        }
         $calendars = $this->getCalendarManager()->findVisible($user);
 
         return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Calendar:list.html.twig', array(
             'calendars' => $calendars,
+        ));
+    }
+
+    public function listEventsAction($id)
+    {
+        $calendar = $this->getCalendarManager()->find($id);
+
+        if (!$this->container->get('security.context')->isGranted('view', $calendar)) {
+            throw new AccessDeniedException();
+        }
+
+        $events = $calendar->getEvents();
+
+        return $this->container->get('templating')->renderResponse('RizzaCalendarBundle:Calendar:listEvents.html.twig', array(
+            'events' => $events,
+            'calendar' => $calendar,
         ));
     }
 
