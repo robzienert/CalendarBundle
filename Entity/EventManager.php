@@ -97,4 +97,13 @@ class EventManager extends BaseEventManager
         return $this->class;
     }
 
+    public function isAdmin($user, EventInterface $event)
+    {
+        if (!$user instanceof UserInterface) {
+            return false;
+        }
+
+        return $user->equals($event->getOrganizer());
+    }
+
 }
