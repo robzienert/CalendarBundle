@@ -191,14 +191,14 @@ interface EventInterface
     /**
      * Set the event organizer
      *
-     * @param Organizer $organizer
+     * @param UserInterface $organizer
      */
-    public function setOrganizer(Organizer $organizer);
+    public function setOrganizer(UserInterface $organizer);
 
     /**
      * Get the event organizer
      *
-     * @return Organizer
+     * @return UserInterface
      */
     public function getOrganizer();
 

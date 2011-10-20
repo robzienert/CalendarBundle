@@ -62,22 +62,17 @@ class CalendarVoter implements VoterInterface
 
     protected function canEdit(TokenInterface $token, CalendarInterface $calendar)
     {
-        return $this->isOwner($token, $calendar);
+        return $this->calendarManager->isAdmin($token->getUser(), $calendar);
     }
 
     protected function canDelete(TokenInterface $token, CalendarInterface $calendar)
     {
-        return $this->isOwner($token, $calendar);
+        return $this->calendarManager->isAdmin($token->getUser(), $calendar);
     }
 
     protected function canView(TokenInterface $token, CalendarInterface $calendar)
     {
-        return $calendar->isPublic() || $this->isOwner($token, $calendar);
-    }
-
-    private function isOwner(TokenInterface $token, CalendarInterface $calendar)
-    {
-        return $token->getUser() === $calendar->getOwner();
+        return $calendar->isPublic() || $this->calendarManager->isAdmin($token->getUser(), $calendar);
     }
 
 }
