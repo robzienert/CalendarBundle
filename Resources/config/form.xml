@@ -15,6 +15,9 @@
             <argument type="service" id="rizza_calendar.form.username_transformer" />
             <tag name="form.type" alias="rizza_calendar.username" />
         </service>
+        <service id="rizza_calendar.form_type.attendee.default" class="Rizza\CalendarBundle\Form\Type\AttendeeType">
+            <tag name="form.type" alias="rizza_calendar.attendee" />
+        </service>
 
         <service id="rizza_calendar.form_factory.calendar.default" class="Rizza\CalendarBundle\Form\Factory\CalendarFormFactory" public="false">
             <argument type="service" id="form.factory" />
@@ -29,6 +32,11 @@
         <service id="rizza_calendar.form.username_transformer" class="Rizza\CalendarBundle\Form\DataTransformer\UsernameToUserTransformer">
             <argument type="service" id="rizza_calendar.manager.user" />
             <argument>%rizza_calendar.model.user.class%</argument>
+        </service>
+        <service id="rizza_calendar.form_factory.attendee.default" class="Rizza\CalendarBundle\Form\Factory\AttendeeFormFactory" public="false">
+            <argument type="service" id="form.factory" />
+            <argument>%rizza_calendar.form.attendee.type%</argument>
+            <argument>%rizza_calendar.form.attendee.name%</argument>
         </service>
     </services>
 

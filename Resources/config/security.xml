@@ -7,6 +7,7 @@
     <parameters>
         <parameter key="rizza_calendar.voter.calendar.class">Rizza\CalendarBundle\Security\Authorization\Voter\CalendarVoter</parameter>
         <parameter key="rizza_calendar.voter.event.class">Rizza\CalendarBundle\Security\Authorization\Voter\EventVoter</parameter>
+        <parameter key="rizza_calendar.voter.attendee.class">Rizza\CalendarBundle\Security\Authorization\Voter\AttendeeVoter</parameter>
     </parameters>
 
     <services>
@@ -19,6 +20,11 @@
             <argument type="service" id="rizza_calendar.manager.event" />
             <argument type="service" id="rizza_calendar.manager.calendar" />
             <argument>%rizza_calendar.model.event.class%</argument>
+            <tag name="security.voter" />
+        </service>
+        <service id="rizza_calendar.voter.attendee" class="%rizza_calendar.voter.attendee.class%">
+            <argument type="service" id="rizza_calendar.manager.attendee" />
+            <argument>%rizza_calendar.model.attendee.class%</argument>
             <tag name="security.voter" />
         </service>
     </services>
