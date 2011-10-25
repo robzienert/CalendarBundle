@@ -37,4 +37,6 @@ interface EventManagerInterface
 
     public function getClass();
 
+    public function isAdmin($user, EventInterface $event);
+
 }

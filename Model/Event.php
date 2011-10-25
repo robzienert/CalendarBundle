@@ -200,7 +200,7 @@ abstract class Event implements EventInterface
         }
     }
 
-    public function setOrganizer(Organizer $organizer)
+    public function setOrganizer(UserInterface $organizer)
     {
         $this->organizer = $organizer;
     }

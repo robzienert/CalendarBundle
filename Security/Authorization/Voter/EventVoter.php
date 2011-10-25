@@ -66,17 +66,17 @@ class EventVoter implements VoterInterface
 
     protected function canEdit(TokenInterface $token, EventInterface $event)
     {
-        return $this->calendarManager->isAdmin($token->getUser(), $event->getCalendar());
+        return $this->eventManager->isAdmin($token->getUser(), $event) || $this->calendarManager->isAdmin($token->getUser(), $event->getCalendar());
     }
 
     protected function canDelete(TokenInterface $token, EventInterface $event)
     {
-        return $this->calendarManager->isAdmin($token->getUser(), $event->getCalendar());
+        return $this->eventManager->isAdmin($token->getUser(), $event) || $this->calendarManager->isAdmin($token->getUser(), $event->getCalendar());
     }
 
     protected function canView(TokenInterface $token, EventInterface $event)
     {
-        return $event->getCalendar()->isPublic() || $this->isOwner($token, $event);
+        return $event->getCalendar()->isPublic() || $this->eventManager->isAdmin($token->getUser(), $event);
     }
 
 }
