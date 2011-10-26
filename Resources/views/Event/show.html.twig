@@ -1,4 +1,15 @@
 {% extends "RizzaCalendarBundle::layout.html.twig" %}
 {% block rizza_calendar_content %}
 This is the {{ event.getTitle() }} event. Riveting.
+
+<p>Organizer: {{ event.organizer.username }}</p>
+
+<h3>Attendees ({{ event.attendees|length }})</h3>
+
+<ul>
+{% for attendee in event.attendees %}
+    <li>{{ attendee.user.username }} - {{ attendee.status }}</li>
+{% endfor %}
+</ul>
+<p>{% if event.attendees is empty %}None yet! {% endif %}<a href="{{ path(rizza_calendar_route('attendee', 'add'), {"eventId": event.id}) }}">Attend this event?</a></p>
 {% endblock rizza_calendar_content %}

@@ -1,0 +1,10 @@
+{% extends "RizzaCalendarBundle::layout.html.twig" %}
+{% block rizza_calendar_content %}
+<p>Event: {{ attendee.event.title }}</p>
+<p>User: {{ attendee.user.username }}</p>
+<p>Status: {{ attendee.status }}</p>
+<p>
+{% if is_granted('EDIT', attendee) %}(<a href="{{ path(rizza_calendar_route('attendee', 'edit'), {"id": attendee.id}) }}">edit</a>){% endif %}
+{% if is_granted('DELETE', attendee) %}(<a href="{{ path(rizza_calendar_route('attendee', 'delete'), {"id": attendee.id}) }}">delete</a>){% endif %}
+</p>
+{% endblock rizza_calendar_content %}

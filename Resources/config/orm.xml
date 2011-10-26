@@ -8,6 +8,7 @@
         <parameter key="rizza_calendar.manager.calendar.class">Rizza\CalendarBundle\Entity\CalendarManager</parameter>
         <parameter key="rizza_calendar.manager.event.class">Rizza\CalendarBundle\Entity\EventManager</parameter>
         <parameter key="rizza_calendar.manager.user.class">Rizza\CalendarBundle\Entity\UserManager</parameter>
+        <parameter key="rizza_calendar.manager.attendee.class">Rizza\CalendarBundle\Entity\AttendeeManager</parameter>
     </parameters>
 
     <services>
@@ -22,6 +23,10 @@
         <service id="rizza_calendar.manager.user.default" class="%rizza_calendar.manager.user.class%" public="false">
             <argument type="service" id="doctrine.orm.entity_manager" />
             <argument>%rizza_calendar.model.user.class%</argument>
+        </service>
+        <service id="rizza_calendar.manager.attendee.default" class="%rizza_calendar.manager.attendee.class%" public="false">
+            <argument type="service" id="doctrine.orm.entity_manager" />
+            <argument>%rizza_calendar.model.attendee.class%</argument>
         </service>
     </services>
 

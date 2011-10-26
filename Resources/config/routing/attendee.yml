@@ -1,0 +1,19 @@
+rizza_calendar_attendee_show:
+  pattern:  /show/{id}
+  defaults: { _controller: RizzaCalendarBundle:Attendee:show }
+
+rizza_calendar_attendee_add:
+  pattern:  /add/{eventId}
+  defaults: { _controller: RizzaCalendarBundle:Attendee:add }
+
+rizza_calendar_attendee_edit:
+  pattern:  /edit/{id}
+  defaults: { _controller: RizzaCalendarBundle:Attendee:edit }
+
+rizza_calendar_attendee_delete:
+  pattern: /delete/{id}
+  defaults: { _controller: RizzaCalendarBundle:Attendee:delete }
+
+rizza_calendar_attendee_list:
+  pattern:  /{eventId}
+  defaults: { _controller: RizzaCalendarBundle:Attendee:list }

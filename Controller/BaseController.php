@@ -8,6 +8,8 @@ use Rizza\CalendarBundle\Model\EventManagerInterface;
 use Rizza\CalendarBundle\Form\Factory\CalendarFormFactoryInterface;
 use Rizza\CalendarBundle\Form\Factory\EventFormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Rizza\CalendarBundle\Model\AttendeeManagerInterface;
+use Rizza\CalendarBundle\Form\Factory\AttendeeFormFactoryInterface;
 
 abstract class BaseController extends ContainerAware
 {
@@ -29,6 +31,14 @@ abstract class BaseController extends ContainerAware
     }
 
     /**
+     * @return AttendeeManagerInterface
+     */
+    protected function getAttendeeManager()
+    {
+        return $this->container->get('rizza_calendar.manager.attendee');
+    }
+
+    /**
      * @return CalendarFormFactoryInterface
      */
     protected function getCalendarFormFactory()
@@ -42,6 +52,14 @@ abstract class BaseController extends ContainerAware
     protected function getEventFormFactory()
     {
         return $this->container->get('rizza_calendar.form_factory.event');
+    }
+
+    /**
+     * @return AttendeeFormFactoryInterface
+     */
+    protected function getAttendeeFormFactory()
+    {
+        return $this->container->get('rizza_calendar.form_factory.attendee');
     }
 
     protected function createRedirect($controller, $action, $data = array())
