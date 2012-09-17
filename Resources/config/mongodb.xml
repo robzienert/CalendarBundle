@@ -9,6 +9,8 @@
         <parameter key="rizza_calendar.event_manager.class">Rizza\CalendarBundle\Document\EventManager</parameter>
         <parameter key="rizza_calendar.calendar_document.class">Rizza\CalendarBundle\Document\Calendar</parameter>
         <parameter key="rizza_calendar.event_document.class">Rizza\CalendarBundle\Document\Event</parameter>
+        <parameter key="rizza_calendar.manager.user.class">Rizza\CalendarBundle\Document\UserManager</parameter>
+        <parameter key="rizza_calendar.manager.attendee.class">Rizza\CalendarBundle\Document\AttendeeManager</parameter>
     </parameters>
 
     <services>
@@ -19,6 +21,14 @@
         <service id="rizza_calendar.manager.event.default" class="%rizza_calendar.event_manager.class%" public="false">
             <argument type="service" id="doctrine.odm.mongodb.default_document_manager" />
             <argument>%rizza_calendar.event_document.class%</argument>
+        </service>
+        <service id="rizza_calendar.manager.user.default" class="%rizza_calendar.manager.user.class%" public="false">
+            <argument type="service" id="doctrine.odm.mongodb.default_document_manager" />
+            <argument>%rizza_calendar.model.user.class%</argument>
+        </service>
+        <service id="rizza_calendar.manager.attendee.default" class="%rizza_calendar.manager.attendee.class%" public="false">
+            <argument type="service" id="doctrine.odm.mongodb.default_document_manager" />
+            <argument>%rizza_calendar.model.attendee.class%</argument>
         </service>
     </services>
 
