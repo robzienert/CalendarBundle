@@ -15,12 +15,12 @@ class EventManager extends BaseEventManager
 {
 
     /**
-     * @var EntityManager
+     * @var DocumentManager
      */
     protected $em;
 
     /**
-     * @var EntityRepository
+     * @var DocumentRepository
      */
     protected $repo;
 

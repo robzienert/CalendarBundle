@@ -14,12 +14,12 @@ class CalendarManager extends BaseCalendarManager
 {
 
     /**
-     * @var EntityManager
+     * @var DocumentManager
      */
     protected $em;
 
     /**
-     * @var EntityRepository
+     * @var DocumentRepository
      */
     protected $repo;
 

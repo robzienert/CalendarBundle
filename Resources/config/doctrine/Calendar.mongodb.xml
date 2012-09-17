@@ -5,12 +5,11 @@
                         http://doctrine-project.org/schemas/odm/doctrine-mongo-mapping.xsd">
 
     <mapped-superclass name="Rizza\CalendarBundle\Document\Calendar" table="calendar_calendar">
-<!-- <field name="id" id="true"/>-->
 
         <field name="name" fieldName="name" type="string" />
         <field name="visibility" fieldName="visibility" type="int" />
-
         <reference-many name="events" fieldName="events" target-document="Rizza\CalendarBundle\Document\Event" />
+        
     </mapped-superclass>
 
 </doctrine-mongo-mapping>

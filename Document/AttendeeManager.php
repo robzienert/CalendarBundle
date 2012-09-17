@@ -17,7 +17,7 @@ class AttendeeManager extends BaseAttendeeManager
     protected $em;
 
     /**
-     * @var EntityRepository
+     * @var DocumentRepository
      */
     protected $repo;
 
