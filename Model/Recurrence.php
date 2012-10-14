@@ -20,9 +20,19 @@ abstract class Recurrence implements RecurrenceInterface
     const FREQUENCY_WEEKLY = 1;
     const FREQUENCY_MONTHLY = 2;
     const FREQUENCY_YEARLY = 3;
-    
+
+    /**
+     * The recurence's id
+     *
+     * @var integer
+     */
     protected $id;
 
+    /**
+     * The recurence's event
+     *
+     * @var EventInterface
+     */
     protected $event;
 
     /**
@@ -108,31 +118,51 @@ abstract class Recurrence implements RecurrenceInterface
     /**
      * A string that indicates the start day of the week. Possible values are
      * 0 (sunday) - 6 (saturday).
-     * 
+     *
      * @var int
      */
     protected $weekStartDay;
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getId()
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::setEvent()
+     */
     public function setEvent(EventInterface $event)
     {
         $this->event = $event;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getEvent()
+     */
     public function getEvent()
     {
         return $this->event;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getDays()
+     */
     public function getDays()
     {
         return $this->days ?: $this->days = new ArrayCollection();
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::addDay()
+     */
     public function addDay($day)
     {
         $day = intval($day);
@@ -141,6 +171,10 @@ abstract class Recurrence implements RecurrenceInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::removeDay()
+     */
     public function removeDay($day)
     {
         $day = intval($day);
@@ -149,11 +183,19 @@ abstract class Recurrence implements RecurrenceInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getDayFrequency()
+     */
     public function getDayFrequency()
     {
         return $this->dayFrequency ?: $this->dayFrequency = new ArrayCollection();
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::addDayFrequency()
+     */
     public function addDayFrequency($frequency)
     {
         $frequency = intval($frequency);
@@ -166,6 +208,10 @@ abstract class Recurrence implements RecurrenceInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::removeDayFrequency()
+     */
     public function removeDayFrequency($frequency)
     {
         if ($this->getDayFrequency()->contains($frequency)) {
@@ -173,11 +219,19 @@ abstract class Recurrence implements RecurrenceInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getMonths()
+     */
     public function getMonths()
     {
         return $this->months ?: $this->months = new ArrayCollection();
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::addMonth()
+     */
     public function addMonth($month)
     {
         $month = intval($month);
@@ -186,6 +240,10 @@ abstract class Recurrence implements RecurrenceInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::removeMonth()
+     */
     public function removeMonth($month)
     {
         $month = intval($month);
@@ -194,11 +252,19 @@ abstract class Recurrence implements RecurrenceInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getMonthDays()
+     */
     public function getMonthDays()
     {
         return $this->monthDays ?: $this->monthDays = new ArrayCollection();
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::addMonthDay()
+     */
     public function addMonthDay($day)
     {
         $day = intval($day);
@@ -212,6 +278,10 @@ abstract class Recurrence implements RecurrenceInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::removeMonthDay()
+     */
     public function removeMonthDay($day)
     {
         $day = intval($day);
@@ -220,11 +290,19 @@ abstract class Recurrence implements RecurrenceInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getWeekNumbers()
+     */
     public function getWeekNumbers()
     {
         return $this->weekNumbers ?: $this->weekNumbers = new ArrayCollection();
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::addWeekNumber()
+     */
     public function addWeekNumber($week)
     {
         $week = intval($week);
@@ -233,6 +311,10 @@ abstract class Recurrence implements RecurrenceInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::removeWeekNumber()
+     */
     public function removeWeekNumber($week)
     {
         $week = intval($week);
@@ -241,11 +323,19 @@ abstract class Recurrence implements RecurrenceInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getYearDays()
+     */
     public function getYearDays()
     {
         return $this->yearDays ?: $this->yearDays = new ArrayCollection();
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::addYearDay()
+     */
     public function addYearDay($day)
     {
         $day = intval($day);
@@ -254,6 +344,10 @@ abstract class Recurrence implements RecurrenceInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::removeYearDay()
+     */
     public function removeYearDay($day)
     {
         $day = intval($day);
@@ -262,6 +356,10 @@ abstract class Recurrence implements RecurrenceInterface
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::setFrequency()
+     */
     public function setFrequency($frequency)
     {
         $validFrequencies = array(self::FREQUENCY_DAILY, self::FREQUENCY_MONTHLY,
@@ -269,35 +367,59 @@ abstract class Recurrence implements RecurrenceInterface
         if (!in_array($frequency, $validFrequencies)) {
             throw new \InvalidArgumentException('Invalid frequency value provided');
         }
-        
+
         $this->frequency = $frequency;
     }
-    
+
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getFrequency()
+     */
     public function getFrequency()
     {
         return $this->frequency;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::setInterval()
+     */
     public function setInterval($interval)
     {
         $this->interval = abs(intval($interval));
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getInterval()
+     */
     public function getInterval()
     {
         return $this->interval;
     }
-    
+
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::setUntil()
+     */
     public function setUntil(\DateTime $until)
     {
         $this->until = $until;
     }
-    
+
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getUntil()
+     */
     public function getUntil()
     {
         return $this->until;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::setWeekStartDay()
+     */
     public function setWeekStartDay($day)
     {
         $validDays = array(self::DAY_SUNDAY, self::DAY_MONDAY, self::DAY_TUESDAY,
@@ -309,12 +431,20 @@ abstract class Recurrence implements RecurrenceInterface
 
         $this->weekStartDay = $day;
     }
-    
+
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getWeekStartDay()
+     */
     public function getWeekStartDay()
     {
         return $this->weekStartDay;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::contains()
+     */
     public function contains(\DateTime $dateTime)
     {
         $onDate = true;
@@ -342,6 +472,15 @@ abstract class Recurrence implements RecurrenceInterface
         return $onDate;
     }
 
+    /**
+     * Whether the $datetime is
+     *
+     * @param \DateTime $dateTime
+     *
+     * @throws \Exception
+     * @throws \UnexpectedValueException
+     * @return boolean
+     */
     protected function onDayFrequency(\DateTime $dateTime)
     {
         if ($this->frequency == self::FREQUENCY_DAILY || !$this->dayFrequency->count() || !$this->days->count()) return true;
@@ -375,6 +514,13 @@ abstract class Recurrence implements RecurrenceInterface
         return false;
     }
 
+    /**
+     * Whether the $datetime is
+     *
+     * @param \DateTime $dateTime
+     *
+     * @return boolean
+     */
     protected function onMonthDays(\DateTime $dateTime)
     {
         if (!$this->getMonthDays()->count()) return true;
@@ -387,6 +533,13 @@ abstract class Recurrence implements RecurrenceInterface
         return false;
     }
 
+    /**
+     * Whether the $datetime is
+     *
+     * @param \DateTime $dateTime
+     *
+     * @return boolean
+     */
     protected function onYearDays(\DateTime $dateTime)
     {
         if (!$this->getYearDays()->count()) return true;
@@ -400,6 +553,10 @@ abstract class Recurrence implements RecurrenceInterface
         return false;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getOccurrences()
+     */
     public function getOccurrences(\DateTime $betweenStart = null, \DateTime $betweenEnd = null)
     {
         if (!$betweenEnd) {
