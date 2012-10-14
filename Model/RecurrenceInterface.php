@@ -65,7 +65,7 @@ interface RecurrenceInterface
      *
      * @param integer $frequency The frequency to add (FREQUENCY_DAILY, FREQUENCY_WEEKLY, FREQUENCY_MONTHLY, FREQUENCY_YEARLY)
      */
-    public function addDayFrequence($frequency);
+    public function addDayFrequency($frequency);
 
     /**
      * Remove a frequency
