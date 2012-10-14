@@ -18,7 +18,7 @@ interface RecurrenceInterface
 
     public function getDayFrequency();
 
-    public function addDayFrequence($frequency);
+    public function addDayFrequency($frequency);
 
     public function removeDayFrequency($frequency);
 
