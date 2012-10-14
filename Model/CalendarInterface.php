@@ -6,8 +6,18 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 interface CalendarInterface
 {
-
+    /**
+     * The public visibility code
+     *
+     * @var integer
+     */
     const VISIBILITY_PUBLIC = 1;
+
+    /**
+     * The private visibility code
+     *
+     * @var integer
+     */
     const VISIBILITY_PRIVATE = 2;
 
     /**
@@ -82,16 +92,22 @@ interface CalendarInterface
 
     /**
      * Get the visibility of the calendar.
+     *
+     * @return integer
      */
     public function getVisibility();
 
     /**
      * Whether the calendar is public.
+     *
+     * @return boolean
      */
     public function isPublic();
 
     /**
      * Whether the calendar is private.
+     *
+     * @return boolean
      */
     public function isPrivate();
 }
