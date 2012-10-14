@@ -2,6 +2,6 @@
 
 namespace Rizza\CalendarBundle\Model;
 
-abstract class UserManager
+abstract class UserManager implements UserManagerInterface
 {
 }
