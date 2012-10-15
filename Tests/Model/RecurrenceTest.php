@@ -2,148 +2,159 @@
 
 namespace Rizza\CalendarBundle\Tests\Model;
 
-class RecurrenceTest extends \PHPUnit_Framework_TestCase
+use Rizza\CalendarBundle\Tests\CalendarTestCase;
+
+class RecurrenceTest extends CalendarTestCase
 {
+    /**
+     * The class to test
+     *
+     * @var Rizza\CalendarBundle\Model\Recurrence
+     */
+    private $recurrence;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->recurrence = $this->getMockForAbstractClass("Rizza\CalendarBundle\Model\Recurrence");
+    }
+
+    public function tearDown()
+    {
+        $this->recurrence = null;
+
+        parent::tearDown();
+    }
+
     public function testAddRemoveDay()
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->addDay(1);
-        $recurrence->addDay(5);
-        $recurrence->addDay(20);
-        $recurrence->addDay(20);
+        $this->recurrence->addDay(1);
+        $this->recurrence->addDay(5);
+        $this->recurrence->addDay(20);
+        $this->recurrence->addDay(20);
 
-        $this->assertEquals(array(1, 5, 20), $recurrence->getDays()->getValues());
+        $this->assertEquals(array(1, 5, 20), $this->recurrence->getDays()->getValues());
 
-        $recurrence->removeDay(13);
-        $recurrence->removeDay(5);
+        $this->recurrence->removeDay(13);
+        $this->recurrence->removeDay(5);
 
-        $this->assertEquals(array(1, 20), $recurrence->getDays()->getValues());
+        $this->assertEquals(array(1, 20), $this->recurrence->getDays()->getValues());
     }
 
     public function testSetGetDayFrequency()
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->addDayFrequency(2);
-        $recurrence->addDayFrequency(3);
+        $this->recurrence->addDayFrequency(2);
+        $this->recurrence->addDayFrequency(3);
 
-        $this->assertEquals(array(2, 3), $recurrence->getDayFrequency()->getValues());
+        $this->assertEquals(array(2, 3), $this->recurrence->getDayFrequency()->getValues());
 
-        $recurrence->removeDayFrequency(3);
+        $this->recurrence->removeDayFrequency(3);
 
-        $this->assertEquals(array(2), $recurrence->getDayFrequency()->getValues());
+        $this->assertEquals(array(2), $this->recurrence->getDayFrequency()->getValues());
     }
 
     public function testInvalidDayFrequencyThrowsRangeException()
     {
         $this->setExpectedException('RangeException');
 
-        $recurrence = $this->getRecurrence();
-        $recurrence->addDayFrequency(8);
+        $this->recurrence->addDayFrequency(8);
     }
 
     public function testAddRemoveMonth()
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->addMonth(1);
-        $recurrence->addMonth(3);
-        $recurrence->addMonth(7);
-        $recurrence->addMonth(7);
+        $this->recurrence->addMonth(1);
+        $this->recurrence->addMonth(3);
+        $this->recurrence->addMonth(7);
+        $this->recurrence->addMonth(7);
 
-        $this->assertEquals(array(1, 3, 7), $recurrence->getMonths()->getValues());
+        $this->assertEquals(array(1, 3, 7), $this->recurrence->getMonths()->getValues());
 
-        $recurrence->removeMonth(1);
+        $this->recurrence->removeMonth(1);
 
-        $this->assertEquals(array(3, 7), $recurrence->getMonths()->getValues());
+        $this->assertEquals(array(3, 7), $this->recurrence->getMonths()->getValues());
     }
 
     public function testAddRemoveMonthDay()
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->addMonthDay(1);
-        $recurrence->addMonthDay(15);
-        $recurrence->addMonthDay(30);
-        $recurrence->addMonthDay(30);
+        $this->recurrence->addMonthDay(1);
+        $this->recurrence->addMonthDay(15);
+        $this->recurrence->addMonthDay(30);
+        $this->recurrence->addMonthDay(30);
 
-        $this->assertEquals(array(1, 15, 30), $recurrence->getMonthDays()->getValues());
+        $this->assertEquals(array(1, 15, 30), $this->recurrence->getMonthDays()->getValues());
 
-        $recurrence->removeMonthDay(15);
+        $this->recurrence->removeMonthDay(15);
 
-        $this->assertEquals(array(1, 30), $recurrence->getMonthDays()->getValues());
+        $this->assertEquals(array(1, 30), $this->recurrence->getMonthDays()->getValues());
     }
 
     public function testAddRemoveWeekNumber()
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->addWeekNumber(1);
-        $recurrence->addWeekNumber(2);
-        $recurrence->addWeekNumber(3);
-        $recurrence->addWeekNumber(3);
+        $this->recurrence->addWeekNumber(1);
+        $this->recurrence->addWeekNumber(2);
+        $this->recurrence->addWeekNumber(3);
+        $this->recurrence->addWeekNumber(3);
 
-        $this->assertEquals(array(1, 2, 3), $recurrence->getWeekNumbers()->getValues());
+        $this->assertEquals(array(1, 2, 3), $this->recurrence->getWeekNumbers()->getValues());
 
-        $recurrence->removeWeekNumber(2);
+        $this->recurrence->removeWeekNumber(2);
 
-        $this->assertEquals(array(1, 3), $recurrence->getWeekNumbers()->getValues());
+        $this->assertEquals(array(1, 3), $this->recurrence->getWeekNumbers()->getValues());
     }
 
     public function testAddRemoveYearDay()
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->addYearDay(2);
-        $recurrence->addYearDay(150);
-        $recurrence->addYearDay(200);
-        $recurrence->addYearDay(200);
+        $this->recurrence->addYearDay(2);
+        $this->recurrence->addYearDay(150);
+        $this->recurrence->addYearDay(200);
+        $this->recurrence->addYearDay(200);
 
-        $this->assertEquals(array(2, 150, 200), $recurrence->getYearDays()->getValues());
+        $this->assertEquals(array(2, 150, 200), $this->recurrence->getYearDays()->getValues());
 
-        $recurrence->removeYearDay(2);
+        $this->recurrence->removeYearDay(2);
 
-        $this->assertEquals(array(150, 200), $recurrence->getYearDays()->getValues());
+        $this->assertEquals(array(150, 200), $this->recurrence->getYearDays()->getValues());
     }
 
     public function testInvalidFrequencyThrowsInvalidArgumentException()
     {
         $this->setExpectedException('InvalidArgumentException');
-        
-        $recurrence = $this->getRecurrence();
-        $recurrence->setFrequency(9000);
+
+        $this->recurrence->setFrequency(9000);
     }
 
     public function testSetGetFrequency()
     {
-        $recurrence = $this->getRecurrence();
-
         $frequency = \Rizza\CalendarBundle\Model\Recurrence::FREQUENCY_DAILY;
-        $recurrence->setFrequency($frequency);
+        $this->recurrence->setFrequency($frequency);
 
-        $this->assertEquals($frequency, $recurrence->getFrequency());
+        $this->assertEquals($frequency, $this->recurrence->getFrequency());
     }
 
     public function testSetGetInterval()
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->setInterval(2);
+        $this->recurrence->setInterval(2);
 
-        $this->assertEquals(2, $recurrence->getInterval());
+        $this->assertEquals(2, $this->recurrence->getInterval());
 
-        $recurrence->setInterval(-3);
+        $this->recurrence->setInterval(-3);
 
-        $this->assertEquals(3, $recurrence->getInterval());
+        $this->assertEquals(3, $this->recurrence->getInterval());
     }
 
     public function testSetGetWeekStartDay()
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->setWeekStartDay(0);
+        $this->recurrence->setWeekStartDay(0);
 
-        $this->assertEquals(0, $recurrence->getWeekStartDay());
+        $this->assertEquals(0, $this->recurrence->getWeekStartDay());
     }
 
     public function testInvalidWeekStartDayThrowsInvalidArgumentException()
     {
         $this->setExpectedException('InvalidArgumentException');
 
-        $this->getRecurrence()->setWeekStartDay(8);
+        $this->recurrence->setWeekStartDay(8);
     }
 
     /**
@@ -151,13 +162,12 @@ class RecurrenceTest extends \PHPUnit_Framework_TestCase
      */
     public function testContainsUsingUntil($dateTime)
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->setUntil(\DateTime::createFromFormat('Y-m-d', '2011-11-01'));
+        $this->recurrence->setUntil(\DateTime::createFromFormat('Y-m-d', '2011-11-01'));
 
-        if ($recurrence->getUntil()->format('Y') >= $dateTime->format('Y')) {
-            $this->assertTrue($recurrence->contains($dateTime));
+        if ($this->recurrence->getUntil()->format('Y') >= $dateTime->format('Y')) {
+            $this->assertTrue($this->recurrence->contains($dateTime));
         } else {
-            $this->assertFalse($recurrence->contains($dateTime));
+            $this->assertFalse($this->recurrence->contains($dateTime));
         }
     }
 
@@ -166,14 +176,13 @@ class RecurrenceTest extends \PHPUnit_Framework_TestCase
      */
     public function testContainsMonths($dateTime)
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->addMonth(1);
-        $recurrence->addMonth(9);
+        $this->recurrence->addMonth(1);
+        $this->recurrence->addMonth(9);
 
         if ($dateTime->format('n') == 1 || $dateTime->format('n') == 9) {
-            $this->assertTrue($recurrence->contains($dateTime));
+            $this->assertTrue($this->recurrence->contains($dateTime));
         } else {
-            $this->assertFalse($recurrence->contains($dateTime));
+            $this->assertFalse($this->recurrence->contains($dateTime));
         }
     }
 
@@ -182,14 +191,13 @@ class RecurrenceTest extends \PHPUnit_Framework_TestCase
      */
     public function testContainsWeekNumbers($dateTime)
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->addWeekNumber(1);
+        $this->recurrence->addWeekNumber(1);
 
         // Simple check: jan 1 is week 1.
         if (1 == $dateTime->format('j') && 1 == $dateTime->format('n')) {
-            $this->assertTrue($recurrence->contains($dateTime));
+            $this->assertTrue($this->recurrence->contains($dateTime));
         } else {
-            $this->assertFalse($recurrence->contains($dateTime));
+            $this->assertFalse($this->recurrence->contains($dateTime));
         }
     }
 
@@ -198,14 +206,13 @@ class RecurrenceTest extends \PHPUnit_Framework_TestCase
      */
     public function testContainsDays($dateTime)
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->addDay(1);
-        $recurrence->addDay(14);
+        $this->recurrence->addDay(1);
+        $this->recurrence->addDay(14);
 
         if (1 == $dateTime->format('j') || 14 == $dateTime->format('j')) {
-            $this->assertTrue($recurrence->contains($dateTime));
+            $this->assertTrue($this->recurrence->contains($dateTime));
         } else {
-            $this->assertFalse($recurrence->contains($dateTime));
+            $this->assertFalse($this->recurrence->contains($dateTime));
         }
     }
 
@@ -214,23 +221,21 @@ class RecurrenceTest extends \PHPUnit_Framework_TestCase
      */
     public function testContainsMonthDays($dateTime)
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->addMonthDay(1);
-        $recurrence->addMonthDay(14);
+        $this->recurrence->addMonthDay(1);
+        $this->recurrence->addMonthDay(14);
 
         if (1 == $dateTime->format('j') || 14 == $dateTime->format('j')) {
-            $this->assertTrue($recurrence->contains($dateTime));
+            $this->assertTrue($this->recurrence->contains($dateTime));
         } else {
-            $this->assertFalse($recurrence->contains($dateTime));
+            $this->assertFalse($this->recurrence->contains($dateTime));
         }
     }
 
     public function testInvalidMonthDayRangeThrowsRangeException()
     {
         $this->setExpectedException('RangeException');
-        
-        $recurrence = $this->getRecurrence();
-        $recurrence->addMonthDay(40);
+
+        $this->recurrence->addMonthDay(40);
     }
 
     /**
@@ -238,14 +243,13 @@ class RecurrenceTest extends \PHPUnit_Framework_TestCase
      */
     public function testContainsYearDays($dateTime)
     {
-        $recurrence = $this->getRecurrence();
-        $recurrence->addYearDay(1);
-        $recurrence->addYearDay(274);
+        $this->recurrence->addYearDay(1);
+        $this->recurrence->addYearDay(274);
 
         if (0 == $dateTime->format('z') || 273 == $dateTime->format('z')) {
-            $this->assertTrue($recurrence->contains($dateTime));
+            $this->assertTrue($this->recurrence->contains($dateTime));
         } else {
-            $this->assertFalse($recurrence->contains($dateTime));
+            $this->assertFalse($this->recurrence->contains($dateTime));
         }
     }
 
@@ -261,10 +265,5 @@ class RecurrenceTest extends \PHPUnit_Framework_TestCase
             array(\DateTime::createFromFormat($format, '2020-01-01')),
             array(\DateTime::createFromFormat($format, '2020-06-30'))
         );
-    }
-
-    protected function getRecurrence()
-    {
-        return $this->getMockForAbstractClass('Rizza\CalendarBundle\Model\Recurrence');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Rizza\CalendarBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
