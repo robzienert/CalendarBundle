@@ -99,6 +99,86 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Returns a MockObject
+     *
+     * @param PHPUnit_Framework_MockObject_MockObject $securityContext The security context to configure
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockSecurityContext($securityContext = null)
+    {
+        if (null === $securityContext) {
+            $securityContext = $this->getMock("Symfony\Component\Security\Core\SecurityContextInterface");
+        }
+
+        return $securityContext;
+    }
+
+    /**
+     * Returns a MockObject configured to expect a call to a method
+     *
+     * @param PHPUnit_Framework_MockObject_MockObject $token           The expected returned value
+     * @param PHPUnit_Framework_MockObject_MockObject $securityContext The security context to configure
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockSecurityContext_ExpectsGetToken($token, $securityContext = null)
+    {
+        $securityContext = $this->getMockSecurityContext($securityContext);
+        $securityContext->expects($this->once())->method("getToken")->will($this->returnValue($token));
+
+        return $securityContext;
+    }
+
+    /**
+     * Returns a MockObject configured to expect a call to a method
+     *
+     * @param boolean                                 $isGranted       The expected returned value
+     * @param PHPUnit_Framework_MockObject_MockObject $securityContext The security context to configure
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockSecurityContext_ExpectsIsGranted($isGranted, $securityContext = null)
+    {
+        $securityContext = $this->getMockSecurityContext($securityContext);
+        $securityContext->expects($this->once())->method("isGranted")->with("IS_AUTHENTICATED_REMEMBERED")->will($this->returnValue($isGranted));
+
+        return $securityContext;
+    }
+
+    /**
+     * Returns a MockObject
+     *
+     * @param PHPUnit_Framework_MockObject_MockObject $token The token to configure
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockToken($token = null)
+    {
+        if (null === $token) {
+            $token = $this->getMock("Symfony\Component\Security\Core\Authentication\Token\TokenInterface");
+        }
+
+        return $token;
+    }
+
+    /**
+     * Returns a MockObject configured to expect a call to a method
+     *
+     * @param PHPUnit_Framework_MockObject_MockObject $user  The expected returned value
+     * @param PHPUnit_Framework_MockObject_MockObject $token The token to configure
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockToken_ExpectsGetUser($user, $token = null)
+    {
+        $token = $this->getMockToken($token);
+        $token->expects($this->once())->method("getUser")->will($this->returnValue($user));
+
+        return $token;
+    }
+
+    /**
      * Returns a MockObject of User type
      *
      * @return PHPUnit_Framework_MockObject_MockObject
