@@ -2,6 +2,8 @@
 
 namespace Rizza\CalendarBundle\Blamer;
 
+use Rizza\CalendarBundle\Model\CalendarInterface;
+
 class CalendarNoopBlamer implements CalendarBlamerInterface
 {
 
