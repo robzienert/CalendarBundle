@@ -6,9 +6,11 @@
 
 namespace Rizza\CalendarBundle\Tests;
 
+use Rizza\CalendarBundle\Blamer\EventBlamerInterface;
 use Rizza\CalendarBundle\Model\AttendeeInterface;
 use Rizza\CalendarBundle\Model\CalendarInterface;
 use Rizza\CalendarBundle\Model\EventInterface;
+use Rizza\CalendarBundle\Model\EventManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -135,6 +137,70 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
         $event->expects($this->once())->method("setOrganizer")->with($organizer);
 
         return $event;
+    }
+
+    /**
+     * Returns a mock object of EventBlamer type.
+     *
+     * @param EventBlamerInterface $eventBlamer The event blamer
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockEventBlamer(EventBlamerInterface $eventBlamer = null)
+    {
+        if (null === $eventBlamer) {
+            $eventBlamer = $this->getMock("Rizza\CalendarBundle\Blamer\EventBlamerInterface");
+        }
+
+        return $eventBlamer;
+    }
+
+    /**
+     * Returns a mock object of EventBlamer type.
+     *
+     * @param EventInterface       $event       The event
+     * @param EventBlamerInterface $eventBlamer The event blamer
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockEventBlamer_ExpectsBlame(EventInterface $event, EventBlamerInterface $eventBlamer = null)
+    {
+        $eventBlamer = $this->getMockEventBlamer($eventBlamer);
+        $eventBlamer->expects($this->once())->method("blame")->with($event);
+
+        return $eventBlamer;
+    }
+
+    /**
+     * Returns a mock object of EventManager type.
+     *
+     * @param EventManagerInterface $eventManager The event manager
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockEventManager(EventManagerInterface $eventManager = null)
+    {
+        if (null === $eventManager) {
+            $eventManager = $this->getMock("Rizza\CalendarBundle\Model\EventManagerInterface");
+        }
+
+        return $eventManager;
+    }
+
+    /**
+     * Returns a mock object of EventManager type.
+     *
+     * @param EventInterface        $event        The event
+     * @param EventManagerInterface $eventManager The event manager
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockEventManager_ExpectsAddEvent(EventInterface $event, EventManagerInterface $eventManager = null)
+    {
+        $eventManager = $this->getMockEventManager($eventManager);
+        $eventManager->expects($this->once())->method("addEvent")->with($event);
+
+        return $eventManager;
     }
 
     /**
