@@ -6,6 +6,10 @@
 
 namespace Rizza\CalendarBundle\Tests;
 
+use Rizza\CalendarBundle\Model\AttendeeInterface;
+use Rizza\CalendarBundle\Model\CalendarInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 /**
  * Common test case class for all the tests of this bundles.
  * It encapsulates all the commonly used methods for testing.
@@ -31,21 +35,65 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Returns a MockObject of Attendee type
      *
+     * @param AttendeeInterface $attendee The mock attendee
+     *
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getMockAttendee()
+    protected function getMockAttendee(AttendeeInterface $attendee = null)
     {
-        return $this->getMock("Rizza\CalendarBundle\Model\Attendee");
+        if (null === $attendee) {
+            $attendee = $this->getMock("Rizza\CalendarBundle\Model\AttendeeInterface");
+        }
+
+        return $attendee;
+    }
+
+    /**
+     * Returns a mock object of Attendee type.
+     *
+     * @param UserInterface     $user     The mock user
+     * @param AttendeeInterface $attendee The mock attendee
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockAttendee_ExpectsSetUser(UserInterface $user, AttendeeInterface $attendee = null)
+    {
+        $attendee = $this->getMockAttendee($attendee);
+        $attendee->expects($this->once())->method("setUser")->with($user);
+
+        return $attendee;
     }
 
     /**
      * Returns a mock object of Calendar type.
      *
+     * @param CalendarInterface $calendar The mock calendar
+     *
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getMockCalendar()
+    protected function getMockCalendar(CalendarInterface $calendar = null)
     {
-        return $this->getMock('Rizza\CalendarBundle\Model\CalendarInterface');
+        if (null === $calendar) {
+            $calendar = $this->getMock('Rizza\CalendarBundle\Model\CalendarInterface');
+        }
+
+        return $calendar;
+    }
+
+    /**
+     * Returns a mock object of Calendar type.
+     *
+     * @param UserInterface     $owner    The mock owner
+     * @param CalendarInterface $calendar The mock calendar
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockCalendar_ExpectsSetOwner(UserInterface $owner, CalendarInterface $calendar = null)
+    {
+        $calendar = $this->getMockCalendar($calendar);
+        $calendar->expects($this->once())->method("setOwner")->with($owner);
+
+        return $calendar;
     }
 
     /**

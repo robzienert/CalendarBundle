@@ -1,16 +1,15 @@
 <?php
+namespace Rizza\CalendarBundle\Tests\Blamer;
+
+use Rizza\CalendarBundle\Blamer\SecurityCalendarBlamer;
+use Rizza\CalendarBundle\Tests\CalendarTestCase;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+
 /**
  * @author  Yannick Voyer <yan.voyer@gmail.com>
  * @package CalendarBundle
  */
-
-namespace Rizza\CalendarBundle\Tests\Blamer;
-
-use Rizza\CalendarBundle\Blamer\SecurityAttendeeBlamer;
-use Rizza\CalendarBundle\Tests\CalendarTestCase;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-
-class SecurityAttendeeBlamerTest extends CalendarTestCase
+class SecurityCalendarBlamerTest extends CalendarTestCase
 {
     /**
      * @dataProvider getTestData
@@ -21,8 +20,8 @@ class SecurityAttendeeBlamerTest extends CalendarTestCase
     public function testBlame($returnToken, $isGranted)
     {
         $securityContext = $this->getMockSecurityContext();
-        $user            = $this->getMockUser();
-        $attendee        = $this->getMockAttendee();
+        $owner           = $this->getMockUser();
+        $calendar        = $this->getMockCalendar();
         $token           = null;
 
         if (null === $returnToken) {
@@ -30,10 +29,10 @@ class SecurityAttendeeBlamerTest extends CalendarTestCase
         } else {
             $token = $this->getMockToken();
             if (false === $isGranted) {
-                $attendee->expects($this->never())->method("setUser");
+                $calendar->expects($this->never())->method("setOwner");
             } else {
-                $token    = $this->getMockToken_ExpectsGetUser($user);
-                $attendee = $this->getMockAttendee_ExpectsSetUser($user, $attendee);
+                $token    = $this->getMockToken_ExpectsGetUser($owner);
+                $calendar = $this->getMockCalendar_ExpectsSetOwner($owner, $calendar);
             }
 
             $securityContext = $this->getMockSecurityContext_ExpectsIsGranted($isGranted, $securityContext);
@@ -41,26 +40,27 @@ class SecurityAttendeeBlamerTest extends CalendarTestCase
         $securityContext = $this->getMockSecurityContext_ExpectsGetToken($token, $securityContext);
 
         $blamer = $this->getBlamer($securityContext);
-        $blamer->blame($attendee);
+        $blamer->blame($calendar);
     }
 
     /**
      * Return the blamer to test
      *
-     * @param unknown_type $securityContext
-     * @return \Rizza\CalendarBundle\Blamer\SecurityAttendeeBlamer
+     * @param SecurityContextInterface $securityContext The security context
+     *
+     * @return \Rizza\CalendarBundle\Blamer\SecurityCalendarBlamer
      */
     protected function getBlamer(SecurityContextInterface $securityContext)
     {
-        return new SecurityAttendeeBlamer($securityContext);
+        return new SecurityCalendarBlamer($securityContext);
     }
 
     public static function getTestData()
     {
         return array(
-            array(null, false),
-            array(true, false),
-            array(true, true),
+                array(null, false),
+                array(true, false),
+                array(true, true),
         );
     }
 }
