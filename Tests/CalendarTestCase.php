@@ -8,6 +8,7 @@ namespace Rizza\CalendarBundle\Tests;
 
 use Rizza\CalendarBundle\Model\AttendeeInterface;
 use Rizza\CalendarBundle\Model\CalendarInterface;
+use Rizza\CalendarBundle\Model\EventInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -111,9 +112,29 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getMockEvent()
+    protected function getMockEvent(EventInterface $event = null)
     {
-        return $this->getMock('Rizza\CalendarBundle\Model\EventInterface');
+        if (null === $event) {
+            $event = $this->getMock('Rizza\CalendarBundle\Model\EventInterface');
+        }
+
+        return $event;
+    }
+
+    /**
+     * Returns a mock object of Calendar type.
+     *
+     * @param UserInterface  $organizer The mock organizer
+     * @param EventInterface $event     The mock event
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockEvent_ExpectsSetOrganizer(UserInterface $organizer, EventInterface $event = null)
+    {
+        $event = $this->getMockEvent($event);
+        $event->expects($this->once())->method("setOrganizer")->with($organizer);
+
+        return $event;
     }
 
     /**

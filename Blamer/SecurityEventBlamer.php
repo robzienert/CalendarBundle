@@ -7,7 +7,11 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class SecurityEventBlamer implements EventBlamerInterface
 {
-
+    /**
+     * The security context
+     *
+     * @var SecurityContextInterface
+     */
     protected $securityContext;
 
     public function __construct(SecurityContextInterface $securityContext)
@@ -17,13 +21,13 @@ class SecurityEventBlamer implements EventBlamerInterface
 
     public function blame(EventInterface $event)
     {
-        if (null === $this->securityContext->getToken()) {
+        $token = $this->securityContext->getToken();
+        if (null === $token) {
             throw new \RuntimeException('You must configure a firewall for this route');
         }
 
         if ($this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $event->setOrganizer($this->securityContext->getToken()->getUser());
+            $event->setOrganizer($token->getUser());
         }
     }
-
 }
