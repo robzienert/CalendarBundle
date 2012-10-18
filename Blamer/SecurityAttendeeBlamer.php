@@ -19,10 +19,6 @@ class SecurityAttendeeBlamer implements AttendeeBlamerInterface
         $this->securityContext = $securityContext;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Blamer\AttendeeBlamerInterface::blame()
-     */
     public function blame(AttendeeInterface $attendee)
     {
         $token = $this->securityContext->getToken();

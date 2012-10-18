@@ -8,8 +8,18 @@ use Rizza\CalendarBundle\Model\AttendeeInterface;
 
 class AttendeeCreator implements AttendeeCreatorInterface
 {
-
+    /**
+     * The manager
+     *
+     * @var AttendeeManagerInterface
+     */
     protected $attendeeManager;
+
+    /**
+     * The blamer
+     *
+     * @var AttendeeBlamerInterface
+     */
     protected $attendeeBlamer;
 
     public function __construct(AttendeeManagerInterface $attendeeManager, AttendeeBlamerInterface $attendeeBlamer)
@@ -25,5 +35,4 @@ class AttendeeCreator implements AttendeeCreatorInterface
 
         return true;
     }
-
 }

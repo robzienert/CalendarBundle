@@ -7,7 +7,7 @@ use Rizza\CalendarBundle\Model\EventInterface;
 interface EventCreatorInterface
 {
     /**
-     * Create an event
+     * Performs operations when creating an event
      *
      * @param EventInterface $event The event to create
      *
