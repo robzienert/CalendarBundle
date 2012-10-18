@@ -4,13 +4,24 @@ namespace Rizza\CalendarBundle\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Rizza\CalendarBundle\Model\AttendeeInterface;
 use Rizza\CalendarBundle\Model\AttendeeManagerInterface;
 
 class AttendeeVoter implements VoterInterface
 {
-
+    /**
+     * The attendeeManager
+     *
+     * @var AttendeeManagerInterface
+     */
     protected $attendeeManager;
+
+    /**
+     * The class that the voter supports
+     *
+     * @var string
+     */
     protected $class;
 
     public function __construct(AttendeeManagerInterface $attendeeManager, $class)
@@ -36,10 +47,19 @@ class AttendeeVoter implements VoterInterface
 
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        if (!$this->supportsClass(get_class($object))) {
+        $classIsSupported = false;
+        foreach (class_implements($object) as $class) {
+            if ($this->supportsClass($class)) {
+                $classIsSupported = true;
+            }
+        }
+
+        if (!$classIsSupported) {
             return VoterInterface::ACCESS_ABSTAIN;
         }
-        if (null === $token->getUser()) {
+
+        $user = $token->getUser();
+        if (null === $user) {
             return VoterInterface::ACCESS_DENIED;
         }
 
@@ -47,7 +67,8 @@ class AttendeeVoter implements VoterInterface
             if (!$this->supportsAttribute($attribute)) {
                 return VoterInterface::ACCESS_ABSTAIN;
             }
-            if (!$this->{"can".$attribute}($token, $object)) {
+
+            if (!$this->{"can".$attribute}($user, $object)) {
                 return VoterInterface::ACCESS_DENIED;
             }
         }
@@ -55,24 +76,68 @@ class AttendeeVoter implements VoterInterface
         return VoterInterface::ACCESS_GRANTED;
     }
 
-    protected function canCreate(TokenInterface $token, AttendeeInterface $attendee)
+    /**
+     * Returns whether the $user can create the $attendee
+     *
+     * @param mixed             $user The user
+     * @param AttendeeInterface $attendee The attendee
+     *
+     * @return boolean
+     */
+    protected function canCreate($user, AttendeeInterface $attendee)
     {
-        return is_object($token->getUser()) && ($attendee->getEvent()->getCalendar()->isPublic() || $attendee->getEvent()->getOrganizer()->equals($token->getUser()));
+        $canCreate    = false;
+
+        $loggedInUser = is_object($user);
+        if ($loggedInUser) {
+            $event     = $attendee->getEvent();
+            $calendar  = $event->getCalendar();
+            $organizer = $event->getOrganizer();
+
+            if ($calendar->isPublic() || $organizer->equals($user)) {
+                $canCreate = true;
+            }
+        }
+
+        return $canCreate;
     }
 
-    protected function canEdit(TokenInterface $token, AttendeeInterface $attendee)
+    /**
+     * Returns whether the $user can edit the $attendee
+     *
+     * @param UserInterface     $user     The user
+     * @param AttendeeInterface $attendee The attendee
+     *
+     * @return boolean
+     */
+    protected function canEdit(UserInterface $user, AttendeeInterface $attendee)
     {
-        return $this->attendeeManager->isAdmin($token->getUser(), $attendee);
+        return $this->attendeeManager->isAdmin($user, $attendee);
     }
 
-    protected function canDelete(TokenInterface $token, AttendeeInterface $attendee)
+    /**
+     * Returns whether the $user can delete the $attendee
+     *
+     * @param UserInterface     $user     The user
+     * @param AttendeeInterface $attendee The attendee
+     *
+     * @return boolean
+     */
+    protected function canDelete(UserInterface $user, AttendeeInterface $attendee)
     {
-        return $this->attendeeManager->isAdmin($token->getUser(), $attendee);
+        return $this->attendeeManager->isAdmin($user, $attendee);
     }
 
-    protected function canView(TokenInterface $token, AttendeeInterface $attendee)
+    /**
+     * Returns whether the $user can view the $attendee
+     *
+     * @param UserInterface     $user     The user
+     * @param AttendeeInterface $attendee The attendee
+     *
+     * @return boolean
+     */
+    protected function canView(UserInterface $user, AttendeeInterface $attendee)
     {
-        return $this->attendeeManager->isAdmin($token->getUser(), $attendee);
+        return $this->attendeeManager->isAdmin($user, $attendee);
     }
-
 }

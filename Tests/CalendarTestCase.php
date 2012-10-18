@@ -15,6 +15,7 @@ use Rizza\CalendarBundle\Model\CalendarInterface;
 use Rizza\CalendarBundle\Model\CalendarManagerInterface;
 use Rizza\CalendarBundle\Model\EventInterface;
 use Rizza\CalendarBundle\Model\EventManagerInterface;
+use Rizza\CalendarBundle\Model\Organizer;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -51,6 +52,22 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
         if (null === $attendee) {
             $attendee = $this->getMock("Rizza\CalendarBundle\Model\AttendeeInterface");
         }
+
+        return $attendee;
+    }
+
+    /**
+     * Returns a mock object of Attendee type.
+     *
+     * @param EventInterface    $event    The event
+     * @param AttendeeInterface $attendee The attendee
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockAttendee_ExpectsGetEvent(EventInterface $event, AttendeeInterface $attendee = null)
+    {
+        $attendee = $this->getMockAttendee($attendee);
+        $attendee->expects($this->once())->method("getEvent")->will($this->returnValue($event));
 
         return $attendee;
     }
@@ -136,6 +153,24 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Returns a mock object of AttendeeManager type.
+     *
+     * @param UserInterface            $user            The user
+     * @param AttendeeInterface        $attendee        The attendee
+     * @param boolean                  $isAdmin         Whether or not the user is expected to be an admin
+     * @param AttendeeManagerInterface $attendeeManager The attendee manager
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockAttendeeManager_ExpectsIsAdmin(UserInterface $user, AttendeeInterface $attendee, $isAdmin, AttendeeManagerInterface $attendeeManager = null)
+    {
+        $attendeeManager = $this->getMockAttendeeManager($attendeeManager);
+        $attendeeManager->expects($this->once())->method("isAdmin")->with($user, $attendee)->will($this->returnValue($isAdmin));
+
+        return $attendeeManager;
+    }
+
+    /**
      * Returns a mock object of Calendar type.
      *
      * @param CalendarInterface $calendar The mock calendar
@@ -147,6 +182,22 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
         if (null === $calendar) {
             $calendar = $this->getMock('Rizza\CalendarBundle\Model\CalendarInterface');
         }
+
+        return $calendar;
+    }
+
+    /**
+     * Returns a mock object of Calendar type.
+     *
+     * @param boolean           $isPublic Whether the calendar is public
+     * @param CalendarInterface $calendar The calendar
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockCalendar_ExpectsIsPublic($isPublic, CalendarInterface $calendar = null)
+    {
+        $calendar = $this->getMockCalendar($calendar);
+        $calendar->expects($this->once())->method("isPublic")->will($this->returnValue($isPublic));
 
         return $calendar;
     }
@@ -258,6 +309,38 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Returns a mock object of Calendar type.
      *
+     * @param CalendarInterface $calendar The calendar
+     * @param EventInterface $event       The event
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockEvent_ExpectsGetCalendar(CalendarInterface $calendar, EventInterface $event = null)
+    {
+        $event = $this->getMockEvent($event);
+        $event->expects($this->once())->method("getCalendar")->will($this->returnValue($calendar));
+
+        return $event;
+    }
+
+    /**
+     * Returns a mock object of Calendar type.
+     *
+     * @param Organizer $organizer  The organizer
+     * @param EventInterface $event The event
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockEvent_ExpectsGetOrganizer(Organizer $organizer, EventInterface $event = null)
+    {
+        $event = $this->getMockEvent($event);
+        $event->expects($this->once())->method("getOrganizer")->will($this->returnValue($organizer));
+
+        return $event;
+    }
+
+    /**
+     * Returns a mock object of Calendar type.
+     *
      * @param UserInterface  $organizer The mock organizer
      * @param EventInterface $event     The mock event
      *
@@ -338,11 +421,34 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Returns a MockObject of Organizer type
      *
+     * @param Organizer $organizer The organizer
+     *
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getMockOrganizer()
+    protected function getMockOrganizer(Organizer $organizer = null)
     {
-        return $this->getMock("Rizza\CalendarBundle\Model\Organizer");
+        if (null === $organizer) {
+            $organizer = $this->getMock("Rizza\CalendarBundle\Model\Organizer");
+        }
+
+        return $organizer;
+    }
+
+    /**
+     * Returns a MockObject of Organizer type
+     *
+     * @param UserInterface      $userToValidate The argument
+     * @param boolean            $isEqual        Whether the users are the same
+     * @param OrganizerInterface $user           The mock object to assert
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockOrganizer_ExpectsEquals(UserInterface $userToValidate, $isEqual, Organizer $organizer = null)
+    {
+        $organizer = $this->getMockOrganizer($organizer);
+        $organizer->expects($this->once())->method("equals")->with($userToValidate)->will($this->returnValue($isEqual));
+
+        return $organizer;
     }
 
     /**
@@ -453,6 +559,23 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
     protected function getMockUser()
     {
         return $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
+    }
+
+    /**
+     * Returns a MockObject of User type
+     *
+     * @param UserInterface $userToValidate The argument
+     * @param boolean       $isEqual        Whether the users are the same
+     * @param UserInterface $user           The mock object to assert
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockUser_ExpectsEquals(UserInterface $userToValidate, $isEqual, UserInterface $user = null)
+    {
+        $user = $this->getMockUser($user);
+        $user->expects($this->once())->method("equals")->with($userToValidate)->will($this->returnValue($isEqual));
+
+        return $user;
     }
 
     /**
