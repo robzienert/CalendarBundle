@@ -6,9 +6,11 @@
 
 namespace Rizza\CalendarBundle\Tests;
 
+use Rizza\CalendarBundle\Blamer\CalendarBlamerInterface;
 use Rizza\CalendarBundle\Blamer\EventBlamerInterface;
 use Rizza\CalendarBundle\Model\AttendeeInterface;
 use Rizza\CalendarBundle\Model\CalendarInterface;
+use Rizza\CalendarBundle\Model\CalendarManagerInterface;
 use Rizza\CalendarBundle\Model\EventInterface;
 use Rizza\CalendarBundle\Model\EventManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -97,6 +99,70 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
         $calendar->expects($this->once())->method("setOwner")->with($owner);
 
         return $calendar;
+    }
+
+    /**
+     * Returns a mock object of CalendarBlamer type.
+     *
+     * @param CalendarBlamerInterface $calendarBlamer The calendar blamer
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockCalendarBlamer(CalendarBlamerInterface $calendarBlamer = null)
+    {
+        if (null === $calendarBlamer) {
+            $calendarBlamer = $this->getMock("Rizza\CalendarBundle\Blamer\CalendarBlamerInterface");
+        }
+
+        return $calendarBlamer;
+    }
+
+    /**
+     * Returns a mock object of CalendarBlamer type.
+     *
+     * @param CalendarInterface       $calendar       The calendar
+     * @param CalendarBlamerInterface $calendarBlamer The calendar blamer
+     *
+     * @return Ambigous <\Rizza\CalendarBundle\Tests\PHPUnit_Framework_MockObject_MockObject, CalendarBlamerInterface>
+     */
+    protected function getMockCalendarBlamer_ExpectsBlame(CalendarInterface $calendar, CalendarBlamerInterface $calendarBlamer = null)
+    {
+        $calendarBlamer = $this->getMockCalendarBlamer($calendarBlamer);
+        $calendarBlamer->expects($this->once())->method("blame")->with($calendar);
+
+        return $calendarBlamer;
+    }
+
+    /**
+     * Returns a mock object of CalendarManager type.
+     *
+     * @param CalendarManagerInterface $calendarManager The calendar manager
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockCalendarManager(CalendarManagerInterface $calendarManager = null)
+    {
+        if (null === $calendarManager) {
+            $calendarManager = $this->getMock("Rizza\CalendarBundle\Model\CalendarManagerInterface");
+        }
+
+        return $calendarManager;
+    }
+
+    /**
+     * Returns a mock object of CalendarManager type.
+     *
+     * @param CalendarInterface $calendar
+     * @param CalendarManagerInterface $calendarManager
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockCalendarManager_ExpectsAddCalendar(CalendarInterface $calendar, CalendarManagerInterface $calendarManager = null)
+    {
+        $calendarManager = $this->getMockCalendarManager($calendarManager);
+        $calendarManager->expects($this->once())->method("addCalendar")->with($calendar);
+
+        return $calendarManager;
     }
 
     /**
