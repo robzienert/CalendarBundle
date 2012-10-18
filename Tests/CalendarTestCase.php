@@ -6,9 +6,11 @@
 
 namespace Rizza\CalendarBundle\Tests;
 
+use Rizza\CalendarBundle\Blamer\AttendeeBlamerInterface;
 use Rizza\CalendarBundle\Blamer\CalendarBlamerInterface;
 use Rizza\CalendarBundle\Blamer\EventBlamerInterface;
 use Rizza\CalendarBundle\Model\AttendeeInterface;
+use Rizza\CalendarBundle\Model\AttendeeManagerInterface;
 use Rizza\CalendarBundle\Model\CalendarInterface;
 use Rizza\CalendarBundle\Model\CalendarManagerInterface;
 use Rizza\CalendarBundle\Model\EventInterface;
@@ -67,6 +69,70 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
         $attendee->expects($this->once())->method("setUser")->with($user);
 
         return $attendee;
+    }
+
+    /**
+     * Returns a mock object of AttendeeBlamer type.
+     *
+     * @param AttendeeBlamerInterface $attendeeBlamer The attendee blamer
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockAttendeeBlamer(AttendeeBlamerInterface $attendeeBlamer = null)
+    {
+        if (null === $attendeeBlamer) {
+            $attendeeBlamer = $this->getMock("Rizza\CalendarBundle\Blamer\AttendeeBlamerInterface");
+        }
+
+        return $attendeeBlamer;
+    }
+
+    /**
+     * Returns a mock object of AttendeeBlamer type.
+     *
+     * @param AttendeeInterface       $attendee       The attendee
+     * @param AttendeeBlamerInterface $attendeeBlamer The attendee blamer
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockAttendeeBlamer_ExpectsBlame(AttendeeInterface $attendee, AttendeeBlamerInterface $attendeeBlamer = null)
+    {
+        $attendeeBlamer = $this->getMockAttendeeBlamer($attendeeBlamer);
+        $attendeeBlamer->expects($this->once())->method("blame")->with($attendee);
+
+        return $attendeeBlamer;
+    }
+
+    /**
+     * Returns a mock object of AttendeeManager type.
+     *
+     * @param AttendeeManagerInterface $attendeeManager The attendee manager
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockAttendeeManager(AttendeeManagerInterface $attendeeManager = null)
+    {
+        if (null === $attendeeManager) {
+            $attendeeManager = $this->getMock("Rizza\CalendarBundle\Model\AttendeeManagerInterface");
+        }
+
+        return $attendeeManager;
+    }
+
+    /**
+     * Returns a mock object of AttendeeManager type.
+     *
+     * @param AttendeeInterface        $attendee        The attendee
+     * @param AttendeeManagerInterface $attendeeManager The attendee manager
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockAttendeeManager_ExpectsAddAttendee(AttendeeInterface $attendee, AttendeeManagerInterface $attendeeManager = null)
+    {
+        $attendeeManager = $this->getMockAttendeeManager($attendeeManager);
+        $attendeeManager->expects($this->once())->method("addAttendee")->with($attendee);
+
+        return $attendeeManager;
     }
 
     /**
