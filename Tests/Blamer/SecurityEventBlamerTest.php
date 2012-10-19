@@ -20,7 +20,7 @@ class SecurityEventBlamerTest extends CalendarTestCase
     public function testBlame($returnToken, $isGranted)
     {
         $securityContext = $this->getMockSecurityContext();
-        $organizer       = $this->getMockUser();
+        $organizer       = $this->getMockOrganizer();
         $event           = $this->getMockEvent();
         $token           = null;
 

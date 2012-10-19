@@ -191,14 +191,14 @@ interface EventInterface
     /**
      * Set the event organizer
      *
-     * @param UserInterface $organizer
+     * @param Organizer $organizer
      */
-    public function setOrganizer(UserInterface $organizer);
+    public function setOrganizer(Organizer $organizer);
 
     /**
      * Get the event organizer
      *
-     * @return UserInterface
+     * @return Organizer
      */
     public function getOrganizer();
 
@@ -212,16 +212,16 @@ interface EventInterface
     /**
      * Add an attendee
      *
-     * @param Attendee $attendee
+     * @param AttendeeInterface $attendee
      */
-    public function addAttendee(Attendee $attendee);
+    public function addAttendee(AttendeeInterface $attendee);
 
     /**
      * Remove an attendee
      *
-     * @param Attendee $attendee
+     * @param AttendeeInterface $attendee
      */
-    public function removeAttendee(Attendee $attendee);
+    public function removeAttendee(AttendeeInterface $attendee);
 
     /**
      * Returns whether or not the event is on a given DateTime
