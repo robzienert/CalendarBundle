@@ -28,6 +28,11 @@ class EventTest extends CalendarTestCase
         parent::tearDown();
     }
 
+    public function testSetId()
+    {
+        $this->assertNull($this->event->getId(), "Id is null on creation");
+    }
+
     public function testSetGetTitle()
     {
         $this->assertNull($this->event->getTitle());

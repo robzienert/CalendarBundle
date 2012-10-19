@@ -27,6 +27,11 @@ class AlarmTest extends CalendarTestCase
         parent::tearDown();
     }
 
+    public function testSetId()
+    {
+        $this->assertNull($this->alarm->getId(), "Id is null on creation");
+    }
+
     public function testSetGetEvent()
     {
         $this->alarm = $this->getMockForAbstractClass("Rizza\CalendarBundle\Model\Alarm", array($this->getMockEvent()));

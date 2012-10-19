@@ -27,6 +27,11 @@ class RecurrenceTest extends CalendarTestCase
         parent::tearDown();
     }
 
+    public function testSetId()
+    {
+        $this->assertNull($this->recurrence->getId(), "Id is null on creation");
+    }
+
     public function testAddRemoveDay()
     {
         $this->recurrence->addDay(1);

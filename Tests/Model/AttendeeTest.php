@@ -17,44 +17,49 @@ class AttendeeTest extends CalendarTestCase
      *
      * @var Attendee
      */
-    private $class;
+    private $attendee;
 
     public function setUp()
     {
         parent::setUp();
 
-        $this->class = new Attendee();
+        $this->attendee = new Attendee();
     }
 
     public function tearDown()
     {
-        $this->class = null;
+        $this->attendee = null;
 
         parent::tearDown();
     }
 
+    public function testSetId()
+    {
+        $this->assertNull($this->attendee->getId(), "Id is null on creation");
+    }
+
     public function testSetterGetterCreatedAt()
     {
-        $this->assertSetterGetter($this->class, "createdAt", $this->getMockDatetime());
+        $this->assertSetterGetter($this->attendee, "createdAt", $this->getMockDatetime());
     }
 
     public function testSetterGetterUpdatedAt()
     {
-        $this->assertSetterGetter($this->class, "updatedAt", $this->getMockDatetime());
+        $this->assertSetterGetter($this->attendee, "updatedAt", $this->getMockDatetime());
     }
 
     public function testSetterGetterUser()
     {
-        $this->assertSetterGetter($this->class, "user", $this->getMockUser());
+        $this->assertSetterGetter($this->attendee, "user", $this->getMockUser());
     }
 
     public function testSetterGetterEvent()
     {
-        $this->assertSetterGetter($this->class, "event", $this->getMockEvent());
+        $this->assertSetterGetter($this->attendee, "event", $this->getMockEvent());
     }
 
     public function testSetterGetterStatus()
     {
-        $this->assertSetterGetter($this->class, "status", uniqid("status-"));
+        $this->assertSetterGetter($this->attendee, "status", uniqid("status-"));
     }
 }
