@@ -46,6 +46,11 @@ abstract class Calendar implements CalendarInterface
      */
     protected $visibility;
 
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+    }
+
     /**
      * (non-PHPdoc)
      * @see \Rizza\CalendarBundle\Model\CalendarInterface::getId()
@@ -97,7 +102,7 @@ abstract class Calendar implements CalendarInterface
      */
     public function getEvents()
     {
-        return $this->events ?: $this->events = new ArrayCollection();
+        return $this->events;
     }
 
     /**
@@ -120,8 +125,8 @@ abstract class Calendar implements CalendarInterface
      */
     public function addEvent(EventInterface $event)
     {
-        if (!$this->getEvents()->contains($event)) {
-            $this->getEvents()->add($event);
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
         }
     }
 
@@ -131,8 +136,8 @@ abstract class Calendar implements CalendarInterface
      */
     public function removeEvent(EventInterface $event)
     {
-        if ($this->getEvents()->contains($event)) {
-            $this->getEvents()->removeElement($event);
+        if ($this->events->contains($event)) {
+            $this->events->removeElement($event);
         }
     }
 

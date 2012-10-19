@@ -2,6 +2,7 @@
 
 namespace Rizza\CalendarBundle\Tests\Model;
 
+use Rizza\CalendarBundle\Model\CalendarInterface;
 use Rizza\CalendarBundle\Tests\CalendarTestCase;
 
 class CalendarTest extends CalendarTestCase
@@ -66,5 +67,28 @@ class CalendarTest extends CalendarTestCase
         $this->assertEquals(array($event2),
                             $this->calendar->getEventsOnDay($dateToCompare)
                                 ->getValues());
+    }
+
+    public function testSetOwner()
+    {
+        $this->assertSetterGetter($this->calendar, "owner", $this->getMockUser());
+    }
+
+    /**
+     * @dataProvider getVisibilityData
+     */
+    public function testVisibility($visibility, $isPrivate, $isPublic)
+    {
+        $this->assertSetterGetter($this->calendar, "visibility", $visibility);
+        $this->assertEquals($isPrivate, $this->calendar->isPrivate());
+        $this->assertEquals($isPublic, $this->calendar->isPublic());
+    }
+
+    public function getVisibilityData()
+    {
+        return array(
+            array(CalendarInterface::VISIBILITY_PRIVATE, true, false),
+            array(CalendarInterface::VISIBILITY_PUBLIC, false, true),
+        );
     }
 }
