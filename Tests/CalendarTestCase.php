@@ -554,11 +554,17 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Returns a MockObject of User type
      *
+     * @param UserInterface $user The mock object to assert
+     *
      * @return PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getMockUser()
+    protected function getMockUser(UserInterface $user = null)
     {
-        return $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
+        if (null === $user) {
+            $user = $this->getMock('Symfony\Component\Security\Core\User\UserInterface');
+        }
+
+        return $user;
     }
 
     /**
@@ -581,15 +587,18 @@ class CalendarTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Assert that the setter and getter are setting/returning the same values.
      *
-     * @param object $object    The object to test
-     * @param string $attribute The attribute as defined in the class (no "_")
-     * @param mixed  $value     The value to assert for
+     * @param object $object      The object to test
+     * @param string $attribute   The attribute as defined in the class (no "_")
+     * @param mixed  $value       The value to assert for
+     * @param mixed  $defaulValue The default value to assert for
      */
-    protected function assertSetterGetter($object, $attribute, $value)
+    protected function assertSetterGetter($object, $attribute, $value, $defaulValue = null)
     {
         $setter = "set" . ucfirst($attribute);
         $getter = "get" . ucfirst($attribute);
+        $class  = get_class($object);
 
+        $this->assertEquals($defaulValue, $object->{$getter}(), "{$class}::{$attribute} should set by default");
         $object->{$setter}($value);
         $this->assertEquals($value, $object->{$getter}(), "The setter and getter for attribute '{$attribute}' should have the same value");
     }
