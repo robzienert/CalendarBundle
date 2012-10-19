@@ -2,6 +2,7 @@
 
 namespace Rizza\CalendarBundle\Model;
 
+use \DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -83,14 +84,14 @@ abstract class Event implements EventInterface
     /**
      * The start date
      *
-     * @var \DateTime
+     * @var DateTime
      */
     protected $startDate;
 
     /**
      * The end date
      *
-     * @var \DateTime
+     * @var DateTime
      */
     protected $endDate;
 
@@ -139,7 +140,7 @@ abstract class Event implements EventInterface
     /**
      * The event's organizer
      *
-     * @var UserInterface
+     * @var Organizer
      */
     protected $organizer;
 
@@ -152,125 +153,76 @@ abstract class Event implements EventInterface
 
     public function __construct($title = null)
     {
-        $this->title = $title;
-        $this->allDay = false;
+        $this->title       = $title;
+        $this->allDay      = false;
+        $this->attendees   = new ArrayCollection();
+        $this->recurrences = new ArrayCollection();
+        $this->exceptions  = new ArrayCollection();
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getId()
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::setTitle()
-     */
     public function setTitle($title)
     {
         $this->title = $title;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getTitle()
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::setDescription()
-     */
     public function setDescription($description)
     {
         $this->description = $description;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getDescription()
-     */
     public function getDescription()
     {
         return $this->description;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::setCategory()
-     */
     public function setCategory($category)
     {
         $this->category = $category;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getCategory()
-     */
     public function getCategory()
     {
         return $this->category;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::setCalendar()
-     */
     public function setCalendar(CalendarInterface $calendar)
     {
         $this->calendar = $calendar;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getCalendar()
-     */
     public function getCalendar()
     {
         return $this->calendar;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::setAllDay()
-     */
     public function setAllDay($allDay)
     {
         $this->allDay = (bool) $allDay;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getAllDay()
-     */
     public function getAllDay()
     {
         return $this->allDay;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::isAllDay()
-     */
     public function isAllDay()
     {
         return $this->allDay;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::setStartDate()
-     */
-    public function setStartDate(\DateTime $startDate)
+    public function setStartDate(DateTime $startDate)
     {
-        if ($this->endDate instanceof \DateTime
+        if ($this->endDate instanceof DateTime
             && $this->endDate->getTimestamp() < $startDate->getTimestamp()
         ) {
             throw new \InvalidArgumentException('The start date must come before the end date');
@@ -279,22 +231,14 @@ abstract class Event implements EventInterface
         $this->startDate = $startDate;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getStartDate()
-     */
     public function getStartDate()
     {
         return $this->startDate;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::setEndDate()
-     */
-    public function setEndDate(\DateTime $endDate)
+    public function setEndDate(DateTime $endDate)
     {
-        if ($this->startDate instanceof \DateTime
+        if ($this->startDate instanceof DateTime
             && $this->startDate->getTimestamp() > $endDate->getTimestamp()
         ) {
             throw new \InvalidArgumentException('The end date must come after the start date');
@@ -303,95 +247,55 @@ abstract class Event implements EventInterface
         $this->endDate = $endDate;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getEndDate()
-     */
     public function getEndDate()
     {
         return $this->endDate;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getExceptions()
-     */
     public function getExceptions()
     {
-        return $this->exceptions ?: $this->exceptions = new ArrayCollection();
+        return $this->exceptions;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::addException()
-     */
-    public function addException(\DateTime $exception)
+    public function addException(DateTime $exception)
     {
         if (!$this->getExceptions()->contains($exception)) {
             $this->getExceptions()->add($exception);
         }
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::removeException()
-     */
-    public function removeException(\DateTime $exception)
+    public function removeException(DateTime $exception)
     {
         if ($this->getExceptions()->contains($exception)) {
             $this->getExceptions()->removeElement($exception);
         }
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::setLocation()
-     */
     public function setLocation($location)
     {
         $this->location = $location;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getLocation()
-     */
     public function getLocation()
     {
         return $this->location;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::setUrl()
-     */
     public function setUrl($url)
     {
         $this->url = $url;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getUrl()
-     */
     public function getUrl()
     {
         return $this->url;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getRecurrences()
-     */
     public function getRecurrences()
     {
-        return $this->recurrences ?: $this->recurrences = new ArrayCollection();
+        return $this->recurrences;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::addRecurrence()
-     */
     public function addRecurrence(RecurrenceInterface $recurrence)
     {
         if (!$this->getRecurrences()->contains($recurrence)) {
@@ -399,10 +303,6 @@ abstract class Event implements EventInterface
         }
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::removeRecurrence()
-     */
     public function removeRecurrence(RecurrenceInterface $recurrence)
     {
         if ($this->getRecurrences()->contains($recurrence)) {
@@ -410,89 +310,97 @@ abstract class Event implements EventInterface
         }
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::setOrganizer()
-     */
-    public function setOrganizer(UserInterface $organizer)
+    public function setOrganizer(Organizer $organizer)
     {
         $this->organizer = $organizer;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getOrganizer()
-     */
     public function getOrganizer()
     {
         return $this->organizer;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::getAttendees()
-     */
     public function getAttendees()
     {
-        return $this->attendees ?: $this->attendees = new ArrayCollection();
+        return $this->attendees;
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::addAttendee()
-     */
-    public function addAttendee(Attendee $attendee)
+    public function addAttendee(AttendeeInterface $attendee)
     {
-        if (!$this->getAttendees()->contains($attendee)) {
-            $this->getAttendees()->add($attendee);
+        if (!$this->attendees->contains($attendee)) {
+            $this->attendees->add($attendee);
         }
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::removeAttendee()
-     */
-    public function removeAttendee(Attendee $attendee)
+    public function removeAttendee(AttendeeInterface $attendee)
     {
-        if ($this->getAttendees()->contains($attendee)) {
-            $this->getAttendees()->removeElement($attendee);
+        if ($this->attendees->contains($attendee)) {
+            $this->attendees->removeElement($attendee);
         }
     }
 
-    /**
-     * (non-PHPdoc)
-     * @see \Rizza\CalendarBundle\Model\EventInterface::isOnDate()
-     */
-    public function isOnDate(\DateTime $dateTime)
+    public function isOnDate(DateTime $dateTime)
     {
-        if (!$this->startDate instanceof \DateTime) {
+        if (!$this->startDate instanceof DateTime) {
             throw new \RuntimeException('Event does not have a start date');
         }
-        if (!$this->endDate instanceof \DateTime) {
+        if (!$this->endDate instanceof DateTime) {
             throw new \RunTimeException('Event does not have an end date');
         }
 
-        $onDate = (($this->startDate->format('Y-m-d') <= $dateTime->format('Y-m-d')
-            && $this->endDate->format('Y-m-d') >= $dateTime->format('Y-m-d')));
+        $isOnDate = $this->isBetween($dateTime);
 
-        if (!$onDate) {
-            while ($this->getRecurrences()->next()) {
-                if ($this->getRecurrences()->current()->contains($dateTime)) {
-                    $onDate = true;
+        // Check event's recurence
+        if (!$isOnDate) {
+            $recurrences = $this->getRecurrences();
+            foreach ($recurrences as $recurrence) {
+                if ($recurrence->contains($dateTime)) {
+                    $isOnDate = true;
                     break;
                 }
             }
         }
 
-        if ($onDate) {
-            while ($this->getExceptions()->next()) {
-                if ($this->getExceptions()->current()->contains($dateTime)) {
-                    $onDate = false;
+        // Check date exceptions
+        if ($isOnDate) {
+            $dateExceptions = $this->getExceptions();
+            // @todo use DatePeriod ?
+            foreach ($dateExceptions as $dateException) {
+                if ($this->isInRange($dateTime, $dateException)) {
+                    $isOnDate = false;
                     break;
                 }
             }
         }
 
-        return $onDate;
+        return $isOnDate;
+    }
+
+    /**
+     * Returns whether the $dateTime is included between the event's dates.
+     *
+     * @param DateTime $dateTime The datetime to test
+     *
+     * @return boolean
+     */
+    private function isBetween(DateTime $dateTime)
+    {
+        return ($this->startDate <= $dateTime && $this->endDate >= $dateTime);
+    }
+
+    /**
+     * Returns whether the $dateTime is included between the event's dates.
+     *
+     * @param DateTime $dateTime1 The datetime to test
+     * @param DateTime $dateTime2 The datetime to compare
+     *
+     * @return boolean
+     */
+    private function isInRange(DateTime $dateTime1, DateTime $dateTime2)
+    {
+        $diff = $dateTime1->diff($dateTime2)->format("%r%a%H%I%S");
+
+        // More or less 1 hour
+        return ($diff >= -10000 && $diff <= 10000);
     }
 }

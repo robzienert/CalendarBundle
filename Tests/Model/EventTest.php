@@ -2,6 +2,7 @@
 
 namespace Rizza\CalendarBundle\Tests\Model;
 
+use \DateTime;
 use Rizza\CalendarBundle\Model\Event;
 use Rizza\CalendarBundle\Tests\CalendarTestCase;
 
@@ -146,56 +147,98 @@ class EventTest extends CalendarTestCase
     {
         $this->setExpectedException('InvalidArgumentException');
 
-        $this->event->setStartDate(\DateTime::createFromFormat('Y-m-d', '2011-11-01'));
+        $this->event->setStartDate(DateTime::createFromFormat('Y-m-d', '2011-11-01'));
 
-        $this->event->setEndDate(\DateTime::createFromFormat('Y-m-d', '2011-10-01'));
+        $this->event->setEndDate(DateTime::createFromFormat('Y-m-d', '2011-10-01'));
     }
 
     public function testSetStartDateThrowsExceptionWithValueAfterEnd()
     {
         $this->setExpectedException('InvalidArgumentException');
 
-        $this->event->setEndDate(\DateTime::createFromFormat('Y-m-d', '2011-10-01'));
+        $this->event->setEndDate(DateTime::createFromFormat('Y-m-d', '2011-10-01'));
 
-        $this->event->setStartDate(\DateTime::createFromFormat('Y-m-d', '2011-11-01'));
+        $this->event->setStartDate(DateTime::createFromFormat('Y-m-d', '2011-11-01'));
     }
 
     public function testIsOnDateThrowsExceptionsWithoutStartDate()
     {
         $this->setExpectedException('RuntimeException');
 
-        $this->event->isOnDate(new \DateTime());
+        $this->event->isOnDate(new DateTime());
     }
 
     public function testIsOnDateThrowsExceptionsWithoutEndDate()
     {
         $this->setExpectedException('RuntimeException');
 
-        $this->event->setStartDate(new \DateTime());
-        $this->event->isOnDate(new \DateTime());
+        $this->event->setStartDate(new DateTime());
+        $this->event->isOnDate(new DateTime());
     }
 
     /**
      * @dataProvider dateTimeProvider
      */
-    public function testIsOnDate(\DateTime $dateTime)
+    public function testIsOnDate($isOnDate, DateTime $dateTime, $isInRecurrences = null, $exception = null)
     {
-        $this->event->setStartDate(\DateTime::createFromFormat('Y-m-d', '2011-10-01'));
-        $this->event->setEndDate(\DateTime::createFromFormat('Y-m-d', '2011-10-02'));
+        // Event duration is all the 2012 year
+        $this->event->setStartDate(DateTime::createFromFormat('Y-m-d H:i:s', '2012-01-01 00:00:00'));
+        $this->event->setEndDate(DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-31 23:59:59'));
 
-        if ($this->event->getStartDate()->format('Y-m-d') > $dateTime->format('Y-m-d')) {
-            $this->assertFalse($this->event->isOnDate($dateTime));
-        } else {
-            $this->assertTrue($this->event->isOnDate($dateTime));
+        if (null !== $isInRecurrences) {
+            $recurrence = $this->getMockRecurrence();
+            $recurrence->expects($this->once())->method("contains")->will($this->returnValue($isInRecurrences));
+            $this->event->addRecurrence($recurrence);
         }
+
+        if (null !== $exception) {
+            $this->event->addException($exception);
+        }
+
+        $this->assertEquals($isOnDate, $this->event->isOnDate($dateTime));
     }
 
     public function dateTimeProvider()
     {
+        // Exceptions tolerance is in hours (+- 1 hour)
+        $dateNotInException         = DateTime::createFromFormat('Y-m-d H:i:s', '2012-02-01 00:00:00');
+        $dateInException            = DateTime::createFromFormat('Y-m-d H:i:s', '2012-04-01 00:00:00');
+        $dateGreaterByOneHour       = DateTime::createFromFormat('Y-m-d H:i:s', '2012-04-01 00:01:00');
+        $dateLowerByOneHour         = DateTime::createFromFormat('Y-m-d H:i:s', '2012-03-31 23:00:00');
+        $dateGreaterByOneHourOneSec = DateTime::createFromFormat('Y-m-d H:i:s', '2012-04-01 01:00:01');
+        $dateLowerByOneHourOneSec   = DateTime::createFromFormat('Y-m-d H:i:s', '2012-03-31 22:59:59');
+
         return array(
-            array(\DateTime::createFromFormat('Y-m-d H:i:s', '2011-10-01 12:00:00')),
-            array(\DateTime::createFromFormat('Y-m-d H:i:s', '2011-10-02 17:00:00')),
-            array(\DateTime::createFromFormat('Y-m-d H:i:s', '2011-03-14 20:30:00'))
+            // Date is lower than startdate by 1 second
+            array(false, DateTime::createFromFormat('Y-m-d H:i:s', '2011-12-31 23:59:59')),
+            // Date is lower than startdate by 1 day
+            array(false, DateTime::createFromFormat('Y-m-d H:i:s', '2011-12-31 00:00:00')),
+            // Date is greater than enddate by 1 second
+            array(false, DateTime::createFromFormat('Y-m-d H:i:s', '2013-01-01 00:00:00')),
+            // Date is greater than enddate by day
+            array(false, DateTime::createFromFormat('Y-m-d H:i:s', '2013-01-02 23:59:59')),
+            // Date is equals to startdate
+            array(true, DateTime::createFromFormat('Y-m-d H:i:s', '2012-01-01 00:00:00')),
+            // Date is equals to enddate
+            array(true, DateTime::createFromFormat('Y-m-d H:i:s', '2012-12-31 23:59:59')),
+            // Date is between startdate and enddate
+            array(true, DateTime::createFromFormat('Y-m-d H:i:s', '2012-07-01 12:00:00')),
+            // Event has recurrences and date is not in recurrences
+            array(false, DateTime::createFromFormat('Y-m-d H:i:s', '2020-01-01 00:00:00'), false),
+            // Event has recurrences and date is in recurrences
+            array(true, DateTime::createFromFormat('Y-m-d H:i:s', '2020-01-01 00:00:00'), true),
+            // Event has exceptions and date is in exceptions
+            array(false, $dateInException, null, $dateGreaterByOneHour),
+            // Event has exceptions and date is in exceptions
+            array(false, $dateInException, null, $dateLowerByOneHour),
+            // Event has exceptions and date is in exceptions
+            array(false, $dateInException, null, $dateInException),
+            // Event has exceptions and date is in exceptions
+            array(true, $dateInException, null, $dateGreaterByOneHourOneSec),
+            // Event has exceptions and date is in exceptions
+            array(true, $dateInException, null, $dateLowerByOneHourOneSec),
+            // Event has exceptions and date is not in exceptions
+            array(true, $dateInException, null, $dateNotInException),
         );
     }
 }
