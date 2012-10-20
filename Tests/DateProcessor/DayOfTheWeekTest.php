@@ -61,7 +61,7 @@ class DayOfTheWeekTest extends \PHPUnit_Framework_TestCase
         return array(
             array(\DateTime::createFromFormat('Y-m-d H:i:s', '2011-10-01 12:00:00'), 6, true),
             array(\DateTime::createFromFormat('Y-m-d H:i:s', '2011-10-02 17:00:00'), 3, false),
-            array(\DateTime::createFromFormat('Y-m-d H:i:s', '2011-03-14 20:30:00'), 2, true)
+            array(\DateTime::createFromFormat('Y-m-d H:i:s', '2011-03-14 20:30:00'), 1, true)
         );
     }
 }

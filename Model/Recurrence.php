@@ -2,27 +2,102 @@
 
 namespace Rizza\CalendarBundle\Model;
 
+use \Datetime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Rizza\CalendarBundle\DateProcessor\DayOfTheMonth;
 use Rizza\CalendarBundle\DateProcessor\DayOfTheYear;
 
 abstract class Recurrence implements RecurrenceInterface
 {
+    /**
+     * Occur each sunday
+     *
+     * @var integer
+     */
     const DAY_SUNDAY = 0;
+
+    /**
+     * Occur each monday
+     *
+     * @var integer
+     */
     const DAY_MONDAY = 1;
+
+    /**
+     * Occur each tuesday
+     *
+     * @var integer
+     */
     const DAY_TUESDAY = 2;
+
+    /**
+     * Occur each wednesday
+     *
+     * @var integer
+     */
     const DAY_WEDNESDAY = 3;
+
+    /**
+     * Occur each thursday
+     *
+     * @var integer
+     */
     const DAY_THURSDAY = 4;
+
+    /**
+     * Occur each friday
+     *
+     * @var integer
+     */
     const DAY_FRIDAY = 5;
+
+    /**
+     * Occur each saturday
+     *
+     * @var integer
+     */
     const DAY_SATURDAY = 6;
 
+    /**
+     * Occur at each days
+     *
+     * @var integer
+     */
     const FREQUENCY_DAILY = 0;
+
+    /**
+     * Occur at each weeks
+     *
+     * @var integer
+     */
     const FREQUENCY_WEEKLY = 1;
+
+    /**
+     * Occur at each months
+     *
+     * @var integer
+     */
     const FREQUENCY_MONTHLY = 2;
+
+    /**
+     * Occur at each years
+     *
+     * @var integer
+     */
     const FREQUENCY_YEARLY = 3;
-    
+
+    /**
+     * The recurence's id
+     *
+     * @var integer
+     */
     protected $id;
 
+    /**
+     * The recurence's event
+     *
+     * @var EventInterface
+     */
     protected $event;
 
     /**
@@ -74,7 +149,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     /**
      * An array of numbers, with integer values ranging from 1 to 366 or -366
-     * to -1, that indicate the days within a year that this recurrence occurs.
+     * to -1. The number indicate the days within a year that this recurrence occurs.
      * Negative values indicate the number of days from the last day of the year.
      *
      * @var array
@@ -83,7 +158,7 @@ abstract class Recurrence implements RecurrenceInterface
 
     /**
      * The frequency of this recurrence specified by a constant. Possible values
-     * are 0 (daily), 1 (weekly), 2 (monthly), or 3 (yearly).
+     * are FREQUENCY_DAILY, FREQUENCY_WEEKLY, FREQUENCY_MONTHLY, FREQUENCY_YEARLY.
      *
      * @var string
      */
@@ -107,53 +182,96 @@ abstract class Recurrence implements RecurrenceInterface
 
     /**
      * A string that indicates the start day of the week. Possible values are
-     * 0 (sunday) - 6 (saturday).
-     * 
+     * DAY_SUNDAY, DAY_MONDAY, DAY_TUESDAY, DAY_WEDNESDAY,
+     * DAY_THURSDAY, DAY_FRIDAY, DAY_SATURDAY.
+     *
      * @var int
      */
     protected $weekStartDay;
 
+    public function __construct()
+    {
+        $this->yearDays     = new ArrayCollection();
+        $this->weekNumbers  = new ArrayCollection();
+        $this->days         = new ArrayCollection();
+        $this->months       = new ArrayCollection();
+        $this->monthDays    = new ArrayCollection();
+        $this->dayFrequency = new ArrayCollection();
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getId()
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::setEvent()
+     */
     public function setEvent(EventInterface $event)
     {
         $this->event = $event;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getEvent()
+     */
     public function getEvent()
     {
         return $this->event;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getDays()
+     */
     public function getDays()
     {
-        return $this->days ?: $this->days = new ArrayCollection();
+        return $this->days;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::addDay()
+     */
     public function addDay($day)
     {
         $day = intval($day);
-        if (!$this->getDays()->contains($day)) {
-            $this->getDays()->add($day);
+        if (!$this->days->contains($day)) {
+            $this->days->add($day);
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::removeDay()
+     */
     public function removeDay($day)
     {
         $day = intval($day);
-        if ($this->getDays()->contains($day)) {
-            $this->getDays()->removeElement($day);
+        if ($this->days->contains($day)) {
+            $this->days->removeElement($day);
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getDayFrequency()
+     */
     public function getDayFrequency()
     {
-        return $this->dayFrequency ?: $this->dayFrequency = new ArrayCollection();
+        return $this->dayFrequency;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::addDayFrequency()
+     */
     public function addDayFrequency($frequency)
     {
         $frequency = intval($frequency);
@@ -161,44 +279,68 @@ abstract class Recurrence implements RecurrenceInterface
             throw new \RangeException('Day frequency cannot be less than 0 or greater than 6');
         }
 
-        if (!$this->getDayFrequency()->contains($frequency)) {
-            $this->getDayFrequency()->add($frequency);
+        if (!$this->dayFrequency->contains($frequency)) {
+            $this->dayFrequency->add($frequency);
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::removeDayFrequency()
+     */
     public function removeDayFrequency($frequency)
     {
-        if ($this->getDayFrequency()->contains($frequency)) {
-            $this->getDayFrequency()->removeElement($frequency);
+        if ($this->dayFrequency->contains($frequency)) {
+            $this->dayFrequency->removeElement($frequency);
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getMonths()
+     */
     public function getMonths()
     {
-        return $this->months ?: $this->months = new ArrayCollection();
+        return $this->months;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::addMonth()
+     */
     public function addMonth($month)
     {
         $month = intval($month);
-        if (!$this->getMonths()->contains($month)) {
-            $this->getMonths()->add($month);
+        if (!$this->months->contains($month)) {
+            $this->months->add($month);
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::removeMonth()
+     */
     public function removeMonth($month)
     {
         $month = intval($month);
-        if ($this->getMonths()->contains($month)) {
-            $this->getMonths()->removeElement($month);
+        if ($this->months->contains($month)) {
+            $this->months->removeElement($month);
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getMonthDays()
+     */
     public function getMonthDays()
     {
-        return $this->monthDays ?: $this->monthDays = new ArrayCollection();
+        return $this->monthDays;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::addMonthDay()
+     */
     public function addMonthDay($day)
     {
         $day = intval($day);
@@ -207,127 +349,203 @@ abstract class Recurrence implements RecurrenceInterface
             throw new \RangeException('Month day must be between -1 to -31 or 1 to 31');
         }
 
-        if (!$this->getMonthDays()->contains($day)) {
-            $this->getMonthDays()->add($day);
+        if (!$this->monthDays->contains($day)) {
+            $this->monthDays->add($day);
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::removeMonthDay()
+     */
     public function removeMonthDay($day)
     {
         $day = intval($day);
-        if ($this->getMonthDays()->contains($day)) {
-            $this->getMonthDays()->removeElement($day);
+        if ($this->monthDays->contains($day)) {
+            $this->monthDays->removeElement($day);
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getWeekNumbers()
+     */
     public function getWeekNumbers()
     {
-        return $this->weekNumbers ?: $this->weekNumbers = new ArrayCollection();
+        return $this->weekNumbers;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::addWeekNumber()
+     */
     public function addWeekNumber($week)
     {
         $week = intval($week);
-        if (!$this->getWeekNumbers()->contains($week)) {
-            $this->getWeekNumbers()->add($week);
+        if (!$this->weekNumbers->contains($week)) {
+            $this->weekNumbers->add($week);
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::removeWeekNumber()
+     */
     public function removeWeekNumber($week)
     {
         $week = intval($week);
-        if ($this->getWeekNumbers()->contains($week)) {
-            $this->getWeekNumbers()->removeElement($week);
+        if ($this->weekNumbers->contains($week)) {
+            $this->weekNumbers->removeElement($week);
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getYearDays()
+     */
     public function getYearDays()
     {
-        return $this->yearDays ?: $this->yearDays = new ArrayCollection();
+        return $this->yearDays;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::addYearDay()
+     */
     public function addYearDay($day)
     {
         $day = intval($day);
-        if (!$this->getYearDays()->contains($day)) {
-            $this->getYearDays()->add($day);
+        if (!$this->yearDays->contains($day)) {
+            $this->yearDays->add($day);
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::removeYearDay()
+     */
     public function removeYearDay($day)
     {
         $day = intval($day);
-        if ($this->getYearDays()->contains($day)) {
-            $this->getYearDays()->removeElement($day);
+        if ($this->yearDays->contains($day)) {
+            $this->yearDays->removeElement($day);
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::setFrequency()
+     */
     public function setFrequency($frequency)
     {
-        $validFrequencies = array(self::FREQUENCY_DAILY, self::FREQUENCY_MONTHLY,
-                                  self::FREQUENCY_WEEKLY, self::FREQUENCY_YEARLY);
+        $validFrequencies = array(
+            self::FREQUENCY_DAILY,
+            self::FREQUENCY_MONTHLY,
+            self::FREQUENCY_WEEKLY,
+            self::FREQUENCY_YEARLY,
+        );
+
         if (!in_array($frequency, $validFrequencies)) {
             throw new \InvalidArgumentException('Invalid frequency value provided');
         }
-        
+
         $this->frequency = $frequency;
     }
-    
+
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getFrequency()
+     */
     public function getFrequency()
     {
         return $this->frequency;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::setInterval()
+     */
     public function setInterval($interval)
     {
         $this->interval = abs(intval($interval));
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getInterval()
+     */
     public function getInterval()
     {
         return $this->interval;
     }
-    
-    public function setUntil(\DateTime $until)
+
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::setUntil()
+     */
+    public function setUntil(DateTime $until)
     {
         $this->until = $until;
     }
-    
+
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getUntil()
+     */
     public function getUntil()
     {
         return $this->until;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::setWeekStartDay()
+     */
     public function setWeekStartDay($day)
     {
-        $validDays = array(self::DAY_SUNDAY, self::DAY_MONDAY, self::DAY_TUESDAY,
-                           self::DAY_WEDNESDAY, self::DAY_THURSDAY,
-                           self::DAY_FRIDAY, self::DAY_SATURDAY);
+        $validDays = array(
+            self::DAY_SUNDAY,
+            self::DAY_MONDAY,
+            self::DAY_TUESDAY,
+            self::DAY_WEDNESDAY,
+            self::DAY_THURSDAY,
+            self::DAY_FRIDAY,
+            self::DAY_SATURDAY,
+        );
+
         if (!in_array($day, $validDays)) {
             throw new \InvalidArgumentException('Invalid week start day provided');
         }
 
         $this->weekStartDay = $day;
     }
-    
+
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getWeekStartDay()
+     */
     public function getWeekStartDay()
     {
         return $this->weekStartDay;
     }
 
-    public function contains(\DateTime $dateTime)
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::contains()
+     */
+    public function contains(DateTime $dateTime)
     {
         $onDate = true;
 
-        if ($this->until instanceof \DateTime && $dateTime->format('Y-m-d') > $this->until->format('Y-m-d')) {
+        if ($this->until instanceof DateTime && $dateTime->format('Y-m-d') > $this->until->format('Y-m-d')) {
             $onDate = false;
         }
 
-        if ($this->getMonths()->count() && !$this->getMonths()->contains((int) $dateTime->format('n'))) {
+        if ($this->months->count() && !$this->months->contains((int) $dateTime->format('n'))) {
             $onDate = false;
         }
 
-        if ($this->getWeekNumbers()->count() && !$this->getWeekNumbers()->contains((int) $dateTime->format('W'))) {
+        if ($this->weekNumbers->count() && !$this->weekNumbers->contains((int) $dateTime->format('W'))) {
             $onDate = false;
         }
 
@@ -342,7 +560,16 @@ abstract class Recurrence implements RecurrenceInterface
         return $onDate;
     }
 
-    protected function onDayFrequency(\DateTime $dateTime)
+    /**
+     * Whether the $datetime is
+     *
+     * @param DateTime $dateTime
+     *
+     * @throws \Exception
+     * @throws \UnexpectedValueException
+     * @return boolean
+     */
+    protected function onDayFrequency(DateTime $dateTime)
     {
         if ($this->frequency == self::FREQUENCY_DAILY || !$this->dayFrequency->count() || !$this->days->count()) return true;
 
@@ -375,9 +602,16 @@ abstract class Recurrence implements RecurrenceInterface
         return false;
     }
 
-    protected function onMonthDays(\DateTime $dateTime)
+    /**
+     * Whether the $datetime is
+     *
+     * @param DateTime $dateTime
+     *
+     * @return boolean
+     */
+    protected function onMonthDays(DateTime $dateTime)
     {
-        if (!$this->getMonthDays()->count()) return true;
+        if (!$this->monthDays->count()) return true;
 
         $dotm = new DayOfTheMonth();
         while ($this->monthDays->next()) {
@@ -387,20 +621,36 @@ abstract class Recurrence implements RecurrenceInterface
         return false;
     }
 
-    protected function onYearDays(\DateTime $dateTime)
+    /**
+     * Whether the $datetime is
+     *
+     * @param DateTime $dateTime
+     *
+     * @return boolean
+     */
+    protected function onYearDays(DateTime $dateTime)
     {
-        if (!$this->getYearDays()->count()) return true;
-
-        $doty = new DayOfTheYear();
-        while ($this->yearDays->next()) {
-            if ($doty->setDay($this->yearDays->current())->contains($dateTime))
-                return true;
+        $isOnDay = false;
+        if (!$this->yearDays->count()) {
+            $isOnDay = true;
         }
 
-        return false;
+        foreach ($this->yearDays as $day) {
+            $doty = new DayOfTheYear($day);
+
+            if ($doty->contains($dateTime)) {
+                $isOnDay = true;
+            }
+        }
+
+        return $isOnDay;
     }
 
-    public function getOccurrences(\DateTime $betweenStart = null, \DateTime $betweenEnd = null)
+    /**
+     * (non-PHPdoc)
+     * @see \Rizza\CalendarBundle\Model\RecurrenceInterface::getOccurrences()
+     */
+    public function getOccurrences(DateTime $betweenStart = null, DateTime $betweenEnd = null)
     {
         if (!$betweenEnd) {
             if (!$this->until) {

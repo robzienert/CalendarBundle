@@ -19,6 +19,11 @@ class UserManager extends BaseUserManager
         $this->class = $class;
     }
 
+    public function getClass()
+    {
+        return $this->class;
+    }
+
     public function find($id)
     {
         return $this->repo->find($id);

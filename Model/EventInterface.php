@@ -2,6 +2,7 @@
 
 namespace Rizza\CalendarBundle\Model;
 
+use \DateTime;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface EventInterface
@@ -93,28 +94,28 @@ interface EventInterface
     /**
      * Set the start date/time of the event
      *
-     * @param \DateTime $startDate
+     * @param DateTime $startDate
      */
-    public function setStartDate(\DateTime $startDate);
+    public function setStartDate(DateTime $startDate);
 
     /**
      * Get the start date/time of the event
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartDate();
 
     /**
      * Set the end date/time of the event
      *
-     * @param \DateTime $dateTime
+     * @param DateTime $dateTime
      */
-    public function setEndDate(\DateTime $endDate);
+    public function setEndDate(DateTime $endDate);
 
     /**
      * Get the end date/time of the event
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndDate();
 
@@ -126,18 +127,18 @@ interface EventInterface
     public function getExceptions();
 
     /**
-     * Add a DateTime to the recurrence exception collection
+     * Add a DateTime to the exception collection
      *
-     * @param \DateTime $exception
+     * @param DateTime $exception
      */
-    public function addException(\DateTime $exception);
+    public function addException(DateTime $exception);
 
     /**
-     * Remove a DateTime from the recurrence exception collection
+     * Remove a DateTime from the exception collection
      *
-     * @param \DateTime $exception
+     * @param DateTime $exception
      */
-    public function removeException(\DateTime $exception);
+    public function removeException(DateTime $exception);
 
     /**
      * Set where the event will be / was at.
@@ -191,14 +192,14 @@ interface EventInterface
     /**
      * Set the event organizer
      *
-     * @param UserInterface $organizer
+     * @param Organizer $organizer
      */
-    public function setOrganizer(UserInterface $organizer);
+    public function setOrganizer(Organizer $organizer);
 
     /**
      * Get the event organizer
      *
-     * @return UserInterface
+     * @return Organizer
      */
     public function getOrganizer();
 
@@ -212,22 +213,24 @@ interface EventInterface
     /**
      * Add an attendee
      *
-     * @param Attendee $attendee
+     * @param AttendeeInterface $attendee
      */
-    public function addAttendee(Attendee $attendee);
+    public function addAttendee(AttendeeInterface $attendee);
 
     /**
      * Remove an attendee
      *
-     * @param Attendee $attendee
+     * @param AttendeeInterface $attendee
      */
-    public function removeAttendee(Attendee $attendee);
+    public function removeAttendee(AttendeeInterface $attendee);
 
     /**
-     * Returns whether or not the event is on a given DateTime
+     * Returns whether the $dateTime is between the event's interval,
+     *  is included in the recurences or is not included in the
+     *  date's exceptions.
      *
-     * @param \DateTime $dateTime
+     * @param DateTime $dateTime
      * @return bool
      */
-    public function isOnDate(\DateTime $dateTime);
+    public function isOnDate(DateTime $dateTime);
 }
