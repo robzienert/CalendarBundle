@@ -2,35 +2,42 @@
 
 namespace Rizza\CalendarBundle\Tests\DateProcessor;
 
+use \DateTime;
 use Rizza\CalendarBundle\DateProcessor\DayOfTheYear;
 
 class DayOfTheYearTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSetDay()
+    /**
+     * @dataProvider getSupportedDaysOfTheYear
+     */
+    public function testSetterGetterDay($isSupported, $day)
     {
-        $doty = new DayOfTheYear(100);
+        if (!$isSupported) {
+            $this->setExpectedException("\InvalidArgumentException");
+        }
 
-        $this->assertEquals(100, $doty->getDay());
-
-        $doty->setDay(50);
-
-        $this->assertEquals(50, $doty->getDay());
+        $doty = new DayOfTheYear($day);
+        $this->assertEquals($day, $doty->getDay());
+        $this->assertEquals($doty, $doty->setDay($day), "Setter should return self");
     }
 
-    /**
-     * @dataProvider containsProvider
-     */
-    public function testContains($date, $day, $valid)
+    public function getSupportedDaysOfTheYear()
     {
-        $doty = new DayOfTheYear($day);
+        $day  = 368;
+        $days = array();
 
-        $date = \DateTime::createFromFormat('Y-m-d H:i:s', $date);
+        // From -366 to -1 or 1 to 366 (Excluding 0)
+        while ($day !== -368) {
+            $isSupported = false;
+            if ($day <= 366 && $day >= -366 && $day !== 0) {
+                $isSupported = true;
+            }
 
-        if ($valid) {
-            $this->assertTrue($doty->contains($date));
-        } else {
-            $this->assertFalse($doty->contains($date));
+            $days[] = array($isSupported, $day);
+            $day --;
         }
+
+        return $days;
     }
 
     public function testGetNextOccurrence()
@@ -38,17 +45,30 @@ class DayOfTheYearTest extends \PHPUnit_Framework_TestCase
         $this->markTestIncomplete('Test has not been implemented');
     }
 
-    public function containsProvider()
+    /**
+     * @dataProvider getContainsData
+     *
+     * @param boolean $isValid Whether it is expected to be valid
+     * @param string  $date    The date to test
+     * @param integer $day     The day to test
+     */
+    public function testDayOfTheYearContains($isValid, $date, $day)
     {
-        // date (Y-m-d H:i:s), day, valid?
+        $doty = new DayOfTheYear($day);
+        $date = \DateTime::createFromFormat('Y-m-d H:i:s', $date);
+
+        $this->assertEquals($isValid, $doty->contains($date));
+    }
+
+    public function getContainsData()
+    {
         return array(
-            array('2011-04-03 15:02:00', 93, true),
-            array('2011-07-03 15:02:00', 184, true),
-            array('2011-07-03 15:02:00', 14, false),
-            array('1986-11-21 06:32:00', 325, true),
-            array('1986-11-21 06:32:00', 100, false),
-            array('1986-12-22 12:32:00', 356, true),
-            array('1986-12-22 12:32:00', -356, false),
+            // First day of the year
+            array(true, '2012-01-01 00:00:00', 1),
+            // Last day of the year
+            array(true, '2012-12-31 23:59:59', 366),
+            // Day not contained
+            array(false, '2012-01-02 00:00:00', 1),
         );
     }
 }
