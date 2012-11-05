@@ -2,8 +2,9 @@
 
 namespace Rizza\CalendarBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType;
 use Rizza\CalendarBundle\Form\DataTransformer\UsernameToUserTransformer;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilder;
 
 class UsernameType extends AbstractType
 {

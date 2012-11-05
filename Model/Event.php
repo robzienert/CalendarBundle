@@ -2,52 +2,162 @@
 
 namespace Rizza\CalendarBundle\Model;
 
+use \DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Base class for the events
+ */
 abstract class Event implements EventInterface
 {
+    /**
+     * The none status code
+     *
+     * @var integer
+     */
     const STATUS_NONE = 0;
+
+    /**
+     * The tentative status code
+     *
+     * @var integer
+     */
     const STATUS_TENTATIVE = 1;
+
+    /**
+     * The confirmed status code
+     *
+     * @var integer
+     */
     const STATUS_CONFIRMED = 2;
+
+    /**
+     * The cancelled status code
+     *
+     * @var integer
+     */
     const STATUS_CANCELLED = -1;
-    
+
+    /**
+     * The unique id
+     *
+     * @var integer
+     */
     protected $id;
 
+    /**
+     * The category
+     *
+     * @var string
+     */
     protected $category;
 
+    /**
+     * The event's calendar
+     *
+     * @var CalendarInterface
+     */
     protected $calendar;
 
+    /**
+     * The event's title
+     *
+     * @var string
+     */
     protected $title;
 
+    /**
+     * The event's description
+     *
+     * @var string
+     */
     protected $description;
 
+    /**
+     * The all day event's flag
+     *
+     * @var boolean
+     */
     protected $allDay;
 
+    /**
+     * The start date
+     *
+     * @var DateTime
+     */
     protected $startDate;
-    
+
+    /**
+     * The end date
+     *
+     * @var DateTime
+     */
     protected $endDate;
 
+    /**
+     * The event's exceptions (Collection of DateTime)
+     *
+     * @var ArrayCollection
+     */
     protected $exceptions;
 
+    /**
+     * The event's status
+     *
+     * @var string
+     */
     protected $status;
 
+    /**
+     * The event's location
+     *
+     * @var string
+     */
     protected $location;
 
+    /**
+     * The event's url
+     *
+     * @var string
+     */
     protected $url;
 
+    /**
+     * The event's recurences
+     *
+     * @var RecurrenceInterface
+     */
     protected $recurrences;
 
+    /**
+     * The event's alarms
+     *
+     * @var ArrayCollection
+     */
     protected $alarms;
 
+    /**
+     * The event's organizer
+     *
+     * @var Organizer
+     */
     protected $organizer;
 
+    /**
+     * The event's attendees
+     *
+     * @var ArrayCollection
+     */
     protected $attendees;
 
     public function __construct($title = null)
     {
-        $this->title = $title;
-        $this->allDay = false;
+        $this->title       = $title;
+        $this->allDay      = false;
+        $this->attendees   = new ArrayCollection();
+        $this->recurrences = new ArrayCollection();
+        $this->exceptions  = new ArrayCollection();
     }
 
     public function getId()
@@ -110,14 +220,14 @@ abstract class Event implements EventInterface
         return $this->allDay;
     }
 
-    public function setStartDate(\DateTime $startDate)
+    public function setStartDate(DateTime $startDate)
     {
-        if ($this->endDate instanceof \DateTime
+        if ($this->endDate instanceof DateTime
             && $this->endDate->getTimestamp() < $startDate->getTimestamp()
         ) {
             throw new \InvalidArgumentException('The start date must come before the end date');
         }
-        
+
         $this->startDate = $startDate;
     }
 
@@ -126,14 +236,14 @@ abstract class Event implements EventInterface
         return $this->startDate;
     }
 
-    public function setEndDate(\DateTime $endDate)
+    public function setEndDate(DateTime $endDate)
     {
-        if ($this->startDate instanceof \DateTime 
+        if ($this->startDate instanceof DateTime
             && $this->startDate->getTimestamp() > $endDate->getTimestamp()
         ) {
             throw new \InvalidArgumentException('The end date must come after the start date');
         }
-        
+
         $this->endDate = $endDate;
     }
 
@@ -144,17 +254,17 @@ abstract class Event implements EventInterface
 
     public function getExceptions()
     {
-        return $this->exceptions ?: $this->exceptions = new ArrayCollection();
+        return $this->exceptions;
     }
 
-    public function addException(\DateTime $exception)
+    public function addException(DateTime $exception)
     {
         if (!$this->getExceptions()->contains($exception)) {
             $this->getExceptions()->add($exception);
         }
     }
 
-    public function removeException(\DateTime $exception)
+    public function removeException(DateTime $exception)
     {
         if ($this->getExceptions()->contains($exception)) {
             $this->getExceptions()->removeElement($exception);
@@ -183,7 +293,7 @@ abstract class Event implements EventInterface
 
     public function getRecurrences()
     {
-        return $this->recurrences ?: $this->recurrences = new ArrayCollection();
+        return $this->recurrences;
     }
 
     public function addRecurrence(RecurrenceInterface $recurrence)
@@ -200,7 +310,7 @@ abstract class Event implements EventInterface
         }
     }
 
-    public function setOrganizer(UserInterface $organizer)
+    public function setOrganizer(Organizer $organizer)
     {
         $this->organizer = $organizer;
     }
@@ -212,53 +322,85 @@ abstract class Event implements EventInterface
 
     public function getAttendees()
     {
-        return $this->attendees ?: $this->attendees = new ArrayCollection();
+        return $this->attendees;
     }
 
-    public function addAttendee(Attendee $attendee)
+    public function addAttendee(AttendeeInterface $attendee)
     {
-        if (!$this->getAttendees()->contains($attendee)) {
-            $this->getAttendees()->add($attendee);
+        if (!$this->attendees->contains($attendee)) {
+            $this->attendees->add($attendee);
         }
     }
 
-    public function removeAttendee(Attendee $attendee)
+    public function removeAttendee(AttendeeInterface $attendee)
     {
-        if ($this->getAttendees()->contains($attendee)) {
-            $this->getAttendees()->removeElement($attendee);
+        if ($this->attendees->contains($attendee)) {
+            $this->attendees->removeElement($attendee);
         }
     }
 
-    public function isOnDate(\DateTime $dateTime)
+    public function isOnDate(DateTime $dateTime)
     {
-        if (!$this->startDate instanceof \DateTime) {
+        if (!$this->startDate instanceof DateTime) {
             throw new \RuntimeException('Event does not have a start date');
         }
-        if (!$this->endDate instanceof \DateTime) {
+        if (!$this->endDate instanceof DateTime) {
             throw new \RunTimeException('Event does not have an end date');
         }
 
-        $onDate = (($this->startDate->format('Y-m-d') <= $dateTime->format('Y-m-d')
-            && $this->endDate->format('Y-m-d') >= $dateTime->format('Y-m-d')));
+        $isOnDate = $this->isBetween($dateTime);
 
-        if (!$onDate) {
-            while ($this->getRecurrences()->next()) {
-                if ($this->getRecurrences()->current()->contains($dateTime)) {
-                    $onDate = true;
+        // Check event's recurence
+        if (!$isOnDate) {
+            $recurrences = $this->getRecurrences();
+            foreach ($recurrences as $recurrence) {
+                if ($recurrence->contains($dateTime)) {
+                    $isOnDate = true;
                     break;
                 }
             }
         }
 
-        if ($onDate) {
-            while ($this->getExceptions()->next()) {
-                if ($this->getExceptions()->current()->contains($dateTime)) {
-                    $onDate = false;
+        // Check date exceptions
+        if ($isOnDate) {
+            $dateExceptions = $this->getExceptions();
+            // @todo use DatePeriod ?
+            foreach ($dateExceptions as $dateException) {
+                if ($this->isInRange($dateTime, $dateException)) {
+                    $isOnDate = false;
                     break;
                 }
             }
         }
 
-        return $onDate;
+        return $isOnDate;
+    }
+
+    /**
+     * Returns whether the $dateTime is included between the event's dates.
+     *
+     * @param DateTime $dateTime The datetime to test
+     *
+     * @return boolean
+     */
+    private function isBetween(DateTime $dateTime)
+    {
+        return ($this->startDate <= $dateTime && $this->endDate >= $dateTime);
+    }
+
+    /**
+     * Returns whether the $dateTime is included between the event's dates.
+     *
+     * @param DateTime $dateTime1 The datetime to test
+     * @param DateTime $dateTime2 The datetime to compare
+     *
+     * @return boolean
+     */
+    private function isInRange(DateTime $dateTime1, DateTime $dateTime2)
+    {
+        $diff = $dateTime1->diff($dateTime2)->format("%r%a%H%I%S");
+
+        // More or less 1 hour
+        return ($diff >= -10000 && $diff <= 10000);
     }
 }

@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap="./Tests/bootstrap.php" color="true">
+<phpunit
+    backupGlobals               = "false"
+    backupStaticAttributes      = "false"
+    colors                      = "true"
+    convertErrorsToExceptions   = "true"
+    convertNoticesToExceptions  = "true"
+    convertWarningsToExceptions = "true"
+    processIsolation            = "false"
+    stopOnFailure               = "false"
+    syntaxCheck                 = "false"
+    bootstrap                   = "./Tests/bootstrap.php" >
+   
+<!--    Enable the coverage -->
+<!--     <logging> -->
+<!--         <log type="coverage-html" target="coverage" charset="UTF-8"/> -->
+<!--     </logging> -->
+
     <testsuites>
         <testsuite name="Rizza's CalendarBundle">
             <directory suffix="Test.php">./Tests</directory>
