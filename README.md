@@ -1,6 +1,9 @@
 CalendarBundle
 ==============
 
+**This bundle is no longer maintained by myself. If you would like to take
+it over, please send me a message!**
+
 Provides applications with an events calendar. This bundle's model layer
 represents a heavy port of Apple's iCal application.
 
